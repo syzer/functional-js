@@ -70,7 +70,7 @@ var promise = nodefn.call(fs.stat, path); //hide the boiler plate
 
 var rest = require('rest');
 // MAP!!! combines functions
-when.reduce(when.map(getRemoteNumberList(), times10), sum)
+when.reduce(when.map(getRemoteNumberList(), times10), sumNumbers)
     .done(function(result) {
         console.log(result);
     });
@@ -80,7 +80,7 @@ function getRemoteNumberList() {
     return rest('http://example.com/numbers').then(JSON.parse);
 }
 
-function sum(x, y) { return x + y; }
+function sumNumbers(x, y) { return x + y; }
 function times10(x) {return x * 10; }
 
 fetchRemoteGreeting()
