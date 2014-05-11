@@ -82,3 +82,23 @@ function getRemoteNumberList() {
 
 function sum(x, y) { return x + y; }
 function times10(x) {return x * 10; }
+
+fetchRemoteGreeting()
+    .then(addExclamation)
+    .catch(handleError)
+    .done(function(greeting) {
+        console.log(greeting);
+    });
+
+function fetchRemoteGreeting() {
+    // returns a when.js promise for 'hello world'
+    return rest('http://example.com/greeting');
+}
+
+function addExclamation(greeting) {
+    return greeting + '!!!!';
+}
+
+function handleError(e) {
+    return 'drat!';
+}
