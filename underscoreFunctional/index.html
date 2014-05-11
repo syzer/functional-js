@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript" src="underscore.js">
+</script>
+<script>
+//_.each([1, 2, 3], alert);
+//map
+//_.map(list, iterator, [context])
+arr =  _.map([1, 2, 3], function(num){ return num * 3; });
+console.log(arr);
+map2 = _.map({one: 1, two: 2, three: 3}, function(num, key){ return num * 3; });
+console.log(map2);
+
+//reduce
+//_.reduce(list, iterator, memo, [context]) 
+var sum = _.reduce([1, 2, 3], function(memo, num){ return memo + num; }, 0);
+console.log(sum);
+
+//foldRight
+//_.reduceRight(list, iterator, memo, [context])
+var list = [[0, 1], [2, 3], [4, 5]];
+var flat = _.reduceRight(list, function(a, b) { return a.concat(b); }, []);
+// => [4, 5, 2, 3, 0, 1]
+console.log(flat);
+
+//where _.where(list, properties) 
+var listOfPlays = [
+  {author:"Shakespeare", year:1611, title:"Cymbeline"},
+  {title: "The Tempest", author: "Shakespeare", year: 1611},
+  {title: "Sth else", author: "Shakespeare", year: 1612}
+];
+// _.where(list, properties) 
+var reducedList = _.where(listOfPlays, {author: "Shakespeare", year: 1611});
+console.log(reducedList);
+
+//_.findWhere(list, properties) 
+var publicServicePulitzers = [
+       {year: 1918, newsroom: "The New York Times", reason: "first"},
+       {year: 1918, newsroom: "The New York Times", reason: "second"},
+       {year: 1918, newsroom: "The New York Times", reason: "third"}
+       ];
+var reducedList = _.findWhere(publicServicePulitzers, {newsroom: "The New York Times"});
+console.log(reducedList);
+
+//_.reject(list, iterator, [context]) //reject when iterator passes
+var odds = _.reject([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
+console.log(odds);
+
+//true if all passes test _.every(list, [iterator], [context]) //all
+console.log(_.every([true, 1, null, 'yes'], _.identity)); //without null => true
+
+//some true if anyone passes test
+console.warn(_.some([null, 0, 'yes', false])); 
+
+//_.contains([1, 2, 3], 3);
+console.info(_.contains([1, 2, 3], 3));
+
+//invoke_.invoke(list, methodName, [*arguments]) 
+console.log(_.invoke([[5, 1, 7], [3, 2, 1]], 'sort'));
+
+//_.max(list, [iterator], [context]) 
+var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+_.max(stooges, function(stooge){ return stooge.age; });
+console.log(stooges);
+
+//sort by
+console.info(_.sortBy([1, 2, 3, 4, 5, 6], function(num){ return Math.sin(num); }));
+
+//sortBy
+_.groupBy([1.3, 2.1, 2.4], function(num){ return Math.floor(num); });
+//=> {1: [1.3], 2: [2.1, 2.4]}
+
+_.groupBy(['one', 'two', 'three'], 'length');
+//=> {3: ["one", "two"], 5: ["three"]}
+
+//countBy _.countBy(list, iterator, [context]) 
+var count = _.countBy([1, 2, 3, 4, 5], function(num) {
+  return num % 2 == 0 ? 'even': 'odd';
+});
+console.warn(count);
+
+//+ more array operations
+
+//+ more functions
+//DEFER _.defer(function, [*arguments]) 
+_.defer(function(){ alert('deferred'); });
+
+//_delay!! _.delay(function, wait, [*arguments]) 
+var log = _.bind(console.log, console);
+_.delay(log, 5000, 'logged later');
+
+
+</script>
+</html>
