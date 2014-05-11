@@ -8,7 +8,7 @@ var fs = require('fs');
 function times2(x) {
     var deferred = when.defer();    //create deferred
     setTimeout(function(){
-       deferred.resolve(x * 2)}, 500);  //when value is resolved call resolve
+       deferred.resolve(x * 2)}, 2500);  //when value is resolved call resolve
 
     return deferred.promise;    //return promise
 }
@@ -17,7 +17,7 @@ function plus3(x) {
     var deferred = when.defer();
     setTimeout(function() {
         deferred.resolve(x*3)
-    }, 500);
+    }, 2500);
     return deferred.promise;
 }
 

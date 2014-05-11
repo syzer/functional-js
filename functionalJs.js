@@ -83,7 +83,7 @@ function truthy(x) {
 }
 console.log(truthy(0));  //true
 
-function doWhen(cond, action){
+function doWhen(cond, action) {
     if (truthy(cond)) {
         return action();
     } else {
@@ -92,11 +92,11 @@ function doWhen(cond, action){
 }
 
 function executeIfHasField(target, name) {
-    return doWhen(existy(target[name]), function() {
+    return doWhen(existy(target[name]), function () {
         return _.result(target, name);
     })
 }
-console.log(executeIfHasField([1,2,3], 'reverse'));       // 3,2,1
+console.log(executeIfHasField([1, 2, 3], 'reverse'));       // 3,2,1
 console.log(executeIfHasField({foo: 42}, 'foo'));         // 42
 console.log(executeIfHasField({foo: 42}, 'not there'));   // undefined
 
@@ -104,4 +104,29 @@ var a = [null, undefined, 1, 2, false].map(existy);  // [false, false, true, tru
 var b = [null, undefined, 1, 2, false].map(truthy);  // [false, false, true, true, false]
 console.log(a, b);
 
+_.each(['lukas', 'emily', 'david'], function (word) {             // Lukas
+    console.log(word.charAt(0).toUpperCase() + word.substr(1));   // Emily
+});                                                             // David
 
+// 99 botles on the wall SONG
+function lyricSegment(n) {
+    return _.chain([])
+        .push(n + ' bottles of beer on the wall')
+        .push(n + ' bottles of beer')
+        .push('Take one down and pass it around')
+        .tap(function (lyrics) {
+            if (n > 1) lyrics.push((n - 1) + ' bottles of beer on the wall');
+            else lyrics.push('No more bottles of beer on the wall');
+        })
+        .value();
+}
+var print = function (what) {
+    console.log(what);
+};
+function song(start, end, lyricGenerator) {
+    return _.reduce(_.range(start, end, -1), function (acc, n) {
+        return acc.concat(lyricGenerator(n));
+    }, []);
+}
+print(song(4, 0, lyricSegment));
+//print(lyricSegment(9));
