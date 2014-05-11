@@ -1,9 +1,9 @@
 /**
  * Created by syzer on 14/1/29.
  */
-var express = require('express');
-var rest = require('rest');
-var whenLib = require('when');
+//callbackHellFix
+var when = require('when');
+var fs = require('fs');
 
 function times2(x) {
     var deferred = when.defer();    //create deferred
@@ -27,6 +27,9 @@ function plus3AndThenTimes2(x) {
 
 plus3AndThenTimes2(10).then(displayResult);
 
+function displayResult(a) {
+    console.log(a);
+}
 
 //or
 function sum(a,b) {
@@ -49,13 +52,13 @@ plus3PlusTimes2(10).then(displayResult);
 
 //calling on non-promise code
 var deferred = when.defer();
-
+var path = __dirname;
 fs.stat(path, function (err, statInfo) {
     if(err)
         deferred.reject(err);
     else
         deferred.resolve(statInfo);
-})
+});
 var promise = deferred.promise;
 
 //using super when feture
