@@ -100,8 +100,8 @@ console.log(executeIfHasField([1,2,3], 'reverse'));       // 3,2,1
 console.log(executeIfHasField({foo: 42}, 'foo'));         // 42
 console.log(executeIfHasField({foo: 42}, 'not there'));   // undefined
 
-var a = [null, undefined, 1, 2, false].map(existy);
-var b = [null, undefined, 1, 2, false].map(truthy);
+var a = [null, undefined, 1, 2, false].map(existy);  // [false, false, true, true, true]
+var b = [null, undefined, 1, 2, false].map(truthy);  // [false, false, true, true, false]
 console.log(a, b);
 
 
