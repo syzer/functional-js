@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>lences</title>
+</head>
+<script>
+    function lens(get,set) {
+        var f = function (a) {
+            return get(a);
+        };
+        f.set = set;
+        f.mod = function (f, a) {
+            return set(a, f(get(a)));
+        };
+        return f;
+    }
+
+    var first = lens(
+            function (a) { return a[0]; },
+            function (a, b) { return [b].concat(a.slice(1)); }
+    );
+
+    console.log(first([1, 2, 3])); // outputs 1
+    console.log(first.set([1, 2, 3], 5)); // outputs [5, 2, 3]
+
+    function tenTimes(x) {
+        return x * 10;
+    }
+
+    console.log(first.mod(tenTimes, [1,2,3]));//oputipts [10, 2, 3]
+
+</script>
+<body>
+<h1>look on console moron</h1>
+</body>
+</html>
