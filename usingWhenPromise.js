@@ -1,7 +1,7 @@
 /**
  * Created by syzer on 14/1/29.
  */
-//callbackHellFix
+// callbackHellFix
 var when = require('when');
 var fs = require('fs');
 
@@ -65,3 +65,20 @@ var promise = deferred.promise;
 var nodefn = require("when/node/function");
 var promise = nodefn.call(fs.stat, path); //hide the boiler plate
 
+///////////////////////////////
+//from examples
+
+var rest = require('rest');
+// MAP!!! combines functions
+when.reduce(when.map(getRemoteNumberList(), times10), sum)
+    .done(function(result) {
+        console.log(result);
+    });
+
+function getRemoteNumberList() {
+    // Get a remote array [1, 2, 3, 4, 5]
+    return rest('http://example.com/numbers').then(JSON.parse);
+}
+
+function sum(x, y) { return x + y; }
+function times10(x) {return x * 10; }
