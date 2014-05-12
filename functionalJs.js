@@ -279,5 +279,21 @@ var library = [{title: "SICP", isbn: "0262010771", ed: 1},
 var jsonSearch = _.findWhere(library, {title: "SICP", ed: 2});
 print(jsonSearch);   // { title: 'SICP', isbn: '0262510871', ed: 2 }
 print (_.where(library, {ed:2}));   // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
+print(_.pluck(library, 'title'));
 
-// TODO 66/270
+//TODO select
+function project(table, keys) {
+    return _.map(table, function(obj) {
+        return _.pick.apply(null, construct(obj, keys));
+    });
+}
+print(project(library, ['isbn','ed']));     // is exacly like SQL select
+var isbns = project(library, ['isbn']);     // [ { isbn: '0262010771' }, .. ]
+print(isbns);
+print(_.pluck(isbns, 'isbn'));              // [ '0262010771', '0262510871', '1935182641' ]
+
+function rename(obj, newNames) {
+    return _.reduce(obj, function(){
+
+    });
+}
