@@ -339,4 +339,5 @@ var editionBiggerThanOne = restrict(        // [ { title: 'SICP', isbn: '0262510
     });
 print(editionBiggerThanOne);
 
-//TODO 71
+//TODO scopes
+56
