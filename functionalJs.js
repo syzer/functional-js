@@ -222,7 +222,61 @@ function construct(head, tail) {
     return cat([head], _.toArray(tail));
 }
 print(construct(42, [1, 2, 3]));    // [ 42, 1, 2, 3 ]
+
 function mapCat(fun, coll) {        // its better since it recieves it with arguments
     return cat.apply(null, _.map(coll, fun));
 }
-// ... lost interest
+var mapCatValue = mapCat(function (e) {
+    return construct(e, [',']);
+}, [1, 2, 3]);
+print(mapCatValue);                            // [ 1, ',', 2, ',', 3, ',' ]
+function butLast(coll) {
+    return _.toArray(coll).slice(0, -1);
+}
+function interpose(inter, coll) {
+    return butLast(mapCat(function (e) {
+        return construct(e, [inter]);
+    }, coll));
+}
+print(interpose(',', [1, 2, 3]));              // [ 1, ',', 2, ',', 3 ]
+
+var movies = [
+    {title: "Chthon", author: "Anthony"},
+    {title: "Grendel", author: "Gardner"},
+    {title: "After Dark"}
+];
+print(_.pluck(movies, 'author'));               // [ 'Anthony', 'Gardner', undefined ]
+
+var zombie = {name: "Bub", film: "Day of the Dead"};
+_.keys(zombie);
+_.values(zombie);
+print(_.invert(zombie));    // { Bub: 'name', 'Day of the Dead': 'film' }
+print(_.pairs(zombie));     // [ [ 'name', 'Bub' ], [ 'film', 'Day of the Dead' ] ]
+
+print(    // { NAME: 'Bub', FILM: 'Day of the Dead' }
+    _.object(_.map(_.pairs(zombie), function (pair) {
+        return [pair[0].toUpperCase(), pair[1]];
+    }))
+);
+print(_.keys(_.invert({a: 138, b: 9}))); // [ '9', '138' ]
+
+print(  // ["Anthony", "Gardner", "Unknown"]
+    _.pluck(_.map(movies, function (obj) {
+        return _.defaults(obj, {author: "Unknown"})
+    }), 'author')
+);
+
+var person = {name: "Romy", token: "j3983ij", password: "tigress"};
+var info = _.omit(person, 'token', 'password');
+var cred = _.pick(person, 'token', 'password');
+print(info, cred);                        //=> {name: "Romy"}
+
+// searching in JSON
+var library = [{title: "SICP", isbn: "0262010771", ed: 1},
+    {title: "SICP", isbn: "0262510871", ed: 2},
+    {title: "Joy of Clojure", isbn: "1935182641", ed: 1}];
+var jsonSearch = _.findWhere(library, {title: "SICP", ed: 2});
+print(jsonSearch);   // { title: 'SICP', isbn: '0262510871', ed: 2 }
+print (_.where(library, {ed:2}));   // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
+
+// TODO 66/270
