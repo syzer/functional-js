@@ -273,27 +273,70 @@ var cred = _.pick(person, 'token', 'password');
 print(info, cred);                        //=> {name: "Romy"}
 
 // searching in JSON
-var library = [{title: "SICP", isbn: "0262010771", ed: 1},
+var library = [
+    {title: "SICP", isbn: "0262010771", ed: 1},
     {title: "SICP", isbn: "0262510871", ed: 2},
-    {title: "Joy of Clojure", isbn: "1935182641", ed: 1}];
+    {title: "Joy of Clojure", isbn: "1935182641", ed: 1}
+];
 var jsonSearch = _.findWhere(library, {title: "SICP", ed: 2});
 print(jsonSearch);   // { title: 'SICP', isbn: '0262510871', ed: 2 }
-print (_.where(library, {ed:2}));   // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
+print(_.where(library, {ed: 2}));   // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
 print(_.pluck(library, 'title'));
 
 //TODO select
 function project(table, keys) {
-    return _.map(table, function(obj) {
+    return _.map(table, function (obj) {
         return _.pick.apply(null, construct(obj, keys));
     });
 }
-print(project(library, ['isbn','ed']));     // is exacly like SQL select
+print(project(library, ['isbn', 'ed']));     // is exacly like SQL select
 var isbns = project(library, ['isbn']);     // [ { isbn: '0262010771' }, .. ]
 print(isbns);
 print(_.pluck(isbns, 'isbn'));              // [ '0262010771', '0262510871', '1935182641' ]
 
 function rename(obj, newNames) {
-    return _.reduce(obj, function(){
+    return _.reduce(newNames, function (o, nu, old) {
+            if (_.has(obj, old)) {
+                o[nu] = obj[old];
+                return o;
+            } else {
+                return o;
+            }
+        },
+        _.omit.apply(null, construct(obj, _.keys(newNames))));
+}
 
+print(rename({a: 1, b: 2}, {'a': 'AAA'}));  // { b: 2, AAA: 1 }
+
+function as(table, names) {
+    return _.map(table, function (obj) {
+        return rename(obj, names);
     });
 }
+
+print(as(library, {ed: 'edition'})); // [{title: 'SICP', isbn: '0262010771', edition: 1 },...
+print(project(as(library, {ed: 'edition'}), ['edition']));  // [ { edition: 1 }, { edition: 2 }, { edition: 1 } ]
+
+// TODO restrict (like WHERE)
+function restrict(table, pred) {
+    return _.reduce(table, function(newTable, obj) {
+        if (truthy(pred(obj)))
+            return newTable;
+        else
+            return _.without(newTable, obj);
+    }, table);
+}
+print (restrict(library, function(book) {       // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
+    return book.ed > 1;
+}));
+
+var editionBiggerThanOne = restrict(        // [ { title: 'SICP', isbn: '0262510871', edition: 2 } ]
+    project(
+        as(library, {ed: 'edition'}),
+        ['title', 'isbn', 'edition']),
+    function(book) {
+        return book.edition > 1;
+    });
+print(editionBiggerThanOne);
+
+//TODO 71
