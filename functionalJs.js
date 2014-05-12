@@ -339,5 +339,23 @@ var editionBiggerThanOne = restrict(        // [ { title: 'SICP', isbn: '0262510
     });
 print(editionBiggerThanOne);
 
-//TODO scopes
-56
+//TODO EXAM QUESTION ABOUT CLOSUERS
+function whatWasTheLocal() {
+    var CAPTURED = "Oh hai";
+    return function() {
+        return "The local was: " + CAPTURED;
+    };
+}
+var reportLocal = whatWasTheLocal();
+print(reportLocal());   //=> "The local was: Oh hai"
+
+function createScaleFunction(FACTOR) {
+    return function(v) {
+        return _.map(v, function(n) {
+            return (n * FACTOR);
+        });
+    };
+}
+var scale10 = createScaleFunction(10);
+print(scale10([1,2,3]));   //=> [10, 20, 30]
+// TODO 61
