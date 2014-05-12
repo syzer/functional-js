@@ -130,3 +130,99 @@ function song(start, end, lyricGenerator) {
 }
 print(song(4, 0, lyricSegment));
 //print(lyricSegment(9));
+
+
+// MAP REDUCE FILTER
+function doubleAll(table) {
+    return _.map(table, function (n) {
+        return n * 2;
+    })
+}
+print(doubleAll([1, 2, 3, 4, 5]));
+
+function average(table) {
+    var sum = _.reduce(table, function (a, b) {
+        return a + b
+    });
+    return sum / _.size(table);
+}
+print(average([1, 2, 3, 4, 5]));
+
+function onlyEven(table) {
+    return _.filter(table, function (n) {
+        return (n % 2) === 0;
+    })
+}
+print(onlyEven([1, 2, 3, 4, 5]));
+
+// collection centric access
+var mapOverObject = _.map({a: 1, b: 2}, _.identity);
+print(mapOverObject);       // [1, 2]
+
+var nums = [100, 2, 25];
+function div(x, y) {
+    return x / y;
+}
+print(_.reduce(nums, div));         // 2
+print(_.reduceRight(nums, div));    // 0.125
+
+function allOff() {
+    return _.reduceRight(arguments, function (truth, f) {
+        return truth && f();
+    }, true);
+}
+function anyOf() {
+    return _.reduceRight(arguments, function (truth, f) {
+        return truth || f();
+    }, false);
+}
+function T() {
+    return true;
+}
+function F() {
+    return false
+}
+print(allOff(T, T, T, T, F));       // false
+print(allOff(T, T, T, T, T));       // true
+print(anyOf(F, T, F, F, F));        // true
+print(anyOf(F, F, F, F, F));        // false
+
+// COMPLEMENT, like _reject
+//var result = _.filter(['a','b',3,'c'], complement(_.isNumber));
+var arrayMix = ['a', 'b', 3, 'c'];
+print(_.reject(arrayMix, _.isNumber));  // [a,b,c]
+print(_.all(arrayMix, _.isNumber));     // false
+print(_.any(arrayMix, _.isString));     // true
+
+var peoples = [
+    {name: 'Lukas', age: 30, occupation: 'programmer'},
+    {name: 'Rico', age: 5, occupation: 'ferret'},
+    {name: 'Jake', age: 22, occupation: 'programmer'}
+];
+print(_.sortBy(peoples, function (n) {    // sorts by name
+    return n.age;
+}));
+
+print(_.groupBy(peoples, function (n) { // programmer: [ { name: 'Lukas', age: 30, occupation: 'programmer' },
+    return n.occupation;                //              { name: 'Jake', age: 22, occupation: 'programmer' } ],
+}));                                    // ferret: [ { name: 'Rico', age: 5, occupation: 'ferret' } ] }
+
+print(_.countBy(peoples, function (n) {  // { programmer: 2, ferret: 1 }
+    return n.occupation;
+}));
+
+function cat() {
+    var head = _.first(arguments);
+    if (existy(head)) return head.concat.apply(head, _.rest(arguments));
+    else return [];
+}
+print(cat([1, 2, 3], [4, 5], [6, 7, 8]));   // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+// now fucking lences !!
+function construct(head, tail) {
+    return cat([head], _.toArray(tail));
+}
+print(construct(42, [1, 2, 3]));    // [ 42, 1, 2, 3 ]
+function mapCat(fun, coll) {        // its better since it recieves it with arguments
+    return cat.apply(null, _.map(coll, fun));
+}
+// ... lost interest
