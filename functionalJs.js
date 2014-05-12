@@ -166,6 +166,7 @@ function div(x, y) {
 print(_.reduce(nums, div));         // 2
 print(_.reduceRight(nums, div));    // 0.125
 
+// in scala reduce right has advantage of lazy evaulation !!
 function allOff() {
     return _.reduceRight(arguments, function (truth, f) {
         return truth && f();
