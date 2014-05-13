@@ -189,7 +189,14 @@ print(anyOf(F, T, F, F, F));        // true
 print(anyOf(F, F, F, F, F));        // false
 
 // COMPLEMENT, like _reject
-//var result = _.filter(['a','b',3,'c'], complement(_.isNumber));
+var result = _.filter(['a','b',3,'c'], complement(_.isNumber));
+function complement(PRED) {                                 // is like ! = or underscore reject
+    return function() {
+        return !PRED.apply(null, _.toArray(arguments));
+    };
+}
+print("here", result);  // [ 'a', 'b', 'c' ]
+
 var arrayMix = ['a', 'b', 3, 'c'];
 print(_.reject(arrayMix, _.isNumber));  // [a,b,c]
 print(_.all(arrayMix, _.isNumber));     // false
@@ -276,7 +283,8 @@ print(info, cred);                        //=> {name: "Romy"}
 var library = [
     {title: "SICP", isbn: "0262010771", ed: 1},
     {title: "SICP", isbn: "0262510871", ed: 2},
-    {title: "Joy of Clojure", isbn: "1935182641", ed: 1}
+    {title: "Joy of Clojure", isbn: "1935182641", ed: 1},
+    {noTitle: "theres dont have title", isbn: "1935182641", ed: 1}
 ];
 var jsonSearch = _.findWhere(library, {title: "SICP", ed: 2});
 print(jsonSearch);   // { title: 'SICP', isbn: '0262510871', ed: 2 }
@@ -358,4 +366,43 @@ function createScaleFunction(FACTOR) {
 }
 var scale10 = createScaleFunction(10);
 print(scale10([1,2,3]));   //=> [10, 20, 30]
-// TODO 61
+// TODO 65 tells about shadowing, good interview question
+
+// TODO interview question, closure will hold REFERENCE!!! of captured thing,
+function isEven(n) { return (n%2) === 0 }
+var isOdd = complement(isEven);
+isOdd(413);  // true
+//but when we destroy the good behavior
+function isEven(n) { return false }
+isEven(10);  //false
+isOdd(13);   // true, as expected :)
+isOdd(12);   // false, because reference changed
+
+// example of really fucked up closure
+function showObject(OBJ) {
+    return function() {
+        return OBJ;
+    };
+}
+var o = {a: 42};
+var showO = showObject(o);
+showO();        // {a: 42};
+
+// now mindfuck!!!
+o.newField = 108;
+showO();        // {a: 42, newField: 108};  <-has added shit
+// solution is to use golden brackets!!!!!!!!!!
+
+//like underscore plucker
+function plucker(FIELD) {
+    return function(obj) {
+        return (obj && obj[FIELD]);
+    };
+}
+var best = {title: "Infinite Jest", author: "DFW"};
+var getTitle = plucker('title');
+print(getTitle(best));      //Infinite Jest
+print(_.filter(library, getTitle)); // filters one without title
+
+
+
