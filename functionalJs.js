@@ -612,6 +612,7 @@ function hasKeys() {
     fun.message = cat(["Must have values for keys:"], KEYS).join(" ");
     return fun;
 }
+
 //TODO awesome functional validator
 var checkCommand2 = checker(validator("must be a map", aMap),
     hasKeys('msg', 'type'));
