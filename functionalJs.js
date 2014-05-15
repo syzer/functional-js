@@ -189,9 +189,9 @@ print(anyOf(F, T, F, F, F));        // true
 print(anyOf(F, F, F, F, F));        // false
 
 // COMPLEMENT, like _reject
-var result = _.filter(['a','b',3,'c'], complement(_.isNumber));
+var result = _.filter(['a', 'b', 3, 'c'], complement(_.isNumber));
 function complement(PRED) {                                 // is like ! = or underscore reject
-    return function() {
+    return function () {
         return !PRED.apply(null, _.toArray(arguments));
     };
 }
@@ -327,14 +327,14 @@ print(project(as(library, {ed: 'edition'}), ['edition']));  // [ { edition: 1 },
 
 // TODO restrict (like WHERE)
 function restrict(table, pred) {
-    return _.reduce(table, function(newTable, obj) {
+    return _.reduce(table, function (newTable, obj) {
         if (truthy(pred(obj)))
             return newTable;
         else
             return _.without(newTable, obj);
     }, table);
 }
-print (restrict(library, function(book) {       // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
+print(restrict(library, function (book) {       // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
     return book.ed > 1;
 }));
 
@@ -342,7 +342,7 @@ var editionBiggerThanOne = restrict(        // [ { title: 'SICP', isbn: '0262510
     project(
         as(library, {ed: 'edition'}),
         ['title', 'isbn', 'edition']),
-    function(book) {
+    function (book) {
         return book.edition > 1;
     });
 print(editionBiggerThanOne);
@@ -350,7 +350,7 @@ print(editionBiggerThanOne);
 //TODO EXAM QUESTION ABOUT CLOSUERS
 function whatWasTheLocal() {
     var CAPTURED = "Oh hai";
-    return function() {
+    return function () {
         return "The local was: " + CAPTURED;
     };
 }
@@ -358,29 +358,33 @@ var reportLocal = whatWasTheLocal();
 print(reportLocal());   //=> "The local was: Oh hai"
 
 function createScaleFunction(FACTOR) {
-    return function(v) {
-        return _.map(v, function(n) {
+    return function (v) {
+        return _.map(v, function (n) {
             return (n * FACTOR);
         });
     };
 }
 var scale10 = createScaleFunction(10);
-print(scale10([1,2,3]));   //=> [10, 20, 30]
+print(scale10([1, 2, 3]));   //=> [10, 20, 30]
 // TODO 65 tells about shadowing, good interview question
 
 // TODO interview question, closure will hold REFERENCE!!! of captured thing,
-function isEven(n) { return (n%2) === 0 }
+function isEven(n) {
+    return (n % 2) === 0
+}
 var isOdd = complement(isEven);
 isOdd(413);  // true
 //but when we destroy the good behavior
-function isEven(n) { return false }
+function isEven(n) {
+    return false
+}
 isEven(10);  //false
 isOdd(13);   // true, as expected :)
 isOdd(12);   // false, because reference changed
 
 // example of really fucked up closure
 function showObject(OBJ) {
-    return function() {
+    return function () {
         return OBJ;
     };
 }
@@ -395,14 +399,222 @@ showO();        // {a: 42, newField: 108};  <-has added shit
 
 //like underscore plucker
 function plucker(FIELD) {
-    return function(obj) {
+    return function (obj) {
         return (obj && obj[FIELD]);
     };
 }
-var best = {title: "Infinite Jest", author: "DFW"};
+var bestTitle = {title: "Infinite Jest", author: "DFW"};
 var getTitle = plucker('title');
-print(getTitle(best));      //Infinite Jest
+print(getTitle(bestTitle));      //Infinite Jest
 print(_.filter(library, getTitle)); // filters one without title
 
 
+var people = [
+    {name: "Fred", age: 65},
+    {name: "Lucy", age: 36}
+];
+print(_.max(people, function (p) {
+    return p.age
+}));
 
+// finder do the same as max, but with injected comparator
+function finder(valueFun, bestFun, coll) {
+    return _.reduce(coll, function (best, current) {
+        var bestValue = valueFun(best);
+        var currentValue = valueFun(current);
+        return (bestValue === bestFun(bestValue, currentValue)) ? best : current;
+    });
+}
+print(finder(_.identity, Math.max, [1, 2, 3, 4, 5]));
+finder(plucker('age'), Math.max, people); // same as MAX(peope)
+
+finder(plucker('name'),
+    function (x, y) {
+        return (x.charAt(0) === "L") ? x : y
+    },
+    people);    //{name: "Lucy", age: 36}
+
+//!!!!!!!!!!
+function best(fun, coll) {
+    return _.reduce(coll, function (x, y) {
+        return fun(x, y) ? x : y
+    });
+}
+print(best(function (x, y) {
+    return x > y
+}, [1, 2, 3, 4, 5]));
+
+function repeat(times, VALUE) {
+    return _.map(_.range(times), function () {
+        return VALUE;
+    });
+}
+//TODO times, repeadly
+function repeatedly(times, fun) {
+    return _.map(_.range(times), fun);
+}
+repeatedly(3, function () {
+    return Math.floor((Math.random() * 10) + 1);
+});
+repeatedly(3, function () {
+    return print("Odelay!");
+});
+var jsdom = require('jsdom');       // fake DOM!!!
+var window = jsdom.jsdom().createWindow();
+$ = require('jquery')(window);
+
+repeatedly(3, function (n) {
+    var id = 'id' + n;
+    $('body').append($("<p>Odelay!</p>").attr('id', id));
+    return id;
+});
+
+//TODO repeat until
+function iterateUntil(fun, check, init) {
+    var ret = [];
+    var result = fun(init);
+    while (check(result)) {
+        ret.push(result);
+        result = fun(result);
+    }
+    return ret;
+}
+print(iterateUntil(function (n) {
+        return n + n
+    },
+    function (n) {
+        return n <= 1024
+    },
+    1));
+print(repeatedly(10, function (exp) {
+    return Math.pow(2, exp + 1)
+}));
+
+//just a toy
+function invoker(NAME, METHOD) {
+    return function (target /* args ... */) {
+        if (!existy(target)) fail("Must provide a target");
+        var targetMethod = target[NAME];
+        var args = _.rest(arguments);
+        return doWhen((existy(targetMethod) && METHOD === targetMethod), function () {
+            return targetMethod.apply(target, args);
+        });
+    };
+}
+var rev = invoker('reverse', Array.prototype.reverse);
+_.map([
+    [1, 2, 3]
+], rev);  // [[3,2,1]]
+
+var generator = {
+    count: 0,
+    uniqueString: function (prefix) {
+        return [prefix, this.count++].join('');
+    }
+};
+generator.uniqueString("bohr");
+print(generator.uniqueString("bohr"));
+
+// one can owerwrite count in generator, so closure to rescue
+var omGenerator = (function (init) {
+    var COUNTER = init;
+    return {
+        uniqueString: function (prefix) {
+            return [prefix, COUNTER++].join('');
+        }
+    };
+})(0); // nice?
+
+//TODO guard against null, vs nullObject pattern
+function fnull(fun /*, defaults */) {
+    var defaults = _.rest(arguments);
+    return function (/* args */) {       // its a decorator over function
+        var args = _.map(arguments, function (e, i) {
+            return existy(e) ? e : defaults[i];
+        });
+        return fun.apply(null, args);
+    };
+}
+var evilNums = [1, 2, 3, null, 5];
+_.reduce(evilNums, function (total, n) {
+    return total * n
+}); //0, but
+var safeMult = fnull(function (total, n) {
+    return total * n
+}, 1, 1);
+print(_.reduce(nums, safeMult));    // 5000!
+
+function defaults(d) {
+    return function (o, k) {
+        var val = fnull(_.identity, d[k]);
+        return o && val(o[k]);
+    };
+}
+function doSomething(config) {
+    var lookup = defaults({critical: 108});
+    return lookup(config, 'critical');
+}
+
+doSomething({critical: 9});    //=> 9
+doSomething({});               //=> 108
+
+
+function always(VALUE) {
+    return function () {
+        return VALUE;
+    };
+}
+
+function checker(/* validators */) {
+    var validators = _.toArray(arguments);
+    return function (obj) {
+        return _.reduce(validators, function (errs, check) {
+            if (check(obj))
+                return errs;
+            else
+                return _.chain(errs).push(check.message).value();   // mutate and error array
+        }, []);
+    };
+}
+
+var alwaysPasses = checker(always(true), always(true));
+alwaysPasses({});           //=> []
+var fails = always(false);
+fails.message = "a failure in life";
+var alwaysFails = checker(fails);
+alwaysFails({});            //=> ["a failure in life"]
+
+// TODO validators
+function validator(message, fun) {
+    var f = function (/* args */) {
+        return fun.apply(fun, arguments);
+    };
+    f['message'] = message;
+    return f;
+}
+var gonnaFail = checker(validator("ZOMG!", always(false)));
+gonnaFail(100);             // ["ZOMG!"]
+
+function aMap(obj) {
+    return _.isObject(obj);
+}
+var checkCommand = checker(validator("must be a map", aMap));
+checkCommand({});               // true
+print(checkCommand(42));        // myst be a map
+
+function hasKeys() {
+    var KEYS = _.toArray(arguments);        // existy(obj[k])
+    var fun = function (obj) {
+        return _.every(KEYS, function (k) {
+            return _.has(obj, k);
+        });
+    };
+    fun.message = cat(["Must have values for keys:"], KEYS).join(" ");
+    return fun;
+}
+//TODO awesome functional validator
+var checkCommand2 = checker(validator("must be a map", aMap),
+    hasKeys('msg', 'type'));
+print(checkCommand2(32));
+print(checkCommand2({msg: 'blah', type: 'display'}));
+print(checkCommand2({}));
