@@ -1,8 +1,9 @@
 /**
  * Created by syzer on 5/11/2014.
  */
+'use strict';
 
-_ = require('underscore');
+var _ = require('underscore');
 
 function isIndexed(data) {
     return _.isArray(data) || _.isString(data);
@@ -108,7 +109,7 @@ _.each(['lukas', 'emily', 'david'], function (word) {             // Lukas
     console.log(word.charAt(0).toUpperCase() + word.substr(1));   // Emily
 });                                                             // David
 
-// 99 botles on the wall SONG
+// 99 bottles on the wall SONG
 function lyricSegment(n) {
     return _.chain([])
         .push(n + ' bottles of beer on the wall')
@@ -202,20 +203,20 @@ print(_.reject(arrayMix, _.isNumber));  // [a,b,c]
 print(_.all(arrayMix, _.isNumber));     // false
 print(_.any(arrayMix, _.isString));     // true
 
-var peoples = [
+var peoplesArr = [
     {name: 'Lukas', age: 30, occupation: 'programmer'},
     {name: 'Rico', age: 5, occupation: 'ferret'},
     {name: 'Jake', age: 22, occupation: 'programmer'}
 ];
-print(_.sortBy(peoples, function (n) {    // sorts by name
+print(_.sortBy(peoplesArr, function (n) {    // sorts by name
     return n.age;
 }));
 
-print(_.groupBy(peoples, function (n) { // programmer: [ { name: 'Lukas', age: 30, occupation: 'programmer' },
+print(_.groupBy(peoplesArr, function (n) { // programmer: [ { name: 'Lukas', age: 30, occupation: 'programmer' },
     return n.occupation;                //              { name: 'Jake', age: 22, occupation: 'programmer' } ],
 }));                                    // ferret: [ { name: 'Rico', age: 5, occupation: 'ferret' } ] }
 
-print(_.countBy(peoples, function (n) {  // { programmer: 2, ferret: 1 }
+print(_.countBy(peoplesArr, function (n) {  // { programmer: 2, ferret: 1 }
     return n.occupation;
 }));
 
@@ -375,7 +376,7 @@ function isEven(n) {
 var isOdd = complement(isEven);
 isOdd(413);  // true
 //but when we destroy the good behavior
-function isEven(n) {
+function isEven(n) {        // evil version
     return false
 }
 isEven(10);  //false
@@ -461,7 +462,7 @@ repeatedly(3, function () {
 });
 var jsdom = require('jsdom');       // fake DOM!!!
 var window = jsdom.jsdom().createWindow();
-$ = require('jquery')(window);
+var $ = require('jquery')(window);
 
 repeatedly(3, function (n) {
     var id = 'id' + n;
@@ -600,7 +601,7 @@ function aMap(obj) {
 }
 var checkCommand = checker(validator("must be a map", aMap));
 checkCommand({});               // true
-print(checkCommand(42));        // myst be a map
+print(checkCommand(42));        // must be a map
 
 function hasKeys() {
     var KEYS = _.toArray(arguments);        // existy(obj[k])
@@ -619,3 +620,212 @@ var checkCommand2 = checker(validator("must be a map", aMap),
 print(checkCommand2(32));
 print(checkCommand2({msg: 'blah', type: 'display'}));
 print(checkCommand2({}));
+
+// maybe rewrite
+function dispatch(/* funs */) {
+    var funs = _.toArray(arguments);
+    var size = funs.length;
+    return function (target /*, args */) {
+        var ret = undefined;
+        var args = _.rest(arguments);
+        for (var funIndex = 0; funIndex < size; funIndex++) {
+            var fun = funs[funIndex];
+            ret = fun.apply(fun, construct(target, args));
+            if (existy(ret)) return ret;
+        }
+        return ret;
+    };
+}
+
+// call to string or object/string
+var str = dispatch(
+    invoker('toString', Array.prototype.toString),
+    invoker('toString', String.prototype.toString)
+);
+
+print(str('string'));
+print(str(_.range(10)));
+print(str({})); // undefined
+
+function stringReverse(s) {
+    if (!_.isString(s)) return undefined;
+    return s.split('').reverse().join("");
+}
+print(stringReverse("abc"));
+
+var sillyReverse = dispatch(rev, always(42)); //:)
+print(sillyReverse({}));            // 42  : fuck ifs~!!!
+
+//always 42 is a guard
+var notify = print;
+var changeView = print;
+var shutdown = print;
+
+// static factory we will remove this switch
+function performCommandHardcoded(command) {
+    var result;
+    switch (command.type) {
+        case 'notify':
+            result = notify(command.message);
+            break;
+        case 'join':
+            result = changeView(command.target);
+            break;
+        default:
+            print('alerting ' + command.type);
+    }
+    return result;
+}
+
+performCommandHardcoded({type: 'notify', message: 'hi!'});
+performCommandHardcoded({type: 'join', target: 'waiting-room'});
+performCommandHardcoded({type: 'wat'});
+
+function isa(type, action) {
+    return function (obj) {
+        if (type === obj.type)
+            return action(obj);     // returns undefined on unmatched
+    }
+}
+var performCommand = dispatch(
+    isa('notify', function (obj) {
+        return notify(obj.message)
+    }),
+    isa('join', function (obj) {
+        return changeView(obj.target)
+    }),
+    function (obj) {                // guard
+        print('Alerting ' + obj.type)
+    }
+);
+
+var performAdminCommand = dispatch(
+    isa('kill', function(obj) { return shutdown(obj.hostname) }),
+    performCommand
+);
+performAdminCommand({type: 'kill', hostname: 'localhost'});
+performAdminCommand({type: 'join', target: 'foo'}); // do same as normal user
+
+var performTrialUserCommand = dispatch(
+    isa('join', function(obj) { print ( "Alert Cannot join until approved!!") }),
+    performCommand
+);
+print('----trial user----');
+performTrialUserCommand({type: 'join', target: 'foo'}); //
+performTrialUserCommand({type: 'notify', message: 'Hi new user'});  // like normal user
+
+// TODO currying, like yield [], wait till all are resolved
+function rightAwayInvoker() {
+    var args = _.toArray(arguments);
+    var method = args.shift();
+    var target = args.shift();
+    return method.apply(target, args);      // wait till all arguments can be resolved
+}
+print(rightAwayInvoker(Array.prototype.reverse, [1,2,3]));
+invoker('reverse', Array.prototype.reverse)([1,2,3]);
+
+// theres a difference between left and right reduce/curry
+function leftCurryDiv(n) {
+    return function(d) {
+        return n/d;
+    };
+}
+function rightCurryDiv(d) {
+    return function(n) {
+        return n/d;
+    };
+}
+var divide10By = leftCurryDiv(10);
+print(divide10By(2));                       // 5
+
+var divideBy10 = rightCurryDiv(10);
+print(divideBy10(2));                       // 0.2
+
+function curry(fun) {               // take a function
+    return function(arg) {          // return function expecting one parameter
+        return fun(arg);
+    };
+}
+
+print(['11','11','11','11'].map(parseInt));     // [ 11, NaN, 3, 4 ] WTF:??
+//explanation
+print(parseInt('11', 2));                       // 3
+print(['11','11','11','11'].map(curry(parseInt)));  //[11,11..]
+
+// curry 2 functions
+function curry2(fun) {
+    return function(secondArg) {
+        return function(firstArg) {
+            return fun(firstArg, secondArg);
+        };
+    };
+}
+var div10 = curry2(div)(10);
+print(div10(50));   //5
+
+var parseBinaryString = curry2(parseInt)(2);
+parseBinaryString("111");
+print(parseBinaryString("110"));
+
+var plays = [{artist: "Burial", track: "Archangel"},
+    {artist: "Ben Frost", track: "Stomp"},
+    {artist: "Ben Frost", track: "Stomp"},
+    {artist: "Burial", track: "Archangel"},
+    {artist: "Emeralds", track: "Snores"},
+    {artist: "Burial", track: "Archangel"}];
+Object.prototype.info = function(obj){
+    console.log(this);
+};
+_.countBy(plays, function(song) {
+    return [song.artist, song.track].join(" - ");
+}).info();
+
+function songToString(song) {
+    return [song.artist, song.track].join(" - ");
+}
+
+//TODO compositions of functions using curry
+var songCount = curry2(_.countBy)(songToString);
+songCount(plays).info();
+function songFirstLetters(song) {
+    return song.artist.slice(0,3);
+}
+var songWeirdCount = curry2(_.countBy)(songFirstLetters);
+songWeirdCount(plays).info();   //{ Bur: 3, Ben: 2, Eme: 1}
+
+function curry3(fun) {
+    return function(last) {
+        return function(middle) {
+            return function(first) {
+                return fun(first, middle, last);
+            };
+        };
+    };
+}
+var songsPlayed = curry3(_.uniq)(false)(songToString);  // with unique
+songsPlayed(plays).info();
+
+//TODO count colors rgb
+function toHex(n) {
+    var hex = n.toString(16);
+    return (hex.length < 2) ? [0, hex].join(''): hex;
+}
+function rgbToHexString(r, g, b) {
+    return ["#", toHex(r), toHex(g), toHex(b)].join('');
+}
+rgbToHexString(255, 255, 255).info();
+var blueGreenish = curry3(rgbToHexString)(255)(200);
+blueGreenish(0).info();
+
+//TODO curry to provide Fluent API
+var greaterThan = curry2(function (lhs, rhs) { return lhs > rhs });
+var lessThan = curry2(function (lhs, rhs) { return lhs < rhs });
+
+var withinRange = checker(
+    validator("arg must be greater than 10", greaterThan(10)),      // awesome shit!!!
+    validator("arg must be less than 20", lessThan(20))
+);
+withinRange(15).info();             // []
+withinRange(1).info();
+withinRange(100).info();
+
