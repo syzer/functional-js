@@ -1032,6 +1032,7 @@ function myLength(ary) {
         return 1 + myLength(_.rest(ary));
 }
 myLength(_.range(1000)).info();                     // 1000
+
 function cycle(times, ary) {
     if (times <= 0)
         return [];
@@ -1047,20 +1048,30 @@ function constructPair(pair, rests) {
         construct(second(pair), second(rests))
     ];
 }
-constructPair(['a', 1], [[],[]]).info();               //=> [['a'], [1]]
+constructPair(['a', 1],
+    [[],[]]).info();               //=> [['a'], [1]]
 _.zip(['a'], [1]).info();                              //=> [['a', 1]]
-_.zip.apply(null, constructPair(['a', 1], [[],[]])).info();   //=> [['a', 1]]
+_.zip.apply(null, constructPair(['a', 1], [
+    [],
+    []
+])).info();   //=> [['a', 1]]
 
 constructPair(['a', 1],
     constructPair(['b', 2],
-        constructPair(['c', 3], [[],[]]))).info();
+        constructPair(['c', 3], [
+            [],
+            []
+        ]))).info();
 
 
 function unzip(pairs) {
-    if (_.isEmpty(pairs)) return [[],[]];
+    if (_.isEmpty(pairs)) return [
+        [],
+        []
+    ];
     return constructPair(_.first(pairs), unzip(_.rest(pairs)));
 }
-unzip(_.zip([1,2,3],[4,5,6])).info();  // should give the input
+unzip(_.zip([1, 2, 3], [4, 5, 6])).info();  // should give the input
 
 //TODO graphs and recursion
 var influences = [
@@ -1094,7 +1105,21 @@ function depthSearch(graph, nodes, seen) {
     if (_.contains(seen, node))
         return depthSearch(graph, more, seen);
     else
-        return depthSearch(graph,
+        return depthSearch(
+            graph,
             cat(nexts(graph, node), more),
-            construct(node, seen));
+            construct(node, seen)
+        );
 }
+depthSearch(influences, ['Lisp'], []).info();       // [ 'Lisp', 'Smalltalk', 'Self', 'Lua', 'JavaScript', 'Scheme' ]
+depthSearch(influences, ['Smalltalk', 'Self'], []).info();  // [ 'Smalltalk', 'Self', 'Lua', 'JavaScript' ]
+
+// TODO tail call recursion
+function tcLength(ary, n) {
+    var l = n ? n : 0;
+    if (_.isEmpty(ary))
+        return l;
+    else
+        return tcLength(_.rest(ary), l + 1);    // last call its just a call , can be obmited on last execution
+}
+tcLength(_.range(10)).info();
