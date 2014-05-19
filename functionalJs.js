@@ -1122,4 +1122,7 @@ function tcLength(ary, n) {
     else
         return tcLength(_.rest(ary), l + 1);    // last call its just a call , can be obmited on last execution
 }
-tcLength(_.range(10)).info();
+tcLength(_.range(10)).info();                   // 10
+
+// TODO combinators: orify, andify
+
