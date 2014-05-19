@@ -700,14 +700,18 @@ var performCommand = dispatch(
 );
 
 var performAdminCommand = dispatch(
-    isa('kill', function(obj) { return shutdown(obj.hostname) }),
+    isa('kill', function (obj) {
+        return shutdown(obj.hostname)
+    }),
     performCommand
 );
 performAdminCommand({type: 'kill', hostname: 'localhost'});
 performAdminCommand({type: 'join', target: 'foo'}); // do same as normal user
 
 var performTrialUserCommand = dispatch(
-    isa('join', function(obj) { print ( "Alert Cannot join until approved!!") }),
+    isa('join', function (obj) {
+        print("Alert Cannot join until approved!!")
+    }),
     performCommand
 );
 print('----trial user----');
@@ -721,18 +725,18 @@ function rightAwayInvoker() {
     var target = args.shift();
     return method.apply(target, args);      // wait till all arguments can be resolved
 }
-print(rightAwayInvoker(Array.prototype.reverse, [1,2,3]));
-invoker('reverse', Array.prototype.reverse)([1,2,3]);
+print(rightAwayInvoker(Array.prototype.reverse, [1, 2, 3]));
+invoker('reverse', Array.prototype.reverse)([1, 2, 3]);
 
 // theres a difference between left and right reduce/curry
 function leftCurryDiv(n) {
-    return function(d) {
-        return n/d;
+    return function (d) {
+        return n / d;
     };
 }
 function rightCurryDiv(d) {
-    return function(n) {
-        return n/d;
+    return function (n) {
+        return n / d;
     };
 }
 var divide10By = leftCurryDiv(10);
@@ -742,20 +746,20 @@ var divideBy10 = rightCurryDiv(10);
 print(divideBy10(2));                       // 0.2
 
 function curry(fun) {               // take a function
-    return function(arg) {          // return function expecting one parameter
+    return function (arg) {          // return function expecting one parameter
         return fun(arg);
     };
 }
 
-print(['11','11','11','11'].map(parseInt));     // [ 11, NaN, 3, 4 ] WTF:??
+print(['11', '11', '11', '11'].map(parseInt));     // [ 11, NaN, 3, 4 ] WTF:??
 //explanation
 print(parseInt('11', 2));                       // 3
-print(['11','11','11','11'].map(curry(parseInt)));  //[11,11..]
+print(['11', '11', '11', '11'].map(curry(parseInt)));  //[11,11..]
 
 // curry 2 functions
 function curry2(fun) {
-    return function(secondArg) {
-        return function(firstArg) {
+    return function (secondArg) {
+        return function (firstArg) {
             return fun(firstArg, secondArg);
         };
     };
@@ -767,16 +771,19 @@ var parseBinaryString = curry2(parseInt)(2);
 parseBinaryString("111");
 print(parseBinaryString("110"));
 
-var plays = [{artist: "Burial", track: "Archangel"},
+var plays = [
+    {artist: "Burial", track: "Archangel"},
     {artist: "Ben Frost", track: "Stomp"},
     {artist: "Ben Frost", track: "Stomp"},
     {artist: "Burial", track: "Archangel"},
     {artist: "Emeralds", track: "Snores"},
-    {artist: "Burial", track: "Archangel"}];
-Object.prototype.info = function(obj){
-    console.log(this);
+    {artist: "Burial", track: "Archangel"}
+];
+Object.prototype.info = function (stringInj) {
+    var string = stringInj || '';
+    console.log(string, this);
 };
-_.countBy(plays, function(song) {
+_.countBy(plays, function (song) {
     return [song.artist, song.track].join(" - ");
 }).info();
 
@@ -788,15 +795,15 @@ function songToString(song) {
 var songCount = curry2(_.countBy)(songToString);
 songCount(plays).info();
 function songFirstLetters(song) {
-    return song.artist.slice(0,3);
+    return song.artist.slice(0, 3);
 }
 var songWeirdCount = curry2(_.countBy)(songFirstLetters);
 songWeirdCount(plays).info();   //{ Bur: 3, Ben: 2, Eme: 1}
 
 function curry3(fun) {
-    return function(last) {
-        return function(middle) {
-            return function(first) {
+    return function (last) {
+        return function (middle) {
+            return function (first) {
                 return fun(first, middle, last);
             };
         };
@@ -808,7 +815,7 @@ songsPlayed(plays).info();
 //TODO count colors rgb
 function toHex(n) {
     var hex = n.toString(16);
-    return (hex.length < 2) ? [0, hex].join(''): hex;
+    return (hex.length < 2) ? [0, hex].join('') : hex;
 }
 function rgbToHexString(r, g, b) {
     return ["#", toHex(r), toHex(g), toHex(b)].join('');
@@ -818,9 +825,14 @@ var blueGreenish = curry3(rgbToHexString)(255)(200);
 blueGreenish(0).info();
 
 //TODO curry to provide Fluent API
-var greaterThan = curry2(function (lhs, rhs) { return lhs > rhs });
-var lessThan = curry2(function (lhs, rhs) { return lhs < rhs });
+var greaterThan = curry2(function (lhs, rhs) {
+    return lhs > rhs
+});
+var lessThan = curry2(function (lhs, rhs) {
+    return lhs < rhs
+});
 
+//TODO validator -> best example with curring
 var withinRange = checker(
     validator("arg must be greater than 10", greaterThan(10)),      // awesome shit!!!
     validator("arg must be less than 20", lessThan(20))
@@ -828,4 +840,173 @@ var withinRange = checker(
 withinRange(15).info();             // []
 withinRange(1).info();
 withinRange(100).info();
+
+//TODO partial application
+function divPart(n) {
+    return function (d) {
+        return n / d;
+    };
+}
+var over10Part = divPart(10);
+over10Part(2).info();               // 5
+
+function partial1(fun, arg1) {
+    return function (/* args */) {
+        var args = construct(arg1, arguments);
+        return fun.apply(fun, args);        // or call/bind
+    };
+}
+var over10Part1 = partial1(div, 10);
+over10Part1(5).info();            // 2
+
+function partial2(fun, arg1, arg2) {
+    return function (/* args */) {
+        var args = cat([arg1, arg2], arguments);
+        return fun.apply(fun, args);
+    };
+}
+var div10By2 = partial2(div, 10, 2);
+div10By2().info();              // 5
+
+function partial(fun /*, pargs */) {
+    var pargs = _.rest(arguments);
+    return function (/* arguments */) {
+        var args = cat(pargs, _.toArray(arguments));
+        return fun.apply(fun, args);
+    };
+}
+
+var div10By2By4By5000Partial = partial(div, 10, 2, 4, 5000);
+div10By2By4By5000Partial().info();
+
+validator("arg must be a map", aMap)(42).info();
+var zero = validator("cannot be zero", function (n) {
+    return 0 === n
+});
+var number = validator("arg must be a number", _.isNumber);
+
+function sqr(n) {
+    if (!number(n)) throw new Error(number.message);
+    if (zero(n)) throw new Error(zero.message);
+    return n * n;
+}
+
+sqr(10).info();
+//sqr(0).info();           // cannot be zerro
+//sqr('').info();         // must be a number
+
+
+//TODO validator precondition
+function condition1(/* validators */) {
+    var validators = _.toArray(arguments);
+    return function (fun, arg) {
+        var errors = mapCat(function (isValid) {
+            return isValid(arg) ? [] : [isValid.message];
+        }, validators);
+        if (!_.isEmpty(errors))
+            throw new Error(errors.join(", "));
+        return fun(arg);
+    };
+}
+var sqrPre = condition1(
+    validator("arg must not be zero", complement(zero)),
+    validator("arg must be a number", _.isNumber)
+);
+sqrPre(_.identity, 10).info();
+try {
+    sqrPre(_.identity, 0)
+} catch (e) {
+    console.log(e);
+}
+function uncheckedSqr(n) {
+    return n * n
+}
+uncheckedSqr('').info();            // 0 wich is NOT TRUE bu all means!
+
+var checkedSqr = partial1(sqrPre, uncheckedSqr);
+checkedSqr(10).info();
+try {
+    checkedSqr('');
+} catch (e) {
+    console.log(e);         // must be a number
+}
+
+var sillySquare = partial1(
+    condition1(validator("should be even", isEven)),
+    checkedSqr
+);
+function tryCatch(fun) {
+    try {
+        fun();
+    } catch (e) {
+        console.log(e);
+    }
+}
+try {
+    sillySquare(11);            // [Error: should be even]
+} catch (e) {
+    console.log(e);
+}
+
+var validateCommand = condition1(
+    validator("arg must be a map", _.isObject),
+    validator("arg must have the correct keys", hasKeys('msg', 'type'))
+);
+var createCommand = partial(validateCommand, _.identity);
+
+// ussage
+createCommand({msg: "", type: ""});
+try {
+    createCommand(21)
+} catch (e) {
+    e.info()
+}
+
+
+var createLaunchCommand = partial1(
+    condition1(
+        validator("arg must have the count down", hasKeys('countDown'))),
+    createCommand
+);
+createCommand({msg: "", type: "", countDown: 10}).info();   //{ msg: '', type: '', countDown: 10 }
+// but with any that has not a countdown will throw an error
+
+//TODO COMPOSE
+function isntString1(str) {
+    return !_.isString(str);
+}
+var isntString2 = _.compose(function (x) {
+    return !x
+}, _.isString);
+
+function not(x) {
+    return !x
+}
+var isntString = _.compose(not, _.isString);
+isntString([]).info();      // true
+
+function splat(fun) {
+    return function(array) {
+        return fun.apply(null, array);
+    };
+}
+function unsplat(fun) {
+    return function() {
+        return fun.call(null, _.toArray(arguments));
+    };
+}
+var composedMapcat = _.compose(splat(cat), _.map);
+composedMapcat([[1,2],[3,4],[5]], _.identity).info();
+
+// post condiitions
+var sqrPost = condition1(
+    validator("result should be a number", _.isNumber),
+    validator("result should not be zero", complement(zero)),
+    validator("result should be positive", greaterThan(0))
+);
+try {
+    sqrPost(_.identity, '');    //[Error: result should be a number, result should be positive]
+} catch (e) {
+    console.log(e);
+}
 
