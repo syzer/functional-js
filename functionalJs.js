@@ -987,17 +987,21 @@ var isntString = _.compose(not, _.isString);
 isntString([]).info();      // true
 
 function splat(fun) {
-    return function(array) {
+    return function (array) {
         return fun.apply(null, array);
     };
 }
 function unsplat(fun) {
-    return function() {
+    return function () {
         return fun.call(null, _.toArray(arguments));
     };
 }
 var composedMapcat = _.compose(splat(cat), _.map);
-composedMapcat([[1,2],[3,4],[5]], _.identity).info();
+composedMapcat([
+    [1, 2],
+    [3, 4],
+    [5]
+], _.identity).info();
 
 // TODO validators post condiitions
 var sqrPost = condition1(
@@ -1034,7 +1038,63 @@ function cycle(times, ary) {
     else
         return cat(ary, cycle(times - 1, ary));
 }
-cycle(2, [1,2,3]).info();                       // [ 1, 2, 3, 1, 2, 3 ]
-_.take(cycle(20, [1,2,3]), 11).info();          // [ 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2 ]
+cycle(2, [1, 2, 3]).info();                       // [ 1, 2, 3, 1, 2, 3 ]
+_.take(cycle(20, [1, 2, 3]), 11).info();          // [ 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2 ]
+
+function constructPair(pair, rests) {
+    return [
+        construct(_.first(pair), _.first(rests)),
+        construct(second(pair), second(rests))
+    ];
+}
+constructPair(['a', 1], [[],[]]).info();               //=> [['a'], [1]]
+_.zip(['a'], [1]).info();                              //=> [['a', 1]]
+_.zip.apply(null, constructPair(['a', 1], [[],[]])).info();   //=> [['a', 1]]
+
+constructPair(['a', 1],
+    constructPair(['b', 2],
+        constructPair(['c', 3], [[],[]]))).info();
 
 
+function unzip(pairs) {
+    if (_.isEmpty(pairs)) return [[],[]];
+    return constructPair(_.first(pairs), unzip(_.rest(pairs)));
+}
+unzip(_.zip([1,2,3],[4,5,6])).info();  // should give the input
+
+//TODO graphs and recursion
+var influences = [
+    ['Lisp', 'Smalltalk'],
+    ['Lisp', 'Scheme'],
+    ['Smalltalk', 'Self'],
+    ['Scheme', 'JavaScript'],
+    ['Scheme', 'Lua'],
+    ['Self', 'Lua'],
+    ['Self', 'JavaScript']
+];
+
+function nexts(graph, node) {
+    if (_.isEmpty(graph)) return [];
+    var pair = _.first(graph);
+    var from = _.first(pair);
+    var to = second(pair);
+    var more = _.rest(graph);
+    if (_.isEqual(node, from))
+        return construct(to, nexts(more, node));
+    else
+        return nexts(more, node);
+}
+nexts(influences, 'Lisp').info();       // [ 'Smalltalk', 'Scheme' ]
+nexts(influences, 'Scheme').info();       // [ 'Javasript', 'Lua' ]
+
+function depthSearch(graph, nodes, seen) {
+    if (_.isEmpty(nodes)) return rev(seen);     // seen as accumulator/cache
+    var node = _.first(nodes);
+    var more = _.rest(nodes);
+    if (_.contains(seen, node))
+        return depthSearch(graph, more, seen);
+    else
+        return depthSearch(graph,
+            cat(nexts(graph, node), more),
+            construct(node, seen));
+}
