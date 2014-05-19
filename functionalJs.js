@@ -1049,7 +1049,10 @@ function constructPair(pair, rests) {
     ];
 }
 constructPair(['a', 1],
-    [[],[]]).info();               //=> [['a'], [1]]
+    [
+        [],
+        []
+    ]).info();               //=> [['a'], [1]]
 _.zip(['a'], [1]).info();                              //=> [['a', 1]]
 _.zip.apply(null, constructPair(['a', 1], [
     [],
@@ -1119,10 +1122,82 @@ function tcLength(ary, n) {
     var l = n ? n : 0;
     if (_.isEmpty(ary))
         return l;
-    else
-        return tcLength(_.rest(ary), l + 1);    // last call its just a call , can be obmited on last execution
+    return tcLength(_.rest(ary), l + 1);    // last call its just a call , can be obmited on last execution
 }
 tcLength(_.range(10)).info();                   // 10
 
 // TODO combinators: orify, andify
+function andify(/* preds */) {
+    var preds = _.toArray(arguments);
+    return function (/* args */) {              // nested function to hide accumulator in recursive call
+        var args = _.toArray(arguments);
+        var everything = function (ps, truth) {
+            if (_.isEmpty(ps))
+                return truth;
 
+            return _.every(args, _.first(ps))
+                && everything(_.rest(ps), truth);   // lazy &&
+        };
+        return everything(preds, true);
+    };
+}
+
+var evenNums = andify(_.isNumber, isEven);
+evenNums(1, 2, 4, 6, 8, 9).info();          // false
+evenNums(2, 4, 6, 8).info();                // true
+
+function orify(/* preds */) {
+    var preds = _.toArray(arguments);
+    return function (/* args */) {
+        var args = _.toArray(arguments);
+        var something = function (ps, truth) {
+            if (_.isEmpty(ps))
+                return truth;
+
+            return _.some(args, _.first(ps))
+                || something(_.rest(ps), truth);
+        };
+        return something(preds, false);
+    };
+}
+
+var zeroOrOdd = orify(isOdd, zero);
+zeroOrOdd().info();                     // false
+zeroOrOdd(0, 2, 4, 6).info();              // true
+
+
+// TODO codependent functions - fun call other function that call back caller
+
+function flat(array) {
+    if (_.isArray(array))
+        return cat.apply(cat, _.map(array, flat));
+    return [array];
+}
+
+flat([
+    [1, 2],
+    [3, 4]
+]).info();                                      // 1,2,3,4
+flat([[1,2],[3,4,[5,6,[[[7]]],8]]]).info();     // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+
+var x = [{a: [1, 2, 3], b: 42}, {c: {d: []}}];
+var y = _.clone(x);
+y.info();                                       // clone
+x[1]['c']['d'] = 10000;
+y.info();                                       //  [ { a: [ 1, 2, 3 ], b: 42 }, { c: { d: 10000 } } ]
+_.isEqual(x, y).info('clone :');                // TRUE !!!, he changed the x also!
+
+function deepClone(obj) {
+    if (!existy(obj) || !_.isObject(obj))
+        return obj;
+    var temp = new obj.constructor();
+    for (var key in obj)
+        if (obj.hasOwnProperty(key))
+            temp[key] = deepClone(obj[key]);
+    return temp;
+}
+
+var y = deepClone(x);
+_.isEqual(x, y);
+y[1]['c']['d'] = 42;
+_.isEqual(x, y).info();                         // false,!!!
