@@ -46,14 +46,14 @@ var array = [100, 1, 0, 10, 1, 2, 1].sort(comparator(lessOrEqual));
 console.log(array); // [ 0, 1, 1, 1, 2, 10, 100 ]
 
 function lameCSV(str) {
-    return _.reduce(str.split("\n"), function (table, row) {
-        table.push(_.map(row.split(","), function (c) {
+    return _.reduce(str.split('\n'), function (table, row) {
+        table.push(_.map(row.split(','), function (c) {
             return c.trim();
         }));
         return table;
     }, []);
 }
-var peoples = "name,age,hair\nLukas,35,red\nBob,44,black";
+var peoples = 'name,age,hair\nLukas,35,red\nBob,44,black';
 var peopleTable = lameCSV(peoples);
 console.log(peopleTable);
 var sorted = _.rest(peopleTable).sort();
@@ -196,7 +196,7 @@ function complement(PRED) {                                 // is like ! = or un
         return !PRED.apply(null, _.toArray(arguments));
     };
 }
-print("here", result);  // [ 'a', 'b', 'c' ]
+print('here', result);  // [ 'a', 'b', 'c' ]
 
 var arrayMix = ['a', 'b', 3, 'c'];
 print(_.reject(arrayMix, _.isNumber));  // [a,b,c]
@@ -220,6 +220,7 @@ print(_.countBy(peoplesArr, function (n) {  // { programmer: 2, ferret: 1 }
     return n.occupation;
 }));
 
+// concatinate data structure
 function cat() {
     var head = _.first(arguments);
     if (existy(head)) return head.concat.apply(head, _.rest(arguments));
@@ -250,13 +251,13 @@ function interpose(inter, coll) {
 print(interpose(',', [1, 2, 3]));              // [ 1, ',', 2, ',', 3 ]
 
 var movies = [
-    {title: "Chthon", author: "Anthony"},
-    {title: "Grendel", author: "Gardner"},
-    {title: "After Dark"}
+    {title: 'Chthon', author: 'Anthony'},
+    {title: 'Grendel', author: 'Gardner'},
+    {title: 'After Dark'}
 ];
 print(_.pluck(movies, 'author'));               // [ 'Anthony', 'Gardner', undefined ]
 
-var zombie = {name: "Bub", film: "Day of the Dead"};
+var zombie = {name: 'Bub', film: 'Day of the Dead'};
 _.keys(zombie);
 _.values(zombie);
 print(_.invert(zombie));    // { Bub: 'name', 'Day of the Dead': 'film' }
@@ -269,25 +270,25 @@ print(    // { NAME: 'Bub', FILM: 'Day of the Dead' }
 );
 print(_.keys(_.invert({a: 138, b: 9}))); // [ '9', '138' ]
 
-print(  // ["Anthony", "Gardner", "Unknown"]
+print(  // ['Anthony', 'Gardner', 'Unknown']
     _.pluck(_.map(movies, function (obj) {
-        return _.defaults(obj, {author: "Unknown"})
+        return _.defaults(obj, {author: 'Unknown'})
     }), 'author')
 );
 
-var person = {name: "Romy", token: "j3983ij", password: "tigress"};
+var person = {name: 'Romy', token: 'j3983ij', password: 'tigress'};
 var info = _.omit(person, 'token', 'password');
 var cred = _.pick(person, 'token', 'password');
-print(info, cred);                        //=> {name: "Romy"}
+print(info, cred);                        //=> {name: 'Romy'}
 
 // searching in JSON
 var library = [
-    {title: "SICP", isbn: "0262010771", ed: 1},
-    {title: "SICP", isbn: "0262510871", ed: 2},
-    {title: "Joy of Clojure", isbn: "1935182641", ed: 1},
-    {noTitle: "theres dont have title", isbn: "1935182641", ed: 1}
+    {title: 'SICP', isbn: '0262010771', ed: 1},
+    {title: 'SICP', isbn: '0262510871', ed: 2},
+    {title: 'Joy of Clojure', isbn: '1935182641', ed: 1},
+    {noTitle: 'theres dont have title', isbn: '1935182641', ed: 1}
 ];
-var jsonSearch = _.findWhere(library, {title: "SICP", ed: 2});
+var jsonSearch = _.findWhere(library, {title: 'SICP', ed: 2});
 print(jsonSearch);   // { title: 'SICP', isbn: '0262510871', ed: 2 }
 print(_.where(library, {ed: 2}));   // [ { title: 'SICP', isbn: '0262510871', ed: 2 } ]
 print(_.pluck(library, 'title'));
@@ -350,13 +351,13 @@ print(editionBiggerThanOne);
 
 //TODO EXAM QUESTION ABOUT CLOSUERS
 function whatWasTheLocal() {
-    var CAPTURED = "Oh hai";
+    var CAPTURED = 'Oh hai';
     return function () {
-        return "The local was: " + CAPTURED;
+        return 'The local was: ' + CAPTURED;
     };
 }
 var reportLocal = whatWasTheLocal();
-print(reportLocal());   //=> "The local was: Oh hai"
+print(reportLocal());   //=> 'The local was: Oh hai'
 
 function createScaleFunction(FACTOR) {
     return function (v) {
@@ -404,15 +405,15 @@ function plucker(FIELD) {
         return (obj && obj[FIELD]);
     };
 }
-var bestTitle = {title: "Infinite Jest", author: "DFW"};
+var bestTitle = {title: 'Infinite Jest', author: 'DFW'};
 var getTitle = plucker('title');
 print(getTitle(bestTitle));      //Infinite Jest
 print(_.filter(library, getTitle)); // filters one without title
 
 
 var people = [
-    {name: "Fred", age: 65},
-    {name: "Lucy", age: 36}
+    {name: 'Fred', age: 65},
+    {name: 'Lucy', age: 36}
 ];
 print(_.max(people, function (p) {
     return p.age
@@ -431,9 +432,9 @@ finder(plucker('age'), Math.max, people); // same as MAX(peope)
 
 finder(plucker('name'),
     function (x, y) {
-        return (x.charAt(0) === "L") ? x : y
+        return (x.charAt(0) === 'L') ? x : y
     },
-    people);    //{name: "Lucy", age: 36}
+    people);    //{name: 'Lucy', age: 36}
 
 //!!!!!!!!!!
 function best(fun, coll) {
@@ -458,7 +459,7 @@ repeatedly(3, function () {
     return Math.floor((Math.random() * 10) + 1);
 });
 repeatedly(3, function () {
-    return print("Odelay!");
+    return print('Odelay!');
 });
 var jsdom = require('jsdom');       // fake DOM!!!
 var window = jsdom.jsdom().createWindow();
@@ -466,7 +467,7 @@ var $ = require('jquery')(window);
 
 repeatedly(3, function (n) {
     var id = 'id' + n;
-    $('body').append($("<p>Odelay!</p>").attr('id', id));
+    $('body').append($('<p>Odelay!</p>').attr('id', id));
     return id;
 });
 
@@ -494,7 +495,7 @@ print(repeatedly(10, function (exp) {
 //just a toy
 function invoker(NAME, METHOD) {
     return function (target /* args ... */) {
-        if (!existy(target)) fail("Must provide a target");
+        if (!existy(target)) fail('Must provide a target');
         var targetMethod = target[NAME];
         var args = _.rest(arguments);
         return doWhen((existy(targetMethod) && METHOD === targetMethod), function () {
@@ -513,8 +514,8 @@ var generator = {
         return [prefix, this.count++].join('');
     }
 };
-generator.uniqueString("bohr");
-print(generator.uniqueString("bohr"));
+generator.uniqueString('bohr');
+print(generator.uniqueString('bohr'));
 
 // one can owerwrite count in generator, so closure to rescue
 var omGenerator = (function (init) {
@@ -581,9 +582,9 @@ function checker(/* validators */) {
 var alwaysPasses = checker(always(true), always(true));
 alwaysPasses({});           //=> []
 var fails = always(false);
-fails.message = "a failure in life";
+fails.message = 'a failure in life';
 var alwaysFails = checker(fails);
-alwaysFails({});            //=> ["a failure in life"]
+alwaysFails({});            //=> ['a failure in life']
 
 // TODO validators
 function validator(message, fun) {
@@ -593,13 +594,13 @@ function validator(message, fun) {
     f['message'] = message;
     return f;
 }
-var gonnaFail = checker(validator("ZOMG!", always(false)));
-gonnaFail(100);             // ["ZOMG!"]
+var gonnaFail = checker(validator('ZOMG!', always(false)));
+gonnaFail(100);             // ['ZOMG!']
 
 function aMap(obj) {
     return _.isObject(obj);
 }
-var checkCommand = checker(validator("must be a map", aMap));
+var checkCommand = checker(validator('must be a map', aMap));
 checkCommand({});               // true
 print(checkCommand(42));        // must be a map
 
@@ -610,12 +611,12 @@ function hasKeys() {
             return _.has(obj, k);
         });
     };
-    fun.message = cat(["Must have values for keys:"], KEYS).join(" ");
+    fun.message = cat(['Must have values for keys:'], KEYS).join(' ');
     return fun;
 }
 
 //TODO awesome functional validator
-var checkCommand2 = checker(validator("must be a map", aMap),
+var checkCommand2 = checker(validator('must be a map', aMap),
     hasKeys('msg', 'type'));
 print(checkCommand2(32));
 print(checkCommand2({msg: 'blah', type: 'display'}));
@@ -649,9 +650,9 @@ print(str({})); // undefined
 
 function stringReverse(s) {
     if (!_.isString(s)) return undefined;
-    return s.split('').reverse().join("");
+    return s.split('').reverse().join('');
 }
-print(stringReverse("abc"));
+print(stringReverse('abc'));
 
 var sillyReverse = dispatch(rev, always(42)); //:)
 print(sillyReverse({}));            // 42  : fuck ifs~!!!
@@ -710,7 +711,7 @@ performAdminCommand({type: 'join', target: 'foo'}); // do same as normal user
 
 var performTrialUserCommand = dispatch(
     isa('join', function (obj) {
-        print("Alert Cannot join until approved!!")
+        print('Alert Cannot join until approved!!')
     }),
     performCommand
 );
@@ -768,27 +769,27 @@ var div10 = curry2(div)(10);
 print(div10(50));   //5
 
 var parseBinaryString = curry2(parseInt)(2);
-parseBinaryString("111");
-print(parseBinaryString("110"));
+parseBinaryString('111');
+print(parseBinaryString('110'));
 
 var plays = [
-    {artist: "Burial", track: "Archangel"},
-    {artist: "Ben Frost", track: "Stomp"},
-    {artist: "Ben Frost", track: "Stomp"},
-    {artist: "Burial", track: "Archangel"},
-    {artist: "Emeralds", track: "Snores"},
-    {artist: "Burial", track: "Archangel"}
+    {artist: 'Burial', track: 'Archangel'},
+    {artist: 'Ben Frost', track: 'Stomp'},
+    {artist: 'Ben Frost', track: 'Stomp'},
+    {artist: 'Burial', track: 'Archangel'},
+    {artist: 'Emeralds', track: 'Snores'},
+    {artist: 'Burial', track: 'Archangel'}
 ];
 Object.prototype.info = function (stringInj) {
     var string = stringInj || '';
     console.log(string, this);
 };
 _.countBy(plays, function (song) {
-    return [song.artist, song.track].join(" - ");
+    return [song.artist, song.track].join(' - ');
 }).info();
 
 function songToString(song) {
-    return [song.artist, song.track].join(" - ");
+    return [song.artist, song.track].join(' - ');
 }
 
 //TODO compositions of functions using curry
@@ -818,7 +819,7 @@ function toHex(n) {
     return (hex.length < 2) ? [0, hex].join('') : hex;
 }
 function rgbToHexString(r, g, b) {
-    return ["#", toHex(r), toHex(g), toHex(b)].join('');
+    return ['#', toHex(r), toHex(g), toHex(b)].join('');
 }
 rgbToHexString(255, 255, 255).info();
 var blueGreenish = curry3(rgbToHexString)(255)(200);
@@ -834,8 +835,8 @@ var lessThan = curry2(function (lhs, rhs) {
 
 //TODO validator -> best example with curring
 var withinRange = checker(
-    validator("arg must be greater than 10", greaterThan(10)),      // awesome shit!!!
-    validator("arg must be less than 20", lessThan(20))
+    validator('arg must be greater than 10', greaterThan(10)),      // awesome shit!!!
+    validator('arg must be less than 20', lessThan(20))
 );
 withinRange(15).info();             // []
 withinRange(1).info();
@@ -879,11 +880,11 @@ function partial(fun /*, pargs */) {
 var div10By2By4By5000Partial = partial(div, 10, 2, 4, 5000);
 div10By2By4By5000Partial().info();
 
-validator("arg must be a map", aMap)(42).info();
-var zero = validator("cannot be zero", function (n) {
+validator('arg must be a map', aMap)(42).info();
+var zero = validator('cannot be zero', function (n) {
     return 0 === n
 });
-var number = validator("arg must be a number", _.isNumber);
+var number = validator('arg must be a number', _.isNumber);
 
 function sqr(n) {
     if (!number(n)) throw new Error(number.message);
@@ -904,13 +905,13 @@ function condition1(/* validators */) {
             return isValid(arg) ? [] : [isValid.message];
         }, validators);
         if (!_.isEmpty(errors))
-            throw new Error(errors.join(", "));
+            throw new Error(errors.join(', '));
         return fun(arg);
     };
 }
 var sqrPre = condition1(
-    validator("arg must not be zero", complement(zero)),
-    validator("arg must be a number", _.isNumber)
+    validator('arg must not be zero', complement(zero)),
+    validator('arg must be a number', _.isNumber)
 );
 sqrPre(_.identity, 10).info();
 try {
@@ -932,7 +933,7 @@ try {
 }
 
 var sillySquare = partial1(
-    condition1(validator("should be even", isEven)),
+    condition1(validator('should be even', isEven)),
     checkedSqr
 );
 function tryCatch(fun) {
@@ -949,13 +950,13 @@ try {
 }
 
 var validateCommand = condition1(
-    validator("arg must be a map", _.isObject),
-    validator("arg must have the correct keys", hasKeys('msg', 'type'))
+    validator('arg must be a map', _.isObject),
+    validator('arg must have the correct keys', hasKeys('msg', 'type'))
 );
 var createCommand = partial(validateCommand, _.identity);
 
 // ussage
-createCommand({msg: "", type: ""});
+createCommand({msg: '', type: ''});
 try {
     createCommand(21)
 } catch (e) {
@@ -965,10 +966,10 @@ try {
 
 var createLaunchCommand = partial1(
     condition1(
-        validator("arg must have the count down", hasKeys('countDown'))),
+        validator('arg must have the count down', hasKeys('countDown'))),
     createCommand
 );
-createCommand({msg: "", type: "", countDown: 10}).info();   //{ msg: '', type: '', countDown: 10 }
+createCommand({msg: '', type: '', countDown: 10}).info();   //{ msg: '', type: '', countDown: 10 }
 // but with any that has not a countdown will throw an error
 
 //TODO COMPOSE
@@ -998,15 +999,42 @@ function unsplat(fun) {
 var composedMapcat = _.compose(splat(cat), _.map);
 composedMapcat([[1,2],[3,4],[5]], _.identity).info();
 
-// post condiitions
+// TODO validators post condiitions
 var sqrPost = condition1(
-    validator("result should be a number", _.isNumber),
-    validator("result should not be zero", complement(zero)),
-    validator("result should be positive", greaterThan(0))
+    validator('result should be a number', _.isNumber),
+    validator('result should not be zero', complement(zero)),
+    validator('result should be positive', greaterThan(0))
 );
+// TODO this is also a decorator
+var megaCheckedSqr = _.compose(partial(sqrPost, _.identity), checkedSqr);
+
 try {
-    sqrPost(_.identity, '');    //[Error: result should be a number, result should be positive]
+    sqrPost(_.identity, '');    // [Error: result should be a number, result should be positive]
 } catch (e) {
     console.log(e);
 }
+megaCheckedSqr(10);
+try {
+    megaCheckedSqr(NaN);
+} catch (e) {
+    console.log(e);
+}
+
+// TODO recursion
+function myLength(ary) {
+    if (_.isEmpty(ary))
+        return 0;
+    else
+        return 1 + myLength(_.rest(ary));
+}
+myLength(_.range(1000)).info();                     // 1000
+function cycle(times, ary) {
+    if (times <= 0)
+        return [];
+    else
+        return cat(ary, cycle(times - 1, ary));
+}
+cycle(2, [1,2,3]).info();                       // [ 1, 2, 3, 1, 2, 3 ]
+_.take(cycle(20, [1,2,3]), 11).info();          // [ 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2 ]
+
 
