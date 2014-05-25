@@ -384,6 +384,10 @@ isEven(10);  //false
 isOdd(13);   // true, as expected :)
 isOdd(12);   // false, because reference changed
 
+function isEven(n) {        // reset back
+    return (n % 2) === 0
+};
+
 // example of really fucked up closure
 function showObject(OBJ) {
     return function () {
@@ -622,7 +626,7 @@ print(checkCommand2(32));
 print(checkCommand2({msg: 'blah', type: 'display'}));
 print(checkCommand2({}));
 
-// maybe rewrite
+// maybe rewrite, run functions till finds defined function(non-udentified)
 function dispatch(/* funs */) {
     var funs = _.toArray(arguments);
     var size = funs.length;
@@ -1178,9 +1182,19 @@ flat([
     [1, 2],
     [3, 4]
 ]).info();                                      // 1,2,3,4
-flat([[1,2],[3,4,[5,6,[[[7]]],8]]]).info();     // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+flat([
+    [1, 2],
+    [3, 4, [5, 6, [
+        [
+            [7]
+        ]
+    ], 8]]
+]).info();     // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
 
-var x = [{a: [1, 2, 3], b: 42}, {c: {d: []}}];
+var x = [
+    {a: [1, 2, 3], b: 42},
+    {c: {d: []}}
+];
 var y = _.clone(x);
 y.info();                                       // clone
 x[1]['c']['d'] = 10000;
@@ -1201,3 +1215,748 @@ var y = deepClone(x);
 _.isEqual(x, y);
 y[1]['c']['d'] = 42;
 _.isEqual(x, y).info();                         // false,!!!
+
+// traversing big arrays
+//doSomethingWithResult(_.map(someArray, someFun));
+function visit(mapFun, resultFun, array) {
+    if (_.isArray(array))
+        return resultFun(_.map(array, mapFun));
+    else
+        return resultFun(array);
+}
+visit(_.identity, _.isNumber, 42).info();       // true
+visit(_.isNumber, _.identity, [1, 2, null, 3]); // t,t,f,t
+visit(function (n) {
+    return n * 2
+}, rev, _.range(10)).info();
+
+function postDepth(fun, ary) {  // after expanding children, like JSON parse revive
+    return visit(partial1(postDepth, fun), fun, ary);
+}
+function preDepth(fun, ary) {
+    return visit(partial1(preDepth, fun), fun, fun(ary));
+}
+postDepth(_.identity, influences).info();
+
+// TODO strategy
+function influencedWithStrategy(strategy, lang, graph) {
+    var results = [];
+    strategy(function (x) {
+        if (_.isArray(x) && _.first(x) === lang)        // hidden mutation
+            results.push(second(x));
+        return x;
+    }, graph);
+    return results;
+}
+influencedWithStrategy(postDepth, "Lisp", influences).info();   // ['Smalltalk', 'Scheme']
+// or better use high order functions
+var groupFrom = curry2(_.groupBy)(_.first);
+var groupTo = curry2(_.groupBy)(second);
+groupFrom(influences).info();
+
+// toys, they call them selves
+function evenOline(n) {
+    if (n === 0)
+        return true;
+    else
+        return partial1(oddOline, Math.abs(n) - 1);
+}
+function oddOline(n) {
+    if (n === 0)
+        return false;
+    else
+        return partial1(evenOline, Math.abs(n) - 1);
+}
+
+// TODO trampoline - flat recursive calls
+// may wrap all racursive calls in 1 function , instead calling all the recursion functions
+// to save the stack
+function trampoline(fun /*, args */) {
+    var result = fun.apply(fun, _.rest(arguments));
+    while (_.isFunction(result)) {
+        result = result();
+    }
+    return result;
+}
+trampoline(oddOline, 300000).info();
+// for better api we need hide implementation details in functions
+function isEvenSafe(n) {
+    if (n === 0)
+        return true;
+    else
+        return trampoline(partial1(oddOline, Math.abs(n) - 1)); // hidden implementation
+}
+function isOddSafe(n) {
+    if (n === 0)
+        return false;
+    else
+        return trampoline(partial1(evenOline, Math.abs(n) - 1));
+}
+//isEvenSafe(2000001).info(); // still quite slow
+
+
+//TODO generators
+function generator2(seed, current, step) {
+    return {
+        head: current(seed),
+        tail: function () {
+//            console.log("forced");
+            return generator2(step(seed), current, step);
+        }
+    };
+}
+function genHead(gen) {
+    return gen.head
+}
+function genTail(gen) {
+    return gen.tail()
+}
+var ints = generator2(0, _.identity, function (n) {
+    return n + 1
+});
+genHead(ints).info();               // 0
+genTail(genTail(ints));
+
+// gives    // might be worth to have accumulator in this generator
+function genTake(n, gen) {
+    var doTake = function (x, g, ret) {
+        if (x === 0)
+            return ret;
+        else
+            return partial(doTake, x - 1, genTail(g), cat(ret, genHead(g)));
+    };
+    return trampoline(doTake, n, gen, []);
+}
+genTake(10, ints).info();
+
+function influenced(graph, node) {
+    return _.map(groupFrom(graph)[node], second);
+}
+influencedWithStrategy(preDepth, 'Lisp', influences).info();
+influenced(influences, 'Lisp').info();
+
+// TODO purity means also testing, map is pure, rand is not
+//describe("_.map", function() {
+//    it("should return an array made from...", function(){
+//        expect(_.map([1,2,3], sqr)).toEqual([1, 4, 9]);
+//    });
+//});
+
+var PI = 3.14;
+function areaOfACircle(radius) {
+    return PI * sqr(radius);
+}
+areaOfACircle(3);
+//=> 28.26 , but if other library overwrite the PI, we got oops
+
+var rand = partial1(_.random, 1);
+// may spread out pure vs impure parts
+function generateRandomCharacter() {
+    return rand(26).toString(36);
+}
+function generateString(charGen, len) {
+    return repeatedly(len, charGen).join('');
+}
+generateString(generateRandomCharacter, 20).info();
+var composedRandomString = partial1(generateString, generateRandomCharacter);
+composedRandomString(10).info();
+//purity gives you freedom in composing functions(and switching them)
+
+// TODO Idempotence - execyte once = execute many times
+//someFun(arg) == _.compose(someFun, someFun)(arg);
+Math.abs(Math.abs(-42)).info();
+
+
+//TODO imutability
+function skipTake(n, coll) {
+    var ret = [];
+    var sz = _.size(coll);
+    for (var index = 0; index < sz; index += n) {
+        ret.push(coll[index]);
+    }
+    return ret;
+}
+skipTake(2, [1, 2, 3, 4]).info();      // [1,3]
+skipTake(3, _.range(20)).info();    // [0, 3, 6, 9, 12, 15, 18]
+
+// local variable mutability
+function summ(array) {
+    var result = 0;
+    var sz = array.length;
+    for (var i = 0; i < sz; i++)
+        result += array[i];
+    return result;
+}
+summ(_.range(1, 11)).info();             //=> 55
+
+// recursion
+function summRec(array, seed) {
+    if (_.isEmpty(array))
+        return seed;
+    else
+        return summRec(_.rest(array), _.first(array) + seed);
+}
+summRec([], 0).info(); //=> 0
+summRec(_.range(1, 11), 0).info();   // 55
+
+// object.freeze is shallow
+var freq = curry2(_.countBy)(_.identity);       // counby is pure, do not mutate
+var a = repeatedly(1000, partial1(rand, 3));
+var copy = _.clone(a);
+freq(a);
+_.isEqual(a, copy).info();      // true
+
+freq(skipTake(2, a));           // skipp take is also pure
+_.isEqual(a, copy).info();
+
+// _.extend is impure
+var person = {fname: "Simon"};
+_.extend(person, {lname: "Petrikov"}, {age: 28}, {age: 108});
+person.info();  // has changed!!
+
+function merge(/*args*/) {
+    return _.extend.apply(null, construct({}, arguments));
+}
+var person = {fname: "Simon"};
+merge(person, {lname: "Petrikov"}, {age: 28}, {age: 108}).info();
+person.info();
+
+// TODO fluentAPI , chain is not lazy!!
+_.chain(library)
+    .tap(function (o) {
+        console.log(o)
+    })       // inject here logger
+    .pluck('title')
+    .sort()
+    .value()
+    .info();
+
+function LazyChain(obj) {
+    this._calls = [];
+    this._target = obj;
+}
+
+LazyChain.prototype.invoke = function (methodName /*, args */) {
+    var args = _.rest(arguments);
+    this._calls.push(function (target) {
+        var meth = target[methodName];
+        return meth.apply(target, args);
+    });
+    return this;
+};
+LazyChain.prototype.force = function () {
+    return _.reduce(this._calls, function (target, thunk) {
+        return thunk(target);
+    }, this._target);
+};
+LazyChain.prototype.tap = function (fun) {
+    this._calls.push(function (target) {
+        fun(target);
+        return target;
+    });
+    return this;
+}
+
+new LazyChain([2, 1, 3]).invoke('sort')._calls.info();    // called thunk, from AGOL days
+new LazyChain([2, 1, 3]).invoke('sort')._calls[0]([2, 1, 3]).info();
+new LazyChain([2, 1, 3]).invoke('sort').force().info();
+new LazyChain([2, 1, 3])
+    .invoke('concat', [8, 5, 7, 6])
+    .invoke('sort')
+    .invoke('join', ' ')
+    .force();
+new LazyChain([2, 1, 3])
+    .invoke('sort')
+    .tap(console.log)
+    .force();
+
+var deferredSort = new LazyChain([666, 6, 66])            // deffered object
+    .invoke('sort')
+    .tap(console.log);
+
+deferredSort.info();
+//deferredSort.force();                                 // fullfill defered resolve
+
+function LazyChainChainChain(obj) {
+    var isLC = (obj instanceof LazyChain);
+    this._calls = isLC ? cat(obj._calls, []) : [];
+    this._target = isLC ? obj._target : obj;
+}
+LazyChainChainChain.prototype = LazyChain.prototype;
+new LazyChainChainChain(deferredSort)
+    .invoke('toString')
+    .force();
+
+var longing = $.Deferred();
+longing.promise().state().info();   // pending
+longing.resolve("<3");
+longing.promise().state().info();   // resolved
+longing.promise().done().info();
+function go() {
+    var d = $.Deferred();
+    $.when("")
+        .then(function () {
+            setTimeout(function () {
+                console.log("sub-task 1");
+            }, 5000)
+        })
+        .then(function () {
+            setTimeout(function () {
+                console.log("sub-task 2");
+            }, 10000)
+        })
+        .then(function () {
+            setTimeout(function () {
+                d.resolve("done done done done");
+            }, 15000)
+        });
+    return d.promise();
+}
+var yearning = go().done().info();
+
+//TODO thrush combinator:
+function pipeline(seed /*, args */) {
+    return _.reduce(_.rest(arguments),
+        function (l, r) {
+            return r(l);
+        },
+        seed);
+}
+
+pipeline(42, function (n) {
+    return -n
+}).info();
+pipeline(42).info();
+
+//lol
+function fifth(a) {
+    return pipeline(a
+        , _.rest
+        , _.rest
+        , _.rest
+        , _.rest
+        , _.first);
+}
+fifth([1, 2, 3, 4, 5]).info();              // 5
+
+function negativeFifth(a) {
+    return pipeline(a
+        , fifth
+        , function (n) {
+            return -n
+        });
+}
+negativeFifth([1, 2, 3, 4, 5, 6, 7, 8, 9]).info();         // -5
+
+function firstEditions(table) {
+    return pipeline(table
+        , function (t) {
+            return as(t, {ed: 'edition'})
+        }
+        , function (t) {
+            return project(t, ['title', 'edition', 'isbn'])
+        }
+        , function (t) {
+            return restrict(t, function (book) {
+                return book.edition === 1;
+            });
+        });
+}
+firstEditions(library).info();
+
+// TODO SQL-RQL
+var RQL = {
+    select: curry2(project),
+    as: curry2(as),
+    where: curry2(restrict)
+};
+function allFirstEditions(table) {
+    return pipeline(table
+        , RQL.as({ed: 'edition'})
+        , RQL.select(['title', 'edition', 'isbn'])
+        , RQL.where(function (book) {
+            return book.edition === 1;
+        }));
+}
+allFirstEditions(library).info();
+// data going in to the pipeline should be same as leaving pipeline
+// so composing pure function is much easier then others
+// use context object to finalize shape
+
+//monads
+function actions(acts, done) {
+    return function (seed) {
+        var init = { values: [], state: seed };
+        var intermediate = _.reduce(acts, function (stateObj, action) {
+            var result = action(stateObj.state);
+            var values = cat(stateObj.values, [result.answer]);
+            return { values: values, state: result.state };
+        }, init);
+        var keep = _.filter(intermediate.values, existy);
+        return done(keep, intermediate.state);
+    };
+}
+
+function mSqr() {
+    return function (state) {
+        var ans = sqr(state);
+        return {answer: ans, state: ans};
+    }
+}
+var doubleSquareAction = actions(
+    [
+        mSqr(),
+        mSqr()
+    ],
+    function (values) {
+        return values;
+    }
+);
+doubleSquareAction(10).info();  // 10, 100
+
+function note(arg) {
+    console.log('Note: ' + arg)
+}
+
+// now lets mix some other shit to it
+function mNote() {
+    return function (state) {
+        note(state);
+        return {answer: undefined, state: state};
+    }
+}
+function mNeg() {
+    return function (state) {
+        return {answer: -state, state: -state};
+    }
+}
+// monad
+var negativeSqrAction = actions(
+    [mSqr(), mNote(), mNeg()],
+    function (_, state) {
+        return state;
+    }
+);
+// action = monad
+negativeSqrAction(9).info();    // -81
+
+// TODO converts shit to monads
+function lift(answerFun, stateFun) {
+    return function (/* args */) {
+        var args = _.toArray(arguments);
+        return function (state) {
+            var ans = answerFun.apply(null, construct(state, args));
+            var s = stateFun ? stateFun(state) : ans;
+            return {answer: ans, state: s};
+        };
+    };
+}
+var mSqr2 = lift(sqr);
+var mNote2 = lift(note, _.identity);
+var mNeg2 = lift(function (n) {
+    return -n
+});
+var negativeSqrAction2 = actions(
+    [mSqr2(), mNote2(), mNeg2()],
+    function (_, state) {
+        return state;
+    }
+);
+negativeSqrAction2(9).info();
+
+// TODO stack!!!
+var push = lift(function (stack, e) {
+    return construct(e, stack)
+});
+var pop = lift(_.first, _.rest);
+var stackAction = actions(      // compose stack
+    [
+        push(1),
+        push(2),
+        pop()
+    ],
+    function (values, state) {
+        return values;
+    }
+);
+stackAction([]).info(); // [ [ 1 ], [ 2, 1 ], 2 ]
+pipeline(                   // decompose stack
+    []
+    , stackAction
+    , _.chain)
+    .each(function (elem) {
+        console.log((elem).info());  // [1], [2, 1], 2
+    });
+
+// TODO lazy best implementation
+function lazyChain(obj) {
+    var calls = [];
+    return {
+        invoke: function (methodName /* args */) {
+            var args = _.rest(arguments);
+            calls.push(function (target) {
+                var meth = target[methodName];
+                return meth.apply(target, args);
+            });
+            return this;
+        },
+        force: function () {
+            return _.reduce(calls, function (ret, thunk) {
+                return thunk(ret);
+            }, obj);
+        }
+    };
+}
+var lazyOp = lazyChain([2, 1, 3])
+    .invoke('concat', [7, 7, 8, 9, 0])
+    .invoke('sort');
+
+lazyOp.force().info();  // [ 0, 1, 2, 3, 7, 7, 8, 9 ]
+
+function deferredSort(ary) {
+    return lazyChain(ary).invoke('sort');
+}
+//var deferredSorts = _.map([[2,1,3], [7,7,1], [0,9,5]], deferredSort);
+//deferredSorts.info();
+function force(thunk) {
+    return thunk.force();
+}
+//_.map(deferredSorts, force).info();
+
+var validateTriples = validator(
+    "Each array should have three elements",
+    function (arrays) {
+        return _.every(arrays, function (a) {
+            return a.length === 3;
+        });
+    }
+);
+var validateTripleStore = partial1(condition1(validateTriples), _.identity);
+validateTripleStore([
+    [2, 1, 3],
+    [7, 7, 1],
+    [0, 9, 5]
+]).info();
+try {
+    validateTripleStore([
+        [2, 1, 3],
+        [7, 7, 1],
+        [0, 9, 5, 7, 7, 7, 7, 7, 7]
+    ]);
+} catch (e) {
+    e.info();
+}
+function postProcess(arrays) {
+    return _.map(arrays, second);
+}
+function processTriples(data) {
+    return pipeline
+    (data
+        , JSON.parse
+        , validateTripleStore
+        //, deferredSort
+        //, force
+        , postProcess
+        , invoker('sort', Array.prototype.sort)
+        , str);
+}
+processTriples("[[2,1,3], [7,7,1], [0,9,5]]").info();   // 1,7,9
+// on bad data it will terminate early
+
+function stringifyArray(ary) {
+    return ["[", _.map(ary, polyToString).join(","), "]"].join('');
+}
+
+// write to a string
+//if string return
+// ealse object.toString() ... to funcitonal
+//dispatch tryes return non - undentified value
+var polyToString = dispatch(
+    function (s) {
+        return _.isString(s) ? s : undefined
+    },
+    function (s) {
+        return _.isArray(s) ? stringifyArray(s) : undefined
+    },   // may add function to composition
+    function (s) {
+        return _.isObject(s) ? JSON.stringify(s) : undefined
+    },   // to accomodate more data structures
+    function (s) {
+        return s.toString()
+    }
+);
+polyToString([1, 2, [3, 4]]).info();
+polyToString({ala: 'makota'}).info();
+
+// mixins
+function Container(val) {
+    this.value = val;
+    this.init(val);
+}
+Container.prototype.init = _.identity;
+var c = new Container(42);  // { _value: 42 }
+c.info();
+
+var HoleMixin = {
+    setValue: function (newValue) {       // interface
+        var oldVal = this.value;
+        this.validate(newValue);        // protocol/template extension
+        this.value = newValue;
+        this.notify(oldVal, newValue);  // extension
+        return this.value;
+    }
+};
+var Hole = function (val) {
+    Container.call(this, val);
+};
+
+var CAS = function(val) {
+    Hole.call(this, val);
+};
+//var h = new Hole(42);  // no method init  // need to implement
+
+var ObserverMixin = (function () {
+    var watchers = [];
+    return {
+        watch: function (fun) {
+            watchers.push(fun);
+            return _.size(watchers);
+        },
+        notify: function (oldVal, newVal) {
+            _.each(watchers, function (watcher) {
+                watcher.call(this, oldVal, newVal);
+            });
+            return _.size(watchers);
+        }
+    };
+}());
+
+var ValidateMixin = {
+    addValidator: function (fun) {
+        this.validator = fun;
+    },
+    init: function (val) {
+        this.validate(val);
+    },
+    validate: function (val) {
+        if (existy(this.validator) && !this.validator(val))
+            throw("Attempted to set invalid value " + polyToString(val));
+    }
+};
+_.extend(Hole.prototype
+    , HoleMixin
+    , ValidateMixin
+    , ObserverMixin
+);
+var h = new Hole(42);    //value:42
+h.addValidator(always(false));
+try {h.setValue(9)} catch (e){e.info()} // Attempted to set invalid value 9
+
+var h2 = new Hole(42);
+h2.addValidator(isEven);
+h2.setValue(8).info();
+try {h2.setValue(9)} catch (e){e.info()}
+
+h2.watch(function(old, nu) {
+    note(["Changing", old, "to", nu].join(' '));
+});
+h2.setValue(42);
+h2.info();
+
+h2.watch(function(old, nu) {
+    note(["Veranderende", old, "tot", nu].join(' '));
+});
+h2.setValue(36);    //Note: Changing 42 to 36
+h2.info();          //Note: Veranderende 42 tot 36
+//{ value: 36, validator: [Function: isEven] }
+
+var SwapMixin = {
+    swap: function(fun /* , args... */) {           // interface
+        var args = _.rest(arguments);
+        var newValue = fun.apply(this, construct(this.value, args));
+        return this.setValue(newValue);             // extension(need to provide setValue)
+    }
+};
+var o = {value: 0, setValue: _.identity};
+_.extend(o, SwapMixin);
+o.swap(construct, [1,2,3]).info(); //0,1,2,3
+var SnapshotMixin = {
+    snapshot: function() {
+        return deepClone(this.value);
+    }
+};
+_.extend(Hole.prototype
+    , HoleMixin
+    , ValidateMixin
+    , ObserverMixin
+    , SwapMixin
+    , SnapshotMixin
+);
+var h3 = new Hole(42);
+h3.snapshot();  // 42
+h3.swap(always(99)); //99 + notes about changing values
+h3.snapshot(); // 99
+
+var CASMixin = {
+    swap: function(oldVal, f) {
+        if (this.value === oldVal) {
+            this.setValue(f(this.value));
+            return this.value;
+        }
+        else {
+            return undefined;
+        }
+    }
+};
+
+_.extend(CAS.prototype
+    , HoleMixin
+    , ValidateMixin
+    , ObserverMixin
+    , SwapMixin
+    , CASMixin
+    , SnapshotMixin
+);
+var c = new CAS(42);
+c.swap(42, always(-1));
+c.snapshot();       // -1
+c.swap('not the value', always(100000));    //undentified
+c.snapshot();
+///////////////////////////////////end of mixin
+
+function contain(value) {
+    return new Container(value);
+}
+contain(42);   //=> {_value: 42} (of type Container, but who cares?)
+function hole(val /*, validator */) {
+    var h = new Hole();
+    var v = _.toArray(arguments)[1];
+    if (v) h.addValidator(v);
+    h.setValue(val);
+    return h;
+}
+
+try {
+    var x = hole(42, always(false));
+} catch (e){
+    e.info();       // atemt to put invalid value
+}
+var swap = invoker('swap', Hole.prototype.swap);
+var x = hole(42);
+//swap(x, hole(1762)).info();
+function cas(val /*, args */) {
+    var h = hole.apply(this, arguments);
+    var c = new CAS(val);
+    c.validator = h.validator;
+    return c;
+}
+var compareAndSwap = invoker('swap', CAS.prototype.swap);
+function snapshot(o) { return o.snapshot() }
+function addWatcher(o, fun) { o.watch(fun) }        // generic , not mixing
+
+var x = hole(42);
+addWatcher(x, note);
+swap(x, hole(42));      // NOTE: 42 chapter01.js:38
+var y = cas(9, isOdd);  //=> 1764
+compareAndSwap(y, 9, always(1));
+snapshot(y);        //=> 1
