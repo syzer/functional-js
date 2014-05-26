@@ -1900,7 +1900,7 @@ h3.snapshot(); // 99
 var CASMixin = {
     swap: function(oldVal, f) {
         if (this.value === oldVal) {
-            this.setValue(f(this.value));
+            this.setValue(f(this.value));   // extension
             return this.value;
         }
         else {
