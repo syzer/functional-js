@@ -1,7 +1,7 @@
 /**
  * Created by syzer on 5/19/2014.
  */
-    var _ = require('underscore');
+var _ = require('underscore');
 
 var doSomethingSwitch = function(doWhat) {
     switch(doWhat) {
