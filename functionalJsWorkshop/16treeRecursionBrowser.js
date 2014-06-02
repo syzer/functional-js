@@ -12,23 +12,21 @@ function getDependencies(tree, acc) {
     return acc.sort();
 }
 module.exports = getDependencies;
-var loremIpsum = {
-    "name": "lorem-ipsum",
-    "version": "0.1.1",
-    "dependencies": {
-        "optimist": {
-            "version": "0.3.7",
-            "dependencies": {
-                "wordwrap": {
-                    "version": "0.0.2"
-                }
-            }
-        },
-        "inflection": {
-            "version": "1.2.6"
-        }
-    }
-};
-
-
-console.log(getDependencies(loremIpsum));
+//var loremIpsum = {
+//    "name": "lorem-ipsum",
+//    "version": "0.1.1",
+//    "dependencies": {
+//        "optimist": {
+//            "version": "0.3.7",
+//            "dependencies": {
+//                "wordwrap": {
+//                    "version": "0.0.2"
+//                }
+//            }
+//        },
+//        "inflection": {
+//            "version": "1.2.6"
+//        }
+//    }
+//};
+//console.log(getDependencies(loremIpsum));
