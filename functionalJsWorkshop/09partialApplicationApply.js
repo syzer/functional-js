@@ -7,6 +7,8 @@ function logger(namespace) {
     return function namespacedLogger(/*args*/){
         var args = slice.call(arguments);
         console.log(namespace, args.join(' '));
+        // or simply
+        // console.log.apply(console, [namespace].concat(slice.call(arguments)))
     };
 }
 
