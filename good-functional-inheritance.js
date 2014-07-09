@@ -36,12 +36,12 @@ console.log(rabbit.jump());
 
 // with NEW - witch is wrong way to do this
 function newRabbit(name) {
-    Animal.apply(this, arguments)
+    Animal.apply(this, arguments);
     var parentRun = this.run;               // fucked up :(
 
     this.jump = function() {
         console.log(name + " jumped!")
-    }
+    };
 
     this.run = function() {
         parentRun.call(this);
