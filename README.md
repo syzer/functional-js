@@ -22,7 +22,7 @@ testOfEncryption
 ================
 `mocha codeEvalChallange/decryptWLodashTest.js -R "nyan"`
 or run thu IDE
-there is reun decryption test
+there is `run decryption test`
 
 
 code Coverage
