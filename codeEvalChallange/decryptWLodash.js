@@ -16,61 +16,31 @@
  Submit your solution in a file (some file name).(py2| c| cpp| java| rb| pl| php| tcl| clj| js| scala| cs| m| py3| hs| go| bash| lua) or use the online editor.
  */
 var _ = require('lodash');
+var encode = require('./decrypt').encode;
+
 var input = '5 | s | 92 112 109 40 118 109 109 108 123 40 119 110 40 124 112 109 40 117 105 118 129 40 119 125 124 127 109 113 111 112 40 124 112 109 40 118 109 109 108 123 40 119 110 40 124 112 109 40 110 109 127 54 40 53 40 91 120 119 107 115';
 var output = 'The needs of the many outweigh the needs of the few. - Spock';
 var input2 = 'The function called per element or the number of elements to return. If a property name or object ';
+input2 = encode(input2);
 
-function encode(str, shift) {
-    shift = shift || Math.floor(Math.random() * 15) + 1;
-    var buffer = '5 | s |';
-    for (var i = 0, len = str.length; i < len; i++) {
-        buffer = buffer + ' ' + (str[i].charCodeAt(0) + shift).toString();
-    }
-    return buffer;
-}
-
-//var input = encode(input2, -16);
-
-var arr = input.split(' ');
-var substringLength = arr.shift;
-var lastLetter = arr[2];
-arr = arr.slice(4);
-
-function findSpaceWOLodash(arr) {
-    var counts = {};
-    for (var i = 0; i < arr.length; i++) {
-        var num = arr[i];
-        counts[num] = counts[num] ? counts[num] + 1 : 1;
-    }
-    return Object.keys(counts)[0];
-//    return counts;
-}
-
-function findSpace(arr) {
-    return _(arr)
+function decode(input) {
+    var SPACE = 32;
+    input = input.substring(8).split(' ');
+    var space = _(input)
         .countBy(function (num) {
             return num
         })
-        .keys(arr)
+        .keys()
         .value()[0];
-}
+    var shift = space - SPACE;
 
-function determineShiftFromSpace(num) {
-    var SPACE = 32;
-    return num - SPACE;
+    return input.map(function (char) {
+        return String.fromCharCode(char - shift);
+    }).join('');
 }
+console.log(decode(input));
 
-var space = findSpace(arr);
-var space = findSpaceWOLodash(arr);
-var shift = determineShiftFromSpace(space);
-function decrypt(arr, shift) {
-    var buffer = '';
-    arr.forEach(function (char) {
-        buffer += String.fromCharCode(char - shift);
-    });
-    return buffer;
-}
-//var message = decrypt(arr, shift);
-//console.log(message);
-
-module.exports.encode = encode;
+//reduce(function (sum, char) {
+//    console.log(char);
+//    return char;
+//});
