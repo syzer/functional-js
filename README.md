@@ -1,10 +1,10 @@
 Functionajs
-=============
+===========
 
 from the book Functional JS
 
-functiona js worksop
-===================
+functiona js workshop
+=====================
 cd dir
 >functional-javascript-workshop
 
@@ -15,7 +15,7 @@ and recepies
 
 good-parts
 ==========
-from crookford book JS good parts
+from Crookford book JS good parts
 
 
 testOfEncryption
