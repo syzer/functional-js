@@ -20,7 +20,7 @@ var encode = require('./decrypt').encode;
 
 var input = '5 | s | 92 112 109 40 118 109 109 108 123 40 119 110 40 124 112 109 40 117 105 118 129 40 119 125 124 127 109 113 111 112 40 124 112 109 40 118 109 109 108 123 40 119 110 40 124 112 109 40 110 109 127 54 40 53 40 91 120 119 107 115';
 var output = 'The needs of the many outweigh the needs of the few. - Spock';
-var input2 = 'The function called per element or the number of elements to return. If a property name or object ';
+var input2 = 'The function called per element or the number of elements to return. If a property name or object';
 input2 = encode(input2);
 
 //1. array to ram
@@ -30,12 +30,22 @@ input2 = encode(input2);
 function decode(input) {
     var SPACE = 32;
     input = input.substring(8).split(' ');
-    var space = _(input)
+    var space = _(input).chain()
         .countBy(function (num) {
             return num
         })
-        .keys()
-        .value()[0];
+        // trick with key:val => [key:val]
+        .pairs()
+        // drop small ones
+        .filter(function (num) {
+            return num[1] > 2;
+        })
+        // order by occurance
+        .sortBy(function (val, key, arr) {
+            return -val[1];
+        })
+        .flatten()
+        .value()[0];    // [1] would give 2nd and so on
     var shift = space - SPACE;
 
     return input.map(function (char) {
@@ -43,4 +53,5 @@ function decode(input) {
     }).join('');
 }
 console.log(decode(input));
+
 
