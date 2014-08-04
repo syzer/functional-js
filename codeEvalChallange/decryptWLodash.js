@@ -23,6 +23,10 @@ var output = 'The needs of the many outweigh the needs of the few. - Spock';
 var input2 = 'The function called per element or the number of elements to return. If a property name or object ';
 input2 = encode(input2);
 
+//1. array to ram
+//2. determine space
+//3. determine shift
+//4. map/reduce shifted answer
 function decode(input) {
     var SPACE = 32;
     input = input.substring(8).split(' ');
@@ -40,7 +44,3 @@ function decode(input) {
 }
 console.log(decode(input));
 
-//reduce(function (sum, char) {
-//    console.log(char);
-//    return char;
-//});
