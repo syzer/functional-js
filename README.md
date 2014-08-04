@@ -22,15 +22,13 @@ testOfEncryption
 ================
 `mocha codeEvalChallange/decryptWLodashTest.js -R "nyan"`
 or run thu IDE
+there is reun decryption test
 
 
 code Coverage
 =============
-still some errors
-`mocha codeEvalChallange/ -R html-cov > codeEvalChallange/report.html`
+run `make`
 
+and in
 
-`jscoverage codeEvalChallange/decryptWLodashTest.js`
-will create -cov files to use with mocha runner
-
-`mocha -r jscoverage --covout=html --covinject=true --coverage=90,80,75 codeEvalChallange/`
+`build/cov/report.html`
