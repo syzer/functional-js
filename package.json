@@ -11,7 +11,7 @@
   "dependencies": {
     "mocha-sinon": "latest",
     "mocha": "latest",
-    "chai": "latest",
+    "chai": "^1.9.1",
     "assert": "latest",
     "sinon": "latest",
     "jquery": "^2.1.0",

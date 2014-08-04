@@ -18,19 +18,47 @@
 var _ = require('lodash');
 var encode = require('./decrypt').encode;
 
-var input = '5 | s | 92 112 109 40 118 109 109 108 123 40 119 110 40 124 112 109 40 117 105 118 129 40 119 125 124 127 109 113 111 112 40 124 112 109 40 118 109 109 108 123 40 119 110 40 124 112 109 40 110 109 127 54 40 53 40 91 120 119 107 115';
-var output = 'The needs of the many outweigh the needs of the few. - Spock';
-var input2 = 'The function called per element or the number of elements to return. If a property name or object';
-input2 = encode(input2);
+
 
 //1. array to ram
-//2. determine space
+//2. determine space (selectMostPopularChar)
 //3. determine shift
 //4. map/reduce shifted answer
-function decode(input) {
+function decode(input, howManyCharToReject) {
     var SPACE = 32;
-    input = input.substring(8).split(' ');
-    var space = _(input).chain()
+    howManyCharToReject = howManyCharToReject || 8;
+    input = input.substring(howManyCharToReject).split(' ');
+
+    var shift = mostPopularNumber(input) - SPACE;
+
+    return input.map(function (char) {
+        return String.fromCharCode(char - shift);
+    }).join('');
+}
+
+/**
+ * histogram of all populars letters
+ * @param string  : caption to convert
+ * @param allUpper : if to upercase all letters
+ * @returns array
+ */
+function mostPopularChars(string, allUpper) {
+    string = _(string).map(function(char, i){
+        if (!allUpper) {
+            return char.charCodeAt(0);
+        }
+        return char.toUpperCase().charCodeAt(0);
+    });
+    return mostPopularNumbers(string, 0)
+        .map(function(el, i){
+            return [String.fromCharCode(el[0]), el[1]];
+        });
+}
+
+// [0][0] would give 1st, [0][1] gives count
+// [1][0] would give 2nd and so on, [1][1] gives 2nd count
+function mostPopularNumbers(arr) {
+    return _(arr)
         .countBy(function (num) {
             return num
         })
@@ -40,18 +68,20 @@ function decode(input) {
         .filter(function (num) {
             return num[1] > 2;
         })
-        // order by occurance
+        // order by occurrence
         .sortBy(function (val, key, arr) {
             return -val[1];
         })
-        .flatten()
-        .value()[0];    // [1] would give 2nd and so on
-    var shift = space - SPACE;
-
-    return input.map(function (char) {
-        return String.fromCharCode(char - shift);
-    }).join('');
+//        .flatten()
+        .value();
 }
-console.log(decode(input));
 
+function mostPopularNumber(arr){
+    return mostPopularNumbers(arr)[0][0];
+}
 
+module.exports.decode = decode;
+module.exports.encode = encode;
+module.exports.mostPopularNumbers = mostPopularNumbers;
+module.exports.mostPopularNumber = mostPopularNumber;
+module.exports.mostPopularChars = mostPopularChars;
