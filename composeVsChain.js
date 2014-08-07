@@ -40,25 +40,22 @@ var map = _.curry(function (f, s) {
     })
 });
 
+//var add = function (a) {
+//    return function (b) {
+//        return a + b;
+//    }
+//};
 var add = function (a, b) {
     return a + b;
 };
 
-
-//TODO sum + square + fold in one iteration
-//var acc=0;
-
 var sum = function (acc, num, key, arr) {
-    console.log(acc, num, key, arr);
-//    console.log(a,b, acc);
-//    acc = acc + a +b | 0;
-//    console.log(acc);
-    //return acc;
+//    console.log(acc, num, key, arr);
     console.log('+', num + acc);
     return num + acc;
 };
 
-var sqr = function (x) {
+var sqr = function (x, num) {
     return x * x;
 };
 
@@ -69,8 +66,8 @@ var sumSqrs = function (arr) {
 // reduce(function(acc, x){return add(sqr(x), acc)}, 0);
 
 //TODO debug
-//var result = sumSqrs([1, 2, 3]);
-//console.log(result);     // 12*12 =144
+var result = sumSqrs([1, 2, 3]);
+console.log('should be 14: ', result);     // 12*12 =144
 
 //var sumUp = _.reduce(add, 0);
 
@@ -81,7 +78,7 @@ var sumSqs = function (arr) {
     }, 0);
 };
 var result = sumSqs([1, 2, 3]);
-console.log(result);     // 9+4+1 = 14 OK
+console.log('1+4+9 is ', result);     // 9+4+1 = 14 OK
 
 // WORKS FOR FUNCTORS + MONADS
 // AUTOMATIC DEFORESTATION -> memoization
@@ -134,15 +131,7 @@ var toUpperCase = String.toUpperCase;
 // null checks
 // lences
 
-var makeLences = function (arr) {
-    return {
-        name: function name() {
-            return arr[0].name
-        }
-    };
-
-    return [].concat(arr);
-};
+//TODO import mekeLences
 
 //var user = {id:1, name:'Ala'};
 //var L = makeLences(['name']);
@@ -191,10 +180,10 @@ var g = function (x) {
 
 var test = ['apples', 'oranges'];
 
-// composiotion assiotiation
+// !!!! composiotion assiotiation
 var composition = _.compose(mapWith(f), mapWith(g));
 p(composition(test));
-var composition2 = mapWith(_.compose(f,g));
+var composition2 = mapWith(_.compose(f, g));
 p(composition2(test));
 
 //Error handling(vs throw)
@@ -206,10 +195,10 @@ p(composition2(test));
 //var Promise = allonge.es.promise; //require('promise');
 var Q = require('q');
 var prom = Q.defer();
-mapWith(function(x){
+mapWith(function (x) {
     return p(reverse(x))
 }, prom);
-prom.resolve([1,2,3]);
+prom.resolve([1, 2, 3]);
 
 // functor -> sth that implements MAP function
 // maybe, either, promise
@@ -223,18 +212,28 @@ prom.resolve([1,2,3]);
 // vs null, 2  async results
 //liftA2(f, A(x), A(y))
 //maybe
-Maybe = function(val) {
-    this.val = val;
-};
-Maybe.prototype.map = function(f) {
-    return this.val ? Maybe(f(this.val)) : Maybe(null);
-};
 
-var liftA2 = function (fn, fn2, fn3) {
-    return mapWith(fn)([fn2, fn3]);
+require('pointfree-fantasy').expose(global);
+var Maybe = require('pointfree-fantasy/instances/maybe');
+var Either = require('pointfree-fantasy/instances/either');
+var Promise = require('pointfree-fantasy/instances/promise');
+//Maybe = function(val) {
+//    this.val = val;
+//};
+//Maybe.prototype.map = function(f) {
+//    return this.val ? Maybe(f(this.val)) : Maybe(null);
+//};
+//var liftA2 = function (fn, fn2, fn3) {
+//    return mapWith(fn)([fn2, fn3]);
+//};
+
+var adder = function (x) {
+    return function (y) {
+        return x + y;
+    }
 };
-var maybe7 = liftA2(add, Maybe(2), Maybe(3));
-p(maybe7); // Maybe(7)
+var maybe5 = liftA2(adder, Maybe(2), Maybe(3)); // 5 !!!
+p(maybe5);
 // if any null it will not run
 
 // accumulation/reduce AKA monoid

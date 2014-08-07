@@ -63,7 +63,7 @@ var isOdd = modulo(2);
 echo("modulo");
 echo(isOdd(6));
 
-var filter - function(f, xs) {
+var filter = function(f, xs) {
     return xs.filter(f);
 }.autoCurry();
 filter(isOdd, [1,2,3,4,5]); //[1,3,5]
@@ -136,7 +136,7 @@ var dot = function() {
     return obj[prop];
 }.autoCurry();
 
-var sortedPhones - compose(_.map(dot('phone')), _sortBy(dot('signup_date')));
+var sortedPhones = compose(_.map(dot('phone')), _sortBy(dot('signup_date')));
 sortedPhones(users);
 
 alertAndClose = compose(scloseWin, alertInvited);

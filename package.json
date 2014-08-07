@@ -22,6 +22,8 @@
     "allong.es": "^0.14.0",
     "bilby": "0.0.2",
     "mori": "^0.2.6",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "pointfree-fantasy": "^0.1.0",
+    "node-promise": "^0.5.10"
   }
 }
