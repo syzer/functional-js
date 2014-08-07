@@ -24,6 +24,9 @@
     "mori": "^0.2.6",
     "lodash": "^2.4.1",
     "pointfree-fantasy": "^0.1.0",
-    "node-promise": "^0.5.10"
+    "node-promise": "^0.5.10",
+    "wu": "^2.0.0",
+    "scoreunder": "^0.1.1",
+    "lambdajs": "^1.0.1"
   }
 }
