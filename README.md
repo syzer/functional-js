@@ -20,7 +20,9 @@ from Crookford book JS good parts
 
 testOfEncryption
 ================
-`mocha codeEvalChallange/decryptWLodashTest.js -R "nyan"`
+`cd codeEvalChallange`
+`mocha ./test/decryptWLodashTest.js -R "nyan"`
+
 or run thu IDE
 there is `run decryption test`
 
