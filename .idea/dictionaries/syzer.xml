@@ -2,6 +2,7 @@
   <dictionary name="syzer">
     <words>
       <w>bilby</w>
+      <w>malloc</w>
     </words>
   </dictionary>
 </component>
