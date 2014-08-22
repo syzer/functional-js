@@ -10,6 +10,10 @@ function mapDistance(el, el2) {
         + Math.abs(el[1] - el2[1]);
 }
 
+var memorizedCartesianDistance = _.memoize(cartesianDistance, function (el, el2) {
+    return [el, el2];
+});
+
 // [x,y] -> number
 function cartesianDistance(el, el2) {
     return Math.pow((el2[0] - el[0]), 2) + Math.pow((el2[1] - el[1]), 2);
@@ -46,6 +50,8 @@ function findAttached(node, array) {
     });
 }
 
+var memoizedAttachedNodes = _.memoize(findAttached);
+
 //TODO memoize
 function calcHeuristicDistances(children, visited, finishNode) {
     var distances = [];
@@ -57,8 +63,9 @@ function calcHeuristicDistances(children, visited, finishNode) {
     return _.sortBy(distances, 'distance');
 }
 
+var memoizedCalcHeuristicDistances = _.memoize(calcHeuristicDistances);
+
 function traverse(node, array, visited, finishNode, callback) {
-//    console.log('node, visited:', node, visited);
     // exit condition
     if (_.some([node], finishNode)) {
         visited.push(node);
@@ -66,8 +73,11 @@ function traverse(node, array, visited, finishNode, callback) {
         return visited;
     }
 
-    var children = findAttached(node, array);
-    var orderedChildren = calcHeuristicDistances(children, visited, finishNode);
+//    var children = findAttached(node, array);
+    var children = memoizedAttachedNodes(node, array);
+//    var orderedChildren = calcHeuristicDistances(children, visited, finishNode);
+    // 17.9 => 5s
+    var orderedChildren = memoizedCalcHeuristicDistances(children, visited, finishNode);
 
     visited.push(node);
     orderedChildren.forEach(function (child) {
@@ -101,17 +111,19 @@ function decode(input) {
     traverse(entries[0], array, [], entries[1], drawBestResult);
 
     function drawBestResult(visited) {
+//        console.log('\n', visited.length, '\n\n', reconstructOutput(lines, visited));
         answers.push({length: visited.length, answer: reconstructOutput(lines, visited)});
         if (timerId) {
             clearTimeout(timerId);
         }
         timerId = setTimeout(function () {
-            console.log(_(answers)
-                    .min('length')
-                    .value()
-                    .answer
-            );
-        }, 60);
+            //enable to see output
+//            console.log(_(answers)
+//                    .min('length')
+//                    .value()
+//                    .answer
+//            );
+        }, 600);
     }
 
     return;
@@ -139,5 +151,5 @@ function reconstructOutput(lines, visited) {
 module.exports.decode = decode;
 module.exports.findEntryPoints = findEntryPoints;
 module.exports.mapDistance = mapDistance;
-module.exports.cartesianDistance = cartesianDistance;
+module.exports.cartesianDistance = memorizedCartesianDistance; //cartesianDistance;
 module.exports.findAttached = findAttached;

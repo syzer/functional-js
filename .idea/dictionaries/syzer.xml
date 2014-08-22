@@ -3,6 +3,7 @@
     <words>
       <w>bilby</w>
       <w>malloc</w>
+      <w>memoized</w>
     </words>
   </dictionary>
 </component>
