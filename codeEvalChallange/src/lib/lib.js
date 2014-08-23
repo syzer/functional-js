@@ -7,6 +7,11 @@ function toNumbers (array) {
     }).value();
 }
 
+// + toNumber:: string -> integer
+function toNumber(num) {
+    return _.parseInt(num);
+}
+
 function isLetter(char) {
     var letter = char.charAt(0).toUpperCase();
     return letter.toLowerCase() !== letter;
