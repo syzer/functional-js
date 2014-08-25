@@ -4,16 +4,22 @@
 
 _ = require('lodash');
 
+function isValidEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//    if ('' === email || re.test(email) !== email) {
+//        return false;
+//    }
+//    return true;
+    return re.test(email);
+}
 
-function stackImplementation(line, i) {
-    line = line.split(' ');
-    return _(line).filter(function (el, j) {
-        return ((line.length + j) % 2);
-    }).reverse().join(' ');
+function validateEmail(line, i) {
+    //console.log(isValidEmail((line)));
+    return (isValidEmail(line) ? 'true' : 'false');
 }
 
 function run(input) {
-    return readLines(input, stackImplementation);
+    return readLines(input, validateEmail);
 }
 
 function readLines(input, lineCallback) {

@@ -4,28 +4,28 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/medium/'; // run on over the test
 
-var lib = require(SRC_DIR + 'stackImplementation');
+var lib = require(SRC_DIR + 'pascalCase');
 
 var input =
-    'foo@bar.com\n'+
-    'this is not an email id\n'+
-    'admin#codeeval.com\n'+
-    'good123@bad.com\n';
+    'Hello world\n' +
+    'javaScript language\n' +
+    'a letter\n' +
+    '1st thing\n';
 
 var output =
-    'true\n'+
-    'false\n'+
-    'false\n'+
-    'true\n';
+    'Hello World\n' +
+    'JavaScript Language\n' +
+    'A Letter\n' +
+    '1st Thing\n';
 
 
-describe('email validator', function () {
+describe('pascal Case', function () {
     afterEach(function (done) {
         setTimeout(done, 600);
     });
 
     it('can get every other number in stack', function (done) {
-//        console.log(lib.run(input));
+        console.log(lib.run(input));
         expect(lib.run(input)).eql(output);
         done();
     });
