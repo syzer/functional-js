@@ -85,20 +85,6 @@ describe('wordSearchBoard', function () {
         done();
     });
 
-    it('finds also neighbours', function (done) {
-        expect(lib.findAttached([1, 2], hardcodedBoard)).eql([
-            [],
-            [ 'F' ],
-            [ 'A', 'E' ]
-        ]);
-        expect(lib.findAttached([0, 1], hardcodedBoard)).eql([
-            [ 'A' ],
-            [ 'F' ],
-            [ 'A' ]
-        ]);
-        done();
-    });
-
     it('whereLetterInArray', function (done) {
         expect(lib.whereLetterInArray('A', hardcodedBoard)).eql([
             [0, 0],
@@ -120,42 +106,4 @@ describe('wordSearchBoard', function () {
         ]);
         done();
     });
-
-    //TODO move to lib
-    it('rejects arrays', function (done) {
-        var rejectedArray = [
-            [3, 0],
-            [2, 2],
-            [3, 2]
-        ];
-        var array = [
-            [2, 0],
-            [3, 0],
-            [2, 2],
-            [3, 2],
-            [0, 0],
-            [1, 0]
-        ];
-        //console.log('\n--------\n', lib.rejectArrays(array, rejectedArray));
-        expect(lib.rejectArrays(array, rejectedArray)).eql([
-            [ 2, 0 ],
-            [ 0, 0 ],
-            [ 1, 0 ]
-        ]);
-        expect(lib.rejectArrays(array, [])).eql(array);
-
-
-        done();
-    });
-
-
-    it('is Letter in board works', function (done) {
-        expect(lib.isLetterInArrays(['A'], hardcodedBoard)).eql(true);
-        expect(lib.isLetterInArrays(['B'], hardcodedBoard)).eql(true);
-        expect(lib.isLetterInArrays(['Z'], hardcodedBoard)).eql(false);
-        expect(lib.isLetterInArrays(['F'], hardcodedBoard)).eql(true);
-        expect(lib.isLetterInArrays(['D'], hardcodedBoard)).eql(true);
-        done();
-    });
-
 });
