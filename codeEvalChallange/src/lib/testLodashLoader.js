@@ -7,3 +7,8 @@ console.log(run(require('fs').readFileSync(process.argv[2])));
 
 // cheat
 console.log(require('fs').readFileSync(process.argv[2]).toString());
+
+// or
+var _ = require('lodash');
+var lib = require('./../lib/lib')(_);
+_.mixin(lib);

@@ -4,13 +4,12 @@
 
 var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
+_.mixin(lib);
 
 var memorizedCartesianDistance = lib.mCartesianDistance;
 var pushIfNonEmpty = lib.pushIfNonEmpty;
-var rejectArrays = lib.rejectArrays;
 var whereLetterInArray = lib.whereLetterInArrayExample;
 var memorizedWhereLetterInArray = whereLetterInArray;
-var memoizedWhereLetterInArrays  = lib.mWhereLetterInArrays;
 
 function isInBoard(board, word, currLetter, i, node, visited) {
     visited = visited || [];
@@ -21,10 +20,10 @@ function isInBoard(board, word, currLetter, i, node, visited) {
         return true;
     }
 
-    var walkPossibilities = memoizedWhereLetterInArrays(currLetter, board);
+    var walkPossibilities = _.mWhereLetterInArrays(currLetter, board);
 
     //reject visited
-    walkPossibilities = rejectArrays(walkPossibilities, visited);
+    walkPossibilities = _.rejectArrays(walkPossibilities, visited);
 
     walkPossibilities = walkPossibilities.filter(function (toVisit) {
         if (node) {
@@ -67,6 +66,5 @@ function readLines(input, lineCallback) {
 
 module.exports.run = run;
 module.exports.whereLetterInArray = whereLetterInArray;
-module.exports.rejectArrays = rejectArrays;
-module.exports.whereLetterInArraysReduce = memoizedWhereLetterInArrays;
+module.exports.whereLetterInArraysReduce = _.mWhereLetterInArrays;
 

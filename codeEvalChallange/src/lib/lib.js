@@ -158,5 +158,9 @@ module.exports = function (_) {
         whereLetterInArrays: whereLetterInArraysReduce,
         mWhereLetterInArrays: mWhereLetterInArrays,
         whereLetterInArray: whereLetterInArrayReduce
-    }
+    };
+
+
 };
+
+
