@@ -2,5 +2,8 @@ function baseIndexOf(e,t,n){var r=(n||0)-1,i=e?e.length:0;while(++r<i){if(e[r]==
 
 console.log(run(require('fs').readFileSync(process.argv[2]).toString()));
 
+// not string call required
+console.log(run(require('fs').readFileSync(process.argv[2])));
+
 // cheat
 console.log(require('fs').readFileSync(process.argv[2]).toString());
