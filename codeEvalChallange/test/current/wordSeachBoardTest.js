@@ -10,8 +10,6 @@
  where adjacent cells are those horizontally or vertically neighboring.
  The same letter cell may not be used more than once.
 
-
-
  */
 
 var expect = require('chai').expect;
