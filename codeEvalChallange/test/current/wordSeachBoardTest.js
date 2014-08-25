@@ -37,16 +37,35 @@ var input2 =
     'SFCS\n' +
     'ADEZ\n';
 
-var input3 =
-//    'ABCES\n' +
-//    'SFCS\n' +
-    'ADECS\n';
-//    'ADECS\n';
-
 var output2 =
     'True\n' +
     'True\n' +
     'False\n';
+
+
+var input3 =
+    'BS\n' +        // not close
+    'ABCF\n' +      // not close
+    'ADECZ\n' +     // no Z in array
+    'CBASADFS\n' +  // same S twice
+    'ABCES\n' +
+    'SFCS\n' +
+    'CCBAS\n' +
+    'ADECS\n' +
+    'CCESEEDASA\n';
+
+var output3 =
+    'False\n' +
+    'False\n' +
+    'False\n' +
+    'False\n' +
+    'True\n' +
+    'True\n' +
+    'True\n' +
+    'True\n' +
+    'True\n';
+
+var input4 = 'CBASADFS\n';
 
 var hardcodedBoard = [
     ['ABCE'],
@@ -61,18 +80,12 @@ describe('wordSearchBoard', function () {
     });
 
     it('finds its', function (done) {
-//        expect(lib.run(input2)).eql(output2);
-//        console.log(lib.run(input));
-        console.log('\n---\n', lib.run(input3));
-//        expect(lib.run(input3)).eql(output2);
-//        expect(lib.run(input)).eql(output);
-//        console.log(lib.run(input2));
+        expect(lib.run(input2)).eql(output2);
+        expect(lib.run(input3)).eql(output3);
         done();
     });
 
     it('finds also neighbours', function (done) {
-//        console.log(lib.findAttached([1,2], hardcodedBoard));
-//        console.log(lib.findAttached([0,1], hardcodedBoard));
         expect(lib.findAttached([1, 2], hardcodedBoard)).eql([
             [],
             [ 'F' ],
@@ -92,6 +105,15 @@ describe('wordSearchBoard', function () {
             [0, 2]
         ]);
         expect(lib.whereLetterInArray('E', hardcodedBoard)).eql([
+            [3, 0],
+            [2, 2],
+            [3, 2]
+        ]);
+        expect(lib.whereLetterInArraysReduce('A', hardcodedBoard)).eql([
+            [0, 0],
+            [0, 2]
+        ]);
+        expect(lib.whereLetterInArraysReduce('E', hardcodedBoard)).eql([
             [3, 0],
             [2, 2],
             [3, 2]
@@ -120,6 +142,8 @@ describe('wordSearchBoard', function () {
             [ 0, 0 ],
             [ 1, 0 ]
         ]);
+        expect(lib.rejectArrays(array, [])).eql(array);
+
 
         done();
     });

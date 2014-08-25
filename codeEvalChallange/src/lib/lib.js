@@ -22,7 +22,6 @@ function isValidEmail(email) {
     return re.test(email);
 }
 
-
 // [ ['AB'], ['SFB'], ['ADEE'] ]
 // +isLetterInArrays :: array, array -> boolean
 function isLetterInArrays(letter, array) {

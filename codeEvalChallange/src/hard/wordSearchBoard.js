@@ -5,8 +5,6 @@
 _ = require('lodash');
 
 
-//var memoizedIsLetterInBoard = isLetterInArrays;
-
 var memorizedCartesianDistance = _.memoize(cartesianDistance, function (el, el2) {
     return [el, el2];
 });
@@ -36,10 +34,13 @@ function isLetterInArrays(letter, array) {
     })
 }
 
+var memorizedWhereLetterInArray = whereLetterInArray;
+
+// TODO to map
 // -> array [[x,y], [x,y]] -> array [[3, 0], [2,3]]
 function whereLetterInArray(letter, array) {
     var found = [];
-    _.forEach(array, function (line, j) {   // TODO arr[0]?
+    _.map(array, function (line, j) {
         _.forEach(line, function (string, i) {
             _(string).forEach(function (char, i) {
                 if (char === letter) {
@@ -51,6 +52,47 @@ function whereLetterInArray(letter, array) {
     return found;
 }
 
+//TODO lib
+var memoizedWhereLetterInArrays  = _.memoize(whereLetterInArraysReduce);
+
+//TODO lib
+// +whereLetterInArrayReduce:: char, array:strings, -> array:integer,integer
+function whereLetterInArrayReduce(letter, line, lineNo) {
+    return _(line[0]).reduce(function (lineResult, char, i) {
+        if (char === letter) {
+            lineResult.push([i, lineNo]);
+        }
+        return lineResult;
+    }, []);
+}
+
+//TODO lib
+function pushIfNonEmpty(array, el) {
+    if (el && !_.isEmpty(el)) {
+        array.push(el);
+    }
+    return array;
+}
+
+//TODO lib
+// gives cartesian representance of existence of letter
+// +whereLetterInArraysReduce:: string ('C'), array (['ABC'], ['FGC]) -> array [[0,2], [1,2]]
+function whereLetterInArraysReduce(letter, array) {
+    return _(array)
+        .chain()
+        .reduce(function (arrayResult, line, lineNo) {
+            pushIfNonEmpty(
+                arrayResult,
+                whereLetterInArrayReduce(letter, line, lineNo)
+            );
+
+            return arrayResult;
+        }, [])
+        .flatten(true)      // shallow flatten because is wrapped in extra []
+        .value()
+}
+
+
 //TODO move to lib
 function rejectArrays(array, rejectArray) {
     return array.filter(function (el) {
@@ -60,41 +102,35 @@ function rejectArrays(array, rejectArray) {
 
 function isInBoard(board, word, currLetter, i, node, visited) {
     visited = visited || [];
-    node = node || [];
 
-    console.log('node', node);
-    visited.push(node);
+    if (node) {
+        visited.push(node);
+    }
 
     if (i === word.length) {
-        console.log ('\n FOUND!!!\n\n');
         return true;
     }
 
-//    if (!isLetterInArrays(currLetter, board)) {
-//        return;
-//    }
-    var walkPossibilities = whereLetterInArray(currLetter, board);
-    if (_.isEmpty(walkPossibilities)) {
-        return;
-    }
+//    var walkPossibilities = memorizedWhereLetterInArray(currLetter, board);
+    var walkPossibilities = memoizedWhereLetterInArrays(currLetter, board);
 
+    //reject visited
     walkPossibilities = rejectArrays(walkPossibilities, visited);
-    walkPossibilities = findAttached(node, board);
-//    visited.push(x, y);
-//    console.log('\n', walkPossibilities, 'v', visited);
-    //TODO filter the ones that are to far
 
-    walkPossibilities.forEach(function(node) {
-        // walk[0] = x, walk [1] =y
-//        console.log('node',node, visited+node);
-        return isInBoard(board, word, word[i + 1], i + 1,
-            node, visited);
+    walkPossibilities = walkPossibilities.filter(function (toVisit) {
+        if (node) {
+//            console.log(node, toVisit, cartesianDistance(node, toVisit));
+            return memorizedCartesianDistance(node, toVisit) <= 1;
+        }
+        return true;
     });
 
-
-//    return isInBoard(board, word, word[i + 1], i + 1, x, y, visited.concat([x,y]));
+    return walkPossibilities.map(function (node) {
+        return isInBoard(
+            board, word, word[i + 1], i + 1, node, _.clone(visited)
+        );
+    });
 }
-
 
 function wordSearchBoard(line, i) {
     var hardcodedBoard = [
@@ -103,9 +139,10 @@ function wordSearchBoard(line, i) {
         ['ADEE']
     ];
 
-    //console.log(line);
+    var humanize = _.compose(_.any, _.uniq, _.flatten);
 
-    return isInBoard(hardcodedBoard, line, line[0], 0) ? 'True' : 'False';
+
+    return humanize(isInBoard(hardcodedBoard, line, line[0], 0)) ? 'True' : 'False';
 }
 
 function run(input) {
@@ -126,3 +163,5 @@ module.exports.whereLetterInArray = whereLetterInArray;
 module.exports.isLetterInArrays = isLetterInArrays;
 module.exports.findAttached = findAttached;
 module.exports.rejectArrays = rejectArrays;
+module.exports.whereLetterInArraysReduce = memoizedWhereLetterInArrays;
+
