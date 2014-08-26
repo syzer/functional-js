@@ -7,7 +7,7 @@ var SRC_DIR = './../../src/medium/'; // run on over the test
 var lib = require(SRC_DIR + 'fileSize');
 var _ = require('lodash');
 
-var input = __dirname + '/wordSeachBoardTest.js';
+var input = __dirname + '/daVyncyTest.js';
 
 var output = 55;
 
