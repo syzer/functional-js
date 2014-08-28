@@ -132,12 +132,126 @@ module.exports = function (_) {
             .value()
     }
 
+    var memoizedLcs = _.memoize(lcs, function (a, b) {
+        return a + ';' + b;
+    });
+
+    function lcSubstring(x, y) {
+        var s, i, j, m, n,
+            lcs = [], row = [], c = [],
+            left, diag, latch;
+        //make sure shorter string is the column string
+        if (m < n) {
+            s = x;
+            x = y;
+            y = s;
+        }
+        m = x.length;
+        n = y.length;
+        //build the c-table
+        for (j = 0; j < n; row[j++] = 0);
+        for (i = 0; i < m; i++) {
+            c[i] = row = row.slice();
+            for (diag = 0, j = 0; j < n; j++, diag = latch) {
+                latch = row[j];
+                if (x[i] == y[j]) {
+                    row[j] = diag + 1;
+                }
+                else {
+                    left = row[j - 1] || 0;
+                    if (left > row[j]) {
+                        row[j] = left;
+                    }
+                }
+            }
+        }
+        i--, j--;
+
+        var t = i;
+        while (i > -1 && j > -1) {
+            switch (c[i][j]) {
+                default:
+                    i--, j--;
+                    continue;
+                case (i && c[i - 1][j]):
+                    if (t !== i) {
+                        lcs.unshift(x.substring(i + 1, t + 1));
+                    }
+                    t = --i;
+                    continue;
+                case (j && c[i][j - 1]):
+                    j--;
+                    if (t !== i) {
+                        lcs.unshift(x.substring(i + 1, t + 1));
+                    }
+                    t = i;
+            }
+        }
+        if (t !== i) {
+            lcs.unshift(x.substring(i + 1, t + 1));
+        }
+
+        return lcs.join('');
+    }
+
+    function lcs(a, b) {
+        var leftSub = a.substr(0, a.length - 1);
+        var rightSub = b.substr(0, b.length - 1);
+
+        if (a.length === 0 || b.length === 0) {
+            return '';
+        }
+        if (a.charAt(a.length - 1) === b.charAt(b.length - 1)) {
+            return memoizedLcs(leftSub, rightSub) + a.charAt(a.length - 1);
+        } else {
+            var left = memoizedLcs(a, rightSub);
+            var right = memoizedLcs(leftSub, b);
+
+            // longest shortest
+            return (left.length > right.length) ? left : right;
+        }
+    }
+
+    function lcs_greedy(x,y){
+        var symbols = {},
+            r=0,p=0,p1,L=0,idx,
+            m=x.length,n=y.length,
+            S = new Buffer(m<n?n:m);
+        p1 = popsym(0);
+        for(i=0;i < m;i++){
+            p = (r===p)?p1:popsym(i);
+            p1 = popsym(i+1);
+            idx=(p > p1)?(i++,p1):p;
+            if(idx===n){p=popsym(i);}
+            else{
+                r=idx;
+                S[L++]=x.charCodeAt(i);
+            }
+        }
+        return S.toString('utf8',0,L);
+
+        function popsym(index){
+            var s = x[index],
+                pos = symbols[s]+1;
+            pos = y.indexOf(s,pos>r?pos:r);
+            if(pos===-1){pos=n;}
+            symbols[s]=pos;
+            return pos;
+        }
+    }
+
     return {
+
+        //string
+        lcs: lcs,
+        mLcs: memoizedLcs,
+
         //array
         pushIfNonEmpty: pushIfNonEmpty,
         rejectArrays: rejectArrays,
         toNumber: toNumber,
         toNumbers: toNumbers,
+
 
         // validators
         isLetter: isLetter,
@@ -149,11 +263,11 @@ module.exports = function (_) {
         mCartesianDistance: memorizedCartesianDistance,
         cartesianDistance: cartesianDistance,
 
-        //factory
+        //factory array
         createArrayWithZeros: createArrayWithZeros,
         findAttachedNodes: findAttachedNodes,
 
-        //searches
+        //searches array
         whereLetterInArrayExample: whereLetterInArrayExample,
         whereLetterInArrays: whereLetterInArraysReduce,
         mWhereLetterInArrays: mWhereLetterInArrays,
