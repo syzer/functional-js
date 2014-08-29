@@ -18,19 +18,25 @@
  */
 
 var expect = require('chai').expect;
-var SRC_DIR = './../../src/hard/'; // run on over the test
+var SRC_DIR = './../../src/medium/'; // run on over the test
 
-var lib = require(SRC_DIR + 'gridWalk');
+var lib = require(SRC_DIR + 'longestLines');
 var _ = require('lodash');
 
-var input = '';
-var output = '';
+var input = [
+    '2',
+    'Hello World',
+    'CodeEval',
+    'Quick Fox',
+    'A',
+    'San Francisco'
+].join('\n');
 
-// 128 GB ram
-// XEON E5-2697
+var output = [
+    'San Francisco',
+    'Hello World'
+].join('\n');
 
-
-// 761 fails?? why??
 describe('name test', function () {
 
     afterEach(function (done) {
@@ -38,9 +44,9 @@ describe('name test', function () {
     });
 
     it('can run', function (done) {
-        var out = lib.run(19);
-        console.log(out);
-
+        var out = lib.run(input);
+        console.log('out:', out);
+        expect(out).eql(output);
         done();
     });
 
