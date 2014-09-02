@@ -13,6 +13,10 @@ module.exports = function (_) {
         return _.parseInt(num);
     }
 
+    function toBitwise(string) {
+       return _.parseInt(string).toString(2);
+    }
+
     function isLetter(char) {
         var letter = char.charAt(0).toUpperCase();
         return letter.toLowerCase() !== letter;
@@ -245,6 +249,7 @@ module.exports = function (_) {
         //string
         lcs: lcs,
         mLcs: memoizedLcs,
+        toBitwise: toBitwise,
 
         //array
         pushIfNonEmpty: pushIfNonEmpty,
