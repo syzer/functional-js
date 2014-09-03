@@ -35,6 +35,28 @@ describe('wordSearchBoard', function () {
         setTimeout(done, 60);
     });
 
+    it('countLowerUpperCase', function (done) {
+        var string1 = 'thisTHIS';
+        var string2 = 'N';
+        var empty = '';
+        expect(lib.countLowerUpperCase(string1)).eql([4, 4]);
+        expect(lib.countLowerUpperCase(string2)).eql([0, 1]);
+        expect(lib.countLowerUpperCase(string2)).eql([0, 1]);
+
+        done();
+    });
+
+    it('isUpperCase()', function (done) {
+        var char = 'n';
+        var char2 = 'N';
+        var empty = '';
+        expect(lib.isUpperCase(char)).eql(false);
+        expect(lib.isUpperCase(char2)).eql(true);
+        expect(lib.isUpperCase(char2)).eql(true);
+
+        done();
+    });
+
 
     it('finds also neighbours', function (done) {
         expect(lib.findAttached([1, 2], hardcodedBoard)).eql([

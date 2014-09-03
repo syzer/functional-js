@@ -244,14 +244,31 @@ module.exports = function (_) {
         }
     }
 
+    //TODO unsafe with space
+    // +isUpperCase :: char -> boolean
+    function isUpperCase(char) {
+        return char === char.toUpperCase()
+    }
+
+    //TODO unsafe with empty string
+    // +countLowerUpperCase :: string -> array
+    function countLowerUpperCase(string) {
+        return _(string).reduce(function (sum, char) {
+            isUpperCase(char) ? sum[1] += 1 : sum[0] += 1;
+            return sum;
+        }, [0, 0]);
+
+    }
+
     return {
 
-        //string
+        // string
         lcs: lcs,
         mLcs: memoizedLcs,
         toBitwise: toBitwise,
+        countLowerUpperCase: countLowerUpperCase,
 
-        //array
+        // array
         pushIfNonEmpty: pushIfNonEmpty,
         rejectArrays: rejectArrays,
         toNumber: toNumber,
@@ -259,6 +276,7 @@ module.exports = function (_) {
 
 
         // validators
+        isUpperCase: isUpperCase,
         isLetter: isLetter,
         isValidEmail: isValidEmail,
         isLetterInArrays: isLetterInArrays,
