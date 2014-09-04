@@ -8,11 +8,12 @@ module.exports = function (_) {
         }).value();
     }
 
-// + toNumber:: string -> integer
+    // + toNumber:: string -> integer
     function toNumber(num) {
         return _.parseInt(num);
     }
 
+    // + toBitwise :: string -> string(bitwise)
     function toBitwise(string) {
        return _.parseInt(string).toString(2);
     }
