@@ -24,7 +24,7 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/hard/'; // run on over the test
 
-var lib = require(SRC_DIR + 'stringSubstitutions');
+var lib = require(SRC_DIR + 'textDollars');
 var _ = require('lodash');
 
 var input = [
@@ -57,7 +57,50 @@ var output = [
     'TwoThousandTwoHundredDollars'
 ].join('\n');
 
-describe('stringSubstitutions', function () {
+var fullInput = [
+    8170,
+    66548,
+    638641816,
+    518913195,
+    83,
+    786,
+    500,
+    626,
+    749,
+    123456789,
+    53605,
+    25882,
+    182462745,
+    2521,
+    3520,
+    602,
+    363830605,
+    147,
+    956848525,
+    669,
+    8002,
+    20043,
+    74736,
+    180363912,
+    245,
+    52648,
+    23,
+    16240,
+    75686,
+    400314581,
+    72138,
+    100000000,
+    305,
+    278854750,
+    34918,
+    577,
+    362,
+    361,
+    1,
+    57258
+].join('\n');
+
+describe('bitPositions', function () {
 
     afterEach(function (done) {
         setTimeout(done, 60);
