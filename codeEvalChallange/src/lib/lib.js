@@ -261,6 +261,10 @@ module.exports = function (_) {
 
     }
 
+    function replaceAll(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+
     return {
 
         // string
@@ -268,6 +272,8 @@ module.exports = function (_) {
         mLcs: memoizedLcs,
         toBitwise: toBitwise,
         countLowerUpperCase: countLowerUpperCase,
+        // all occurrences, not just first one
+        replaceAll: replaceAll,
 
         // array
         pushIfNonEmpty: pushIfNonEmpty,
