@@ -1,9 +1,9 @@
 // 42% faster!!!
 _ = require('lodash');
-var data =_.map(_.range(10000), function(el){
+var data = _.map(_.range(10000), function (el) {
     var obj = {};
     obj[el] = 'wat';
-    obj[111]= 'man';
+    obj[111] = 'man';
     obj[666] = '!';
     obj.name = 'test';
     return obj;
@@ -32,3 +32,24 @@ data.forEach(function (article, i) {
 });
 console.timeEnd('forEach');
 console.log(data[0]);
+
+//////////////////////////////////////////////
+function filterActiveBad(words) {
+    var filtered = [];
+    words.forEach(function (word) {
+        if (!word.completed) {
+            filtered.push(word.name);
+        }
+    });
+    return filtered;
+}
+
+function filteredActive(words) {
+    return words
+        .filter(function (word) {
+            return !word.completed;
+        })
+        .map(function (word) {
+            return word.name;
+        })
+}
