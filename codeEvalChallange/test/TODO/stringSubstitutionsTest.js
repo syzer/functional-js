@@ -46,6 +46,10 @@ var input = [
     '10011011001;0110,1001,1001,0,10,11'
 ].join('\n');
 
+var inputSimple = [
+    '110110;10,11'
+].join('\n');
+
 var output = [
     '11100110'
 ].join('\n');
@@ -58,7 +62,7 @@ describe('string Substitutions', function () {
     });
 
     it('can run on small sample', function (done) {
-        var out = lib.run(input);
+        var out = lib.run(inputSimple);
         console.log(out);
 //        expect(out).eql(output);
         done();

@@ -15,7 +15,7 @@ module.exports = function (_) {
 
     // + toBitwise :: string -> string(bitwise)
     function toBitwise(string) {
-       return _.parseInt(string).toString(2);
+        return _.parseInt(string).toString(2);
     }
 
     function isLetter(char) {
@@ -217,30 +217,34 @@ module.exports = function (_) {
         }
     }
 
-    function lcs_greedy(x,y){
+    function lcs_greedy(x, y) {
         var symbols = {},
-            r=0,p=0,p1,L=0,idx,
-            m=x.length,n=y.length,
-            S = new Buffer(m<n?n:m);
+            r = 0, p = 0, p1, L = 0, idx,
+            m = x.length, n = y.length,
+            S = new Buffer(m < n ? n : m);
         p1 = popsym(0);
-        for(i=0;i < m;i++){
-            p = (r===p)?p1:popsym(i);
-            p1 = popsym(i+1);
-            idx=(p > p1)?(i++,p1):p;
-            if(idx===n){p=popsym(i);}
-            else{
-                r=idx;
-                S[L++]=x.charCodeAt(i);
+        for (i = 0; i < m; i++) {
+            p = (r === p) ? p1 : popsym(i);
+            p1 = popsym(i + 1);
+            idx = (p > p1) ? (i++, p1) : p;
+            if (idx === n) {
+                p = popsym(i);
+            }
+            else {
+                r = idx;
+                S[L++] = x.charCodeAt(i);
             }
         }
-        return S.toString('utf8',0,L);
+        return S.toString('utf8', 0, L);
 
-        function popsym(index){
+        function popsym(index) {
             var s = x[index],
-                pos = symbols[s]+1;
-            pos = y.indexOf(s,pos>r?pos:r);
-            if(pos===-1){pos=n;}
-            symbols[s]=pos;
+                pos = symbols[s] + 1;
+            pos = y.indexOf(s, pos > r ? pos : r);
+            if (pos === -1) {
+                pos = n;
+            }
+            symbols[s] = pos;
             return pos;
         }
     }
@@ -265,6 +269,38 @@ module.exports = function (_) {
         return str.replace(new RegExp(find, 'g'), replace);
     }
 
+    function groupByNrOfEl(array, el) {
+        var groupByEl = [];
+        var group = [];
+        array.forEach(function (num, i) {
+            group.push(num);
+            if (i % el === el - 1 || i === array.length - 1) {
+                groupByEl.push(_.clone(group));
+                group = [];
+            }
+        });
+        return groupByEl;
+    }
+
+    // [1,2,3] => [[1,2,3], [2,1,3], [3,2,1], [1,3,2] [3,1,2]]
+    function permute(input, usedChars, permArr) {
+        var i, ch;
+        usedChars = usedChars || [];
+        permArr = permArr || [];
+
+        for (i = 0; i < input.length; i++) {
+            ch = input.splice(i, 1)[0];
+            usedChars.push(ch);
+            if (input.length == 0) {
+                permArr.push(usedChars.slice());
+            }
+            permute(input, usedChars, permArr);
+            input.splice(i, 0, ch);
+            usedChars.pop();
+        }
+        return permArr
+    }
+
     return {
 
         // string
@@ -280,7 +316,8 @@ module.exports = function (_) {
         rejectArrays: rejectArrays,
         toNumber: toNumber,
         toNumbers: toNumbers,
-
+        groupByNrOfEl: groupByNrOfEl,
+        permute: permute,
 
         // validators
         isUpperCase: isUpperCase,
