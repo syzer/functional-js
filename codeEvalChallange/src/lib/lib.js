@@ -301,6 +301,17 @@ module.exports = function (_) {
         return permArr
     }
 
+    // reverses strings
+    function reverseString(s) {
+        return s.split('').reverse().join('');
+    }
+
+    //4; 1:[1, 3, 2], 2:[1], 3:[4, 3], 4:[4, 3] -> [1,3,2], [1], [4,3]
+    function extractArrays(string) {
+        var rx1 = /\[([^\]]+)]/g;
+        return string.match(rx1);
+    }
+
     return {
 
         // string
@@ -310,6 +321,7 @@ module.exports = function (_) {
         countLowerUpperCase: countLowerUpperCase,
         // all occurrences, not just first one
         replaceAll: replaceAll,
+        reverseString: reverseString,
 
         // array
         pushIfNonEmpty: pushIfNonEmpty,
