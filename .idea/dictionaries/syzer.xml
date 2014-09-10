@@ -2,8 +2,10 @@
   <dictionary name="syzer">
     <words>
       <w>bilby</w>
+      <w>eval</w>
       <w>malloc</w>
       <w>memoized</w>
+      <w>memoizer</w>
       <w>multipier</w>
       <w>overlaping</w>
       <w>stringified</w>
