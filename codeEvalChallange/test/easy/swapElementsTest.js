@@ -29,7 +29,7 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/easy/'; // run on over the test
 
-var lib = require(SRC_DIR + 'swapElements');
+var lib = require(SRC_DIR + 'permute');
 var _ = require('lodash');
 
 var input = [

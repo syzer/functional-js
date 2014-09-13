@@ -312,6 +312,15 @@ module.exports = function (_) {
         return string.match(rx1);
     }
 
+    // +swapElements:: array, integer, integer -> array
+    function swapElements(array, from, to) {
+        var temp;
+        temp = array[to];
+        array[to] = array[from];
+        array[from] = temp;
+        return array;
+    }
+
     return {
 
         // string
@@ -330,6 +339,7 @@ module.exports = function (_) {
         toNumbers: toNumbers,
         groupByNrOfEl: groupByNrOfEl,
         permute: permute,
+        swapElements: swapElements,
 
         // validators
         isUpperCase: isUpperCase,
