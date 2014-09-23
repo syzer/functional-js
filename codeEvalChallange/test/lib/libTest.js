@@ -57,14 +57,67 @@ describe('wordSearchBoard', function () {
         done();
     });
 
+    it('mergeBy id', function (done) {
+        var names = [
+            { id: 1, name: 'barney' },
+            { id: 999, name: 'fred' },
+            { id: 2, name: 'i should have been merged'}
+        ];
+
+        var ages = [
+            { id: 1, 'age': 36 },
+            { id: 2, 'age': 40 }
+        ];
+        var out = lib.mergeBy(names, ages, 'id');
+        // console.log(out);
+        expect(out).eql([
+                { id: 1, name: 'barney', age: 36 },
+                { id: 999, name: 'fred' },
+                { id: 2, name: 'i should have been merged', age: 40 }
+            ]
+        );
+        done();
+    });
+
+    it('mergeBy id on empty array', function (done) {
+        var names = [
+        ];
+
+        var ages = [
+            { id: 1, 'age': 36 },
+            { id: 2, 'age': 40 }
+        ];
+        var out = lib.mergeBy(names, ages, 'id');
+        //console.log(out);
+        expect(out).eql(ages);
+        // tests commutable
+        expect(out).eql(lib.mergeBy(ages, names, 'id'));
+
+        done();
+    });
+
+
+    it('mergeBy id on biger marging array than orginal', function (done) {
+        var names = [ { name:'i should be also on set'} ];
+
+        var ages = [
+            { id: 1, 'age': 36 },
+            { id: 2, 'age': 40 }
+        ];
+        var out = lib.mergeBy(ages, names, 'id');
+        //console.log(out);
+        expect(out.length).eql(3);
+        done();
+    });
+
 
     it('finds also neighbours', function (done) {
-        expect(lib.findAttached([1, 2], hardcodedBoard)).eql([
+        expect(lib.findAttachedNodes([1, 2], hardcodedBoard)).eql([
             [],
             [ 'F' ],
             [ 'A', 'E' ]
         ]);
-        expect(lib.findAttached([0, 1], hardcodedBoard)).eql([
+        expect(lib.findAttachedNodes([0, 1], hardcodedBoard)).eql([
             [ 'A' ],
             [ 'F' ],
             [ 'A' ]

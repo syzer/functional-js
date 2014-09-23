@@ -28,8 +28,8 @@ module.exports = function (_) {
         return re.test(email);
     }
 
-// 'E', [ ['AB'], ['SFB'], ['ADEE'] ] -> true
-// +isLetterInArrays :: char, array:array:string -> boolean
+    // 'E', [ ['AB'], ['SFB'], ['ADEE'] ] -> true
+    // +isLetterInArrays :: char, array:array:string -> boolean
     function isLetterInArrays(letter, array) {
         return _.some(array, function (line) {
             return _.some(line, function (string) {
@@ -38,7 +38,7 @@ module.exports = function (_) {
         })
     }
 
-// [x,y] , [x,y]
+    // [x,y] , [x,y]
     function mapDistance(el, el2) {
         return (Math.abs(el[0] - el2[0]))
             + Math.abs(el[1] - el2[1]);
@@ -48,7 +48,7 @@ module.exports = function (_) {
         return [el, el2];
     });
 
-// [x,y] -> number
+    // [x,y] -> number
     function cartesianDistance(el, el2) {
         return Math.pow((el2[0] - el[0]), 2) + Math.pow((el2[1] - el[1]), 2);
     }
@@ -64,6 +64,8 @@ module.exports = function (_) {
 
         return array;
     }
+
+    //TODO atached with 8 neighbours
 
     //TODO description and test
     function findAttachedNodes(node, array) {
@@ -321,6 +323,43 @@ module.exports = function (_) {
         return array;
     }
 
+    function median(values) {
+        values.sort(function (a, b) {
+            return a - b;
+        });
+        var half = Math.floor(values.length / 2);
+
+        if (values.length % 2)
+            return values[half];
+        else
+            return (values[half - 1] + values[half]) / 2.0;
+    }
+
+    // like arr.concat but better
+    // +mergeBy:: array, array, string -> array
+    function mergeBy(arr, arr2, prop) {
+        arr.forEach(function (el, i) {
+            arr2.forEach(function (el2, j) {
+                if (el[prop] === el2[prop]) {
+                    arr[i] = _.merge(el, el2);
+                }
+            });
+        });
+        return arr;
+    }
+
+    // like arr.concat but better returns NEW array
+    // +mergeBy:: array, array, string -> array
+    function mergeByR(arr, arr2, prop) {
+        return _.unique(
+            arr.map(function (el2) {
+                return _.merge(arr2.filter(function (el) {
+                    return el[prop] === el2[prop];
+                })[0], el2) || el2;
+            }).concat(arr2)
+            , 'id');
+    }
+
     return {
 
         // string
@@ -340,6 +379,8 @@ module.exports = function (_) {
         groupByNrOfEl: groupByNrOfEl,
         permute: permute,
         swapElements: swapElements,
+        median: median,
+        mergeBy: mergeByR,
 
         // validators
         isUpperCase: isUpperCase,
