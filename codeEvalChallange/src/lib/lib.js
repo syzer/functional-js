@@ -93,7 +93,6 @@ module.exports = function (_) {
         return array;
     }
 
-
     // TODO just example temp vs reduce
     // -> array [[x,y], [x,y]] -> array [[3, 0], [2,3]]
     function whereLetterInArrayExample(letter, array) {
@@ -121,7 +120,6 @@ module.exports = function (_) {
             return lineResult;
         }, []);
     }
-
 
     // gives cartesian representation of existence of letter
     // +whereLetterInArraysReduce:: string ('C'), array (['ABC'], ['FGC]) -> array [[0,2], [1,2]]
@@ -357,7 +355,23 @@ module.exports = function (_) {
                     return el[prop] === el2[prop];
                 })[0], el2) || el2;
             }).concat(arr2)
-            , 'id');
+            , prop);
+    }
+
+    // like arr.concat but better returns NEW array
+    // +mergeBy:: array, array, string -> array
+    function mergeByC(arr, arr2, prop) {
+        return _(arr)
+            .chain()
+            // if finds matching prop merges// else gives back the original
+            .map(function (el2) {
+                return _.merge(_.find(arr2, function (el) {
+                    return el[prop] === el2[prop];
+                }), el2) || el2;
+            })
+            .concat(arr2)
+            .unique(prop)
+            .value()
     }
 
     return {
@@ -380,7 +394,7 @@ module.exports = function (_) {
         permute: permute,
         swapElements: swapElements,
         median: median,
-        mergeBy: mergeByR,
+        mergeBy: mergeByC,
 
         // validators
         isUpperCase: isUpperCase,

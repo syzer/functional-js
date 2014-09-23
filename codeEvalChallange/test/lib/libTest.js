@@ -2,9 +2,6 @@
  * Created by syzer on 8/25/2014.
  */
 /**
- * Created by syzer on 8/4/2014.
- */
-/**
  * Word Search
  Challenge Description:
 
