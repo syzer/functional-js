@@ -22,19 +22,6 @@ var output = [
     '17'
 ].join('\n');
 
-var realInput = [
-    '1504,8',
-    '1586,128',
-    '2148,1024',
-    '84,64',
-    '60,2',
-    '1874,4',
-    '742,256',
-    '831,16',
-    '1390,512',
-    '1522,32'
-].join('\n');
-
 describe('sum of numbers', function () {
 
     afterEach(function (done) {
