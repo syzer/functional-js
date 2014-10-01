@@ -10,17 +10,16 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/easy/'; // run on over the test
 
-var lib = require(SRC_DIR + 'multiplesOfNumber');
+var lib = require(SRC_DIR + 'sumNumbers');
 var _ = require('lodash');
 
 var input = [
-    '13,8',
-    '17,16'
+    '5',
+    '12'
 ].join('\n');
 
 var output = [
-    '16',
-    '32'
+    '17'
 ].join('\n');
 
 var realInput = [
@@ -36,7 +35,7 @@ var realInput = [
     '1522,32'
 ].join('\n');
 
-describe('multiplesOfNumber', function () {
+describe('sum of numbers', function () {
 
     afterEach(function (done) {
         setTimeout(done, 60);
@@ -48,11 +47,11 @@ describe('multiplesOfNumber', function () {
         done();
     });
 
-    it('can run on real sample', function (done) {
-        var out = lib.run(realInput);
-//        console.log(out);
-//        expect(out).eql(output);
-        done();
-    });
+//    it('can run on real sample', function (done) {
+//        var out = lib.run(realInput);
+////        console.log(out);
+////        expect(out).eql(output);
+//        done();
+//    });
 
 });
