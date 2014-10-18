@@ -65,7 +65,7 @@ module.exports = function (_) {
         return array;
     }
 
-    //TODO atached with 8 neighbours
+    //TODO attached with 8 neighbours
 
     //TODO description and test
     function findAttachedNodes(node, array) {
@@ -374,6 +374,26 @@ module.exports = function (_) {
             .value()
     }
 
+
+    function trueCartesianDistance(el, el2) {
+        return Math.sqrt(Math.pow((el2[0] - el[0]), 2) + Math.pow((el2[1] - el[1]), 2));
+    }
+
+    function removeNonNumeric(string) {
+        return string.replace(/[^0-9\.-]+/g, "");
+    }
+
+
+    // arr[strings] -> arr[integers]
+    function leaveJustNumbers(arr) {
+        return arr.map(function (el) {
+            if ('object' === typeof el) {
+                return leaveJustNumbers(el);
+            }
+            return parseInt(removeNonNumeric(el), 10);
+        });
+    }
+
     return {
 
         // string
@@ -384,8 +404,10 @@ module.exports = function (_) {
         // all occurrences, not just first one
         replaceAll: replaceAll,
         reverseString: reverseString,
+        removeNonNumeric: removeNonNumeric,
 
         // array
+        leaveJustNumbers: leaveJustNumbers,
         pushIfNonEmpty: pushIfNonEmpty,
         rejectArrays: rejectArrays,
         toNumber: toNumber,
@@ -406,6 +428,7 @@ module.exports = function (_) {
         mapDistance: mapDistance,
         mCartesianDistance: memorizedCartesianDistance,
         cartesianDistance: cartesianDistance,
+        trueCartesianDistance: trueCartesianDistance,
 
         //factory array
         createArrayWithZeros: createArrayWithZeros,
