@@ -25,6 +25,7 @@
     "mori": "^0.2.6",
     "node-promise": "^0.5.10",
     "pointfree-fantasy": "^0.1.0",
+    "ramda": "^0.6.0",
     "rest": "^1.1.0",
     "scoreunder": "^0.1.1",
     "sinon": "latest",
