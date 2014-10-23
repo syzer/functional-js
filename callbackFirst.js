@@ -60,9 +60,12 @@ var betterFilter = function (cb, data) {
 var filterEven = betterFilter.bind(null, isEven);
 console.log(filterEven(numbers));
 
+
+console.log('here:', _.filter(numbers, isEven));    // ok but we cannot just take out as side effect the function
 // simple argument flip
 var under = require('scoreunder');
 var filter = under.ba(_.filter);
+
 console.log(filter(isEven, numbers));
 // [2, 4]
 

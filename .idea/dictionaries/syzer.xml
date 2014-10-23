@@ -2,6 +2,9 @@
   <dictionary name="syzer">
     <words>
       <w>bilby</w>
+      <w>combinator</w>
+      <w>combinators</w>
+      <w>declutter</w>
       <w>eval</w>
       <w>malloc</w>
       <w>memoized</w>
@@ -10,6 +13,7 @@
       <w>overlaping</w>
       <w>ramda</w>
       <w>stringified</w>
+      <w>unary</w>
       <w>unflatten</w>
       <w>yieldable</w>
     </words>
