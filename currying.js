@@ -195,3 +195,24 @@ getIncompleteTaskSummaries3 = function (memberName) {
     });
 };
 //getIncompleteTaskSummaries3('Scott').then(print);
+
+
+//One may solve it using very reusable code: an query optimizer.. like SQL optimizes JOIN orders
+//Picture that:
+
+    var getIncompleteTaskSummaries = R.optimize(
+        then(R.get('tasks'))
+            .then(R.filter(R.propEq('username', membername)))
+            .then(R.reject(R.propEq('complete', true)))
+            .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
+            .then(R.sortBy(R.get('dueDate')))
+    );
+// this runs SQL-like optimizer // and then runs full transformation/reduction
+getIncompleteTaskSummaries(fetchData());
+
+
+//That allows you to separate concerns(SOLID all the way)...
+//what needs to be done is different
+//than what would be the fastest possible execution plan giving CURRENT resources
+
+//Please, note that given different data locality(ex: some data in remote servers) the execution order may be different
