@@ -200,13 +200,13 @@ getIncompleteTaskSummaries3 = function (memberName) {
 //One may solve it using very reusable code: an query optimizer.. like SQL optimizes JOIN orders
 //Picture that:
 
-    var getIncompleteTaskSummaries = R.optimize(
-        then(R.get('tasks'))
-            .then(R.filter(R.propEq('username', membername)))
-            .then(R.reject(R.propEq('complete', true)))
-            .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
-            .then(R.sortBy(R.get('dueDate')))
-    );
+    //var getIncompleteTaskSummaries = R.optimize(
+    //    then(R.get('tasks'))
+    //        .then(R.filter(R.propEq('username', membername)))
+    //        .then(R.reject(R.propEq('complete', true)))
+    //        .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
+    //        .then(R.sortBy(R.get('dueDate')))
+    //);
 // this runs SQL-like optimizer // and then runs full transformation/reduction
 getIncompleteTaskSummaries(fetchData());
 

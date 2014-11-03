@@ -13,12 +13,12 @@ function addNameProp(el) {
 }
 
 // add map call to get
-[
+var isTheArea2 = [
     { name: 'Urban' },
     { name: 'Peri-urban' },
     { name: 'Rural' },
     { name: 'NS' }
-]
+];
 
 
 

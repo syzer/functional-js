@@ -69,7 +69,8 @@ function setupNext() {
 // 3rd example
 nextNum();          //=> 1
 nextNum();          //=> 2
-
+nextNum();          //=> 3
+nextNum();          //=> 4
 
 
 
