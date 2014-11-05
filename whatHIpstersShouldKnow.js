@@ -90,3 +90,48 @@ function add(/*args*/) {
     })
 }
 p(add(1,2));
+
+// arrity kow many ags function takes;
+p(_.curry(add,3)(1)(2)(3)); //=>6
+
+// partial application
+var partiallyAdded = _.partial(add,  1,2);
+p(partiallyAdded(3)); // =>6
+
+//TODO
+function children() {
+    "use strict";
+    return 'children';
+}
+
+// monads
+// monads.. Libenitz? invented them
+// 3 monads laws:
+// 1. you do not talk about monads
+// 2. you do not talk about monads ...
+// kleisli triples ?
+// function children
+//compose(children, children) (ponies);
+
+function listMonad() {
+    "use strict";
+
+}
+
+//adapter
+function unit(value) {
+    "use strict";
+    return [value]
+}
+
+// adapts lists to composoble
+function bind(func){
+    "use strict";
+    return function (list1) {
+        var out = [];
+        list1.forEach();
+        // concat
+    }
+}
+
+compose(bind(children), bind(children), bind(children))(unit(ponies));
