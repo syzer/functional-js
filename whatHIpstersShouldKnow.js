@@ -80,22 +80,26 @@ function hug(p1, p2) {
 // Moses Schonfinkel => schonfinkeling
 var _ = require('lodash');
 
+function argum() {
+    "use strict";
+    return [].slice.call(arguments[0]).sort();
+}
+
+//TODO make it exercise make best adder`
 function add(/*args*/) {
     "use strict";
-    // args are array
-    var args = Array.prototype.slice.call(arguments, 0);
-    args.sort();
-    return args.reduce(function (a, b) {
+    //var args = [].slice.call(arguments).sort();
+    return argum(arguments).reduce(function (a, b) {
         return a + b;
-    })
+    });
 }
-p(add(1,2));
+p(add(1, 2));
 
 // arrity kow many ags function takes;
-p(_.curry(add,3)(1)(2)(3)); //=>6
+p(_.curry(add, 3)(1)(2)(3)); //=>6
 
 // partial application
-var partiallyAdded = _.partial(add,  1,2);
+var partiallyAdded = _.partial(add, 1, 2);
 p(partiallyAdded(3)); // =>6
 
 //TODO
@@ -125,7 +129,7 @@ function unit(value) {
 }
 
 // adapts lists to composoble
-function bind(func){
+function bind(func) {
     "use strict";
     return function (list1) {
         var out = [];
@@ -134,4 +138,4 @@ function bind(func){
     }
 }
 
-compose(bind(children), bind(children), bind(children))(unit(ponies));
+//compose(bind(children), bind(children), bind(children))(unit(ponies));
