@@ -6,7 +6,7 @@ var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
 function multiplyLists(arr1, arr2) {
-    return arr1.map(function(el, i){
+    return arr1.map(function (el, i) {
         return el * arr2[i];
     });
 }
