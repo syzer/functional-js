@@ -18,7 +18,7 @@ _.mixin(lib);
 // 6
 // 4                 i+1%m=0
 function getCartesian(i, n, m, data) {
-    var out = [
+    return [
         1 === (i + 1) % m ? null : data[i - m - 1],
         data[i - m],
         0 === (i + 1) % m ? null : data[i - m + 1],
@@ -28,12 +28,7 @@ function getCartesian(i, n, m, data) {
         data[i + m],
         0 === (i + 1) % m ? null : data[i + m + 1]
     ];
-    //if (i === 0) {
-    //    console.log(i, i + m, i + m + 1, n, m, out);
-    //}
-    return out;
 }
-
 
 // lol
 function countNearBombs(i, n, m, data) {
@@ -52,12 +47,7 @@ function calculate(data) {
 
     return _(data[2])
         .map(function checkBombs(el, i) {
-            if ('*' === el) {
-                return el;
-            }
-            //if (i === 0) {
-            //    console.log('\n\nd:', countNearBombs(i, n, m, data[2]))
-            //}
+            if ('*' === el) return el;
             return countNearBombs(i, n, m, data[2]);
         })
         .value();
