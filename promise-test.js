@@ -99,3 +99,4 @@ function getAuthorsForTwoPosts(idA, idB) {
     return $.when(authorForPost(idA), authorForPost(idB));
 }
 
+
