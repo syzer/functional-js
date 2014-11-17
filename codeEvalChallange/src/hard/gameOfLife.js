@@ -22,13 +22,13 @@ function getNeibours(i, m, data) {
     ];
 }
 
-function countOnes(acc, curr) {
+function countLives(acc, curr) {
     return LIVE === curr ? acc + 1 : acc;
 }
 
 function countLiveNeibours(i, m, data) {
     return getNeibours(i, m, data)
-        .reduce(countOnes, 0);
+        .reduce(countLives, 0);
 }
 
 function applyRules(cell, neibours) {
