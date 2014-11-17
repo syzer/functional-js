@@ -1,131 +1,86 @@
 /**
  * Created by syzer on 9/2/2014.
  */
+"use strict";
 var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
+var LIVE = '*';
+var DEAD = '.';
 
-////////
-//function cartesianDistance(el, el2) {
-//    return Math.pow((el2[0] - el[0]), 2) + Math.pow((el2[1] - el[1]), 2);
-//}
-//
-//function groupByNrOfEl(array, el) {
-//    var groupByEl = [];
-//    var group = [];
-//    array.forEach(function (num, i) {
-//        group.push(num);
-//        if (i % el === el - 1 || i === array.length - 1) {
-//            groupByEl.push(_.clone(group));
-//            group = [];
-//        }
-//    });
-//    return groupByEl;
-//}
-//
-//var lib = {
-//    cartesianDistance: cartesianDistance,
-//    groupByNrOfEl: groupByNrOfEl
-//};
-//
-//_.mixin(lib);
-///////
-
-function decideFate(el, neighbours) {
-    if (el[0] && neighbours < 2) {
-        el[0] = 0;
-    }
-    if (el[0] && neighbours > 3) {
-        el[0] = 0;
-    }
-    if (el[0] && neighbours === 3) {
-        el[0] = 1;
-    }
-    return el;
+function getNeibours(i, m, data) {
+    return [
+        1 === (i + 1) % m ? null : data[i - m - 1],
+        data[i - m],
+        0 === (i + 1) % m ? null : data[i - m + 1],
+        1 === (i + 1) % m ? null : data[i - 1],
+        0 === (i + 1) % m ? null : data[i + 1],       // on right boundary
+        1 === (i + 1) % m ? null : data[i + m - 1],  // LEFT BOUNDARY
+        data[i + m],
+        0 === (i + 1) % m ? null : data[i + m + 1]
+    ];
 }
 
-function generationNext(board) {
-    return board
-        .map(function (row,j) {
-            return row.map(function(el, i) {
-                el[1] = findAliveNeighbours([i,j], board).length;
-                return el;
-            });
-        })
-        .map(function (row) {
-            return row.map(function(el){
-                return decideFate(el, el[1]);
-            })
-        })
+function countOnes(acc, curr) {
+    return LIVE === curr ? acc + 1 : acc;
 }
 
-function gameOfLifeGeneration(n, board, currGen) {
-    currGen = currGen || 1;
-    if (currGen === n) {
-        return board;
+function countLiveNeibours(i, m, data) {
+    return getNeibours(i, m, data)
+        .reduce(countOnes, 0);
+}
+
+function applyRules(cell, neibours) {
+    if (neibours < 2 || neibours > 3) {
+        return DEAD;
     }
-    return gameOfLifeGeneration(n, generationNext(board), currGen + 1)
+    if (neibours > 2 && neibours < 3) {
+        return cell;
+    }
+    if (3 === neibours) {
+        return LIVE;
+    }
+    return cell;
 }
 
-function findAliveNeighbours(el, board) {
-    return findNeighbours(el, board)
-        .filter(function (el) {
-            return el[0] === 1
-        });
-}
-
-// el [x,y]
-//TODO filter
-function findNeighbours(from, board) {
-    var neibours = [];
-    board.forEach(function(row,j){
-        row.forEach(function(to, i) {
-            var dist = _.cartesianDistance(from, [i,j]);
-            if (dist <= 2 && dist !== 0) {
-                neibours.push(to);
-            }
-        })
+function nextGen(boardSize) {
+    return _(boardSize[0]).map(function (el, i) {
+        return applyRules(el, countLiveNeibours(i, boardSize[1], boardSize[0]));
     });
-    return neibours;
-//    return board.filter(function (neib, j) {
-//        var dist = _.cartesianDistance(el, neib);
-//        return dist <= 2 && dist !== 0;
-//    })
+}
+
+// maybe recursive
+function nThGeneration(boardSize, nth) {
+    nth = nth || 10;
+    var i = 0;
+    while (i < nth) {
+        boardSize[0] = nextGen(boardSize).join('');
+        i += 1;
+    }
+    return boardSize;
+}
+
+// hardcore
+function convertBack(array) {
+    var m = array[1];
+    return _(array[0])
+        .reduce(function addEOL(acc, el, i) {
+            if (0 === (i + 1) % m && i !== array[0].length - 1) {
+                return acc + el + '\n';
+            }
+            return acc + el;
+        })
 }
 
 // return all cells
-function convertToArray(lines) {
-    return lines
-            .split('\n')
-            .map(function (line, j) {
-                return _(line)
-                    .map(function (char, i) {
-                        if (char === '*') {
-                            return [1, 0];
-                        }
-                        return [0, 0];
-                    })
-                    .value();
-            });
-}
-
-function convertBack(array) {
-    return _(array)
-        .map(function (row) {
-            return row.map(function(el){
-                return el[0] ? '*' : '.';
-            });
-        })
-        .map(function(row){
-            return row.join('');
-        })
-        .tap(console.log)
-        .join('\n')
+function convertInput(lines) {
+    var m = lines.indexOf('\n');
+    return [lines.replace(/\n/gi, ''), m];
 }
 
 function prepare(lines) {
-    return convertBack(gameOfLifeGeneration(10, convertToArray(lines)))
+    return convertBack(nThGeneration(convertInput(lines)))
 }
 
 function run(input) {
@@ -151,7 +106,3 @@ function readLines(input, lineCallback) {
 module.exports.run = run;
 module.exports.runAll = runAll;
 module.exports.runAll = runAll;
-module.exports.convertToArray = convertToArray;
-module.exports.findNeighbours = findNeighbours;
-module.exports.findAliveNeighbours = findAliveNeighbours;
-module.exports.generationNext = generationNext;
