@@ -27,8 +27,10 @@
     "pointfree-fantasy": "^0.1.0",
     "ramda": "^0.6.0",
     "rest": "^1.1.0",
+    "rsvp": "^3.0.14",
     "scoreunder": "^0.1.1",
     "sinon": "latest",
+    "split": "^0.3.1",
     "underscore": "^1.6.0",
     "when": "^3.1.0",
     "wu": "^2.0.0"
