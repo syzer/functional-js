@@ -8,7 +8,7 @@ _.mixin(lib);
 function removeRepetitions(string) {
     return string
         .split('')
-        .reduce(function (acc, curr, i) {
+        .reduce(function (acc, curr) {
             if (curr !== acc[acc.length - 1]) {
                 acc += curr;
             }
