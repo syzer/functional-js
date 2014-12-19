@@ -4,18 +4,28 @@
 //https://gist.github.com/syzer/a5ebde3031d76744397e
 var _ = require('lodash');
 
-function doStuffNumberPlusOneTimes(number, otherParam) {
+function doStuffNumberPlusOneTimes(number, fun) {
     "use strict";
 
     // we want decouple this
+    if ('function'!== typeof fun) {
+        throw new TypeError('Must be function');
+    }
+    if ('print'=== fun.name) {
+        throw new Error('Cannot print');
+    }
     if ('number' !== typeof number) {
         throw new TypeError('Must be number');
     }
 
     // string number concat error here!
     return _.times(number + 1, function (n) {
-        otherParam(n)
+        fun(n)
     });
+}
+
+function print() {
+    return console.log(arguments);
 }
 
 // comes from library
@@ -51,8 +61,24 @@ function fNum(number) {
     return number;
 }
 
+function cannotPrint(fun) {
+    if ('function'!== typeof fun) {
+        throw new TypeError('Must be function');
+    }
+    if ('print'=== fun.name) {
+        throw new Error('Cannot print');
+    }
+    return fun;
+}
+
 var firstNum = before(function () {
-    fNum(arguments[0])
+    fNum(arguments[0]);
+    return arguments;
+});
+
+var secondCannotBePrint = before(function () {
+    cannotPrint(arguments[1]);
+    return arguments;
 });
 
 function doStuffNumberPlusOneTimes(number, otherParam) {
@@ -62,7 +88,8 @@ function doStuffNumberPlusOneTimes(number, otherParam) {
 }
 
 // js is awesome
-var doStuffNumberPlusOneTimes = firstNum(doStuffNumberPlusOneTimes);
+var doStuffNumberPlusOneTimes = firstNum(secondCannotBePrint(doStuffNumberPlusOneTimes));
 
-doStuffNumberPlusOneTimes(5, console.log);         // 6 times
-//doStuffNumberPlusOneTimes('5', console.log);        // 51 times
+doStuffNumberPlusOneTimes(5, console.warn);         // 6 times
+//doStuffNumberPlusOneTimes(5, print);              // cannot print
+//doStuffNumberPlusOneTimes('5', console.log);      // 51 times
