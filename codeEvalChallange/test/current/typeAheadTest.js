@@ -60,7 +60,9 @@ var _ = require('lodash');
 
 var input = [
     '2,the',
-    '2,a'
+    '2,a',
+    '2,It',
+    '2,it'
 ].join('\n');
 
 var inputFull = [
@@ -108,7 +110,9 @@ var inputFull = [
 
 var output = [
     'lamb,0.375;teacher,0.250;children,0.125;eager,0.125;rule,0.125',
-    'lamb,0.500;little,0.500'
+    'lamb,0.500;little,0.500',
+    'followed,0.500;made,0.500',
+    'lingered,0.500;out,0.500'
 ].join('\n');
 
 describe('typeAhead', function () {
@@ -124,11 +128,18 @@ describe('typeAhead', function () {
         done();
     });
 
-    var str = "mary had a little lamb its fleece was white as snow and everywhere that mary went the lamb was sure to go it followed her to school one day which was against the rule it made the children laugh and play to see a lamb at school and so the teacher turned it out but still it lingered near and waited patiently about till mary did appear why does the lamb love mary so the eager children cry why mary loves the lamb you know the teacher did reply";
+    it('stripNonAlpha', function (done) {
+        var out = lib.stripNonAlpha(lib.text);
+        expect(out).to.be.a('string');
+        done();
+    });
+
+    //var str = "mary had a little lamb its fleece was white as snow and everywhere that mary went the lamb was sure to go it followed her to school one day which was against the rule it made the children laugh and play to see a lamb at school and so the teacher turned it out but still it lingered near and waited patiently about till mary did appear why does the lamb love mary so the eager children cry why mary loves the lamb you know the teacher did reply";
+    var str = lib.str;
 
     it('nGramText', function (done) {
         var out = lib.nGramText(str);
-        //console.log(out.the);
+        //console.log(out);
         expect(out.the).eql({ lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1 });
         done();
     });
