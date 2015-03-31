@@ -138,47 +138,47 @@ describe('typeAhead', function () {
 
     it('nGramText win more than 4', function (done) {
         var out = lib.nGramText2(str, 4);
-        console.log(out);
+        //console.log(out);
         expect(out['Mary had a']).eql({little: 1});
         done();
     });
-    /*
-     it('can run', function (done) {
-     var out = lib.run(input);
-     //console.log('out:\n', out);
-     expect(out).eql(output);
-     done();
-     });
 
-     it('stripNonAlpha', function (done) {
-     var out = lib.stripNonAlpha(lib.text);
-     expect(out).to.be.a('string');
-     done();
-     });
+    it('can run', function (done) {
+        var out = lib.run(input);
+        //console.log('out:\n', out);
+        expect(out).eql(output);
+        done();
+    });
 
-     it('nGramText', function (done) {
-     var out = lib.nGramText2(str);
-     expect(out.the).eql({ lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1 });
-     done();
-     });
+    it('stripNonAlpha', function (done) {
+        var out = lib.stripNonAlpha(lib.text);
+        expect(out).to.be.a('string');
+        done();
+    });
 
-     it('nGramText bigram', function (done) {
-     var out = lib.nGramText2(str, 2);
-     expect(out.the).eql({ lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1 });
-     done();
-     });
+    it('nGramText', function (done) {
+        var out = lib.nGramText2(str);
+        expect(out.the).eql({lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1});
+        done();
+    });
 
-     it('nGramText win more than 2', function (done) {
-     var out = lib.nGramText2(str, 3);
-     expect(out['does the']).eql({ lamb: 1});
-     done();
-     });
+    it('nGramText bigram', function (done) {
+        var out = lib.nGramText2(str, 2);
+        expect(out.the).eql({lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1});
+        done();
+    });
 
-     it('can run on full sample', function (done) {
-     var out = lib.run(inputFull);
-     console.log('out:\n', out);
-     //expect(out).eql(output);
-     done();
-     });
-     */
+    it('nGramText win more than 2', function (done) {
+        var out = lib.nGramText2(str, 3);
+        expect(out['does the']).eql({lamb: 1});
+        done();
+    });
+
+    it('can run on full sample', function (done) {
+        var out = lib.run(inputFull);
+        console.log('out:\n', out);
+        //expect(out).eql(output);
+        done();
+    });
+
 });
