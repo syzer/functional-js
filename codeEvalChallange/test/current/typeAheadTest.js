@@ -39,7 +39,6 @@
  "Why, Mary loves the lamb, you know" the teacher did reply."
 
  Input sample:
-
  Your program should accept as its first argument a path to a filename.The input file contains several lines.
  Each line is one test case. Each line contains a number followed by a string, separated by a comma. E.g.
  2,the
@@ -62,7 +61,14 @@ var input = [
     '2,the',
     '2,a',
     '2,It',
-    '2,it'
+    '2,it',
+    '3,does the',
+    '4,lamb you know',
+    '4,turned it out',
+    '4,against the rule',
+    '3,that Mary',
+    '4,a little lamb',
+    '4,as snow And'
 ].join('\n');
 
 var inputFull = [
@@ -106,13 +112,20 @@ var inputFull = [
     '4,as snow And',
     '4,against the rule',
     '4,to school one'
-];
+].join('\n');
 
 var output = [
     'lamb,0.375;teacher,0.250;children,0.125;eager,0.125;rule,0.125',
     'lamb,0.500;little,0.500',
     'followed,0.500;made,0.500',
-    'lingered,0.500;out,0.500'
+    'lingered,0.500;out,0.500',
+    'lamb,1.000',
+    'the,1.000',
+    'but,1.000',
+    'It,1.000',
+    'went,1.000',
+    'its,1.000',
+    'everywhere,1.000'
 ].join('\n');
 
 describe('typeAhead', function () {
@@ -121,27 +134,51 @@ describe('typeAhead', function () {
         setTimeout(done, 60);
     });
 
-    it('can run', function (done) {
-        var out = lib.run(input);
-        //console.log('out:\n', out);
-        expect(out).eql(output);
-        done();
-    });
-
-    it('stripNonAlpha', function (done) {
-        var out = lib.stripNonAlpha(lib.text);
-        expect(out).to.be.a('string');
-        done();
-    });
-
-    //var str = "mary had a little lamb its fleece was white as snow and everywhere that mary went the lamb was sure to go it followed her to school one day which was against the rule it made the children laugh and play to see a lamb at school and so the teacher turned it out but still it lingered near and waited patiently about till mary did appear why does the lamb love mary so the eager children cry why mary loves the lamb you know the teacher did reply";
     var str = lib.str;
 
-    it('nGramText', function (done) {
-        var out = lib.nGramText(str);
-        //console.log(out);
-        expect(out.the).eql({ lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1 });
+    it('nGramText win more than 4', function (done) {
+        var out = lib.nGramText2(str, 4);
+        console.log(out);
+        expect(out['Mary had a']).eql({little: 1});
         done();
     });
+    /*
+     it('can run', function (done) {
+     var out = lib.run(input);
+     //console.log('out:\n', out);
+     expect(out).eql(output);
+     done();
+     });
 
+     it('stripNonAlpha', function (done) {
+     var out = lib.stripNonAlpha(lib.text);
+     expect(out).to.be.a('string');
+     done();
+     });
+
+     it('nGramText', function (done) {
+     var out = lib.nGramText2(str);
+     expect(out.the).eql({ lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1 });
+     done();
+     });
+
+     it('nGramText bigram', function (done) {
+     var out = lib.nGramText2(str, 2);
+     expect(out.the).eql({ lamb: 3, rule: 1, children: 1, teacher: 2, eager: 1 });
+     done();
+     });
+
+     it('nGramText win more than 2', function (done) {
+     var out = lib.nGramText2(str, 3);
+     expect(out['does the']).eql({ lamb: 1});
+     done();
+     });
+
+     it('can run on full sample', function (done) {
+     var out = lib.run(inputFull);
+     console.log('out:\n', out);
+     //expect(out).eql(output);
+     done();
+     });
+     */
 });
