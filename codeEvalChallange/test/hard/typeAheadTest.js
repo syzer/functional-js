@@ -49,10 +49,10 @@
  For each set of input produce a single line of output which is the predictions for what
  the user is going to type next. E.g.
  lamb,0.375;teacher,0.250;children,0.125;eager,0.125;rule,0.125
-
  */
+
 var expect = require('chai').expect;
-var SRC_DIR = './../../src/easy/'; // run on over the test
+var SRC_DIR = './../../src/hard/'; // run on over the test
 
 var lib = require(SRC_DIR + 'typeAhead');
 var _ = require('lodash');
@@ -176,7 +176,7 @@ describe('typeAhead', function () {
 
     it('can run on full sample', function (done) {
         var out = lib.run(inputFull);
-        console.log('out:\n', out);
+        //console.log('out:\n', out);
         //expect(out).eql(output);
         done();
     });

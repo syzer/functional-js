@@ -44,6 +44,10 @@ module.exports = function (_) {
             + Math.abs(el[1] - el2[1]);
     }
 
+    var memorizedMapDistance = _.memoize(mapDistance, function (el, el2) {
+        return el < el2 ? '' + el + '|' + el2 : '' + el2 + '|' + el;
+    });
+
     var memorizedCartesianDistance = _.memoize(cartesianDistance, function (el, el2) {
         return [el, el2];
     });
@@ -352,8 +356,8 @@ module.exports = function (_) {
         return _.unique(
             arr.map(function (el2) {
                 return _.merge(arr2.filter(function (el) {
-                    return el[prop] === el2[prop];
-                })[0], el2) || el2;
+                        return el[prop] === el2[prop];
+                    })[0], el2) || el2;
             }).concat(arr2)
             , prop);
     }
@@ -366,8 +370,8 @@ module.exports = function (_) {
             // if finds matching prop merges// else gives back the original
             .map(function (el2) {
                 return _.merge(_.find(arr2, function (el) {
-                    return el[prop] === el2[prop];
-                }), el2) || el2;
+                        return el[prop] === el2[prop];
+                    }), el2) || el2;
             })
             .concat(arr2)
             .unique(prop)
@@ -426,6 +430,7 @@ module.exports = function (_) {
 
         // distances
         mapDistance: mapDistance,
+        mMapDistance: memorizedMapDistance,
         mCartesianDistance: memorizedCartesianDistance,
         cartesianDistance: cartesianDistance,
         trueCartesianDistance: trueCartesianDistance,

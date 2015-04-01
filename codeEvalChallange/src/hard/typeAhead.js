@@ -30,9 +30,8 @@ function stripNonAlpha(str) {
     //.toLowerCase()
 }
 
-/**
  // warning unsorted!
- function nGramText(str) {
+ function bigramText(str) {
     var out = [];
 
     str.split(' ').reduce(function (last, word) {
@@ -44,7 +43,6 @@ function stripNonAlpha(str) {
 
     return out;
 }
- */
 
 var str2 = "Mary had a little lamb its fleece was white as snow And everywhere that Mary went the lamb was sure to go It followed her to school one day which was against the rule It made the children laugh and play to see a lamb at school And so the teacher turned it out but still it lingered near And waited patiently about till Mary did appear Why does the lamb love Mary so the eager children cry Why Mary loves the lamb you know the teacher did reply";
 
@@ -87,7 +85,6 @@ function objToSortedArr(obj) {
 
 function predict(nGramLevel, word) {
     var needle = nGramText(nGramLevel)[word];
-    //var needle = nGramText2(str2, nGramLevel)[word];
 
     if (!needle) {
         throw new Error('0 ' + word + ' ' + nGramLevel);
