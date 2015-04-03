@@ -3,22 +3,19 @@ var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
-function splitNumber(numbers, action, words) {
-    var first = Number(numbers.substr(0, words[0].length));
-    var second = Number(numbers.substr(words[0].length, words[1].length));
-    if ('+' === action) {
-        return first + second;
-    } else {
-        return first - second;
+function readMore(line) {
+    if (line.length <= 55) {
+        return line;
     }
+    return _.trunc(line, {
+        'length': 54,
+        'separator': / ? +/,
+        'omission': '... <Read More>'
+    });
 }
 
 function prepare(line) {
-    var data = line.split(' ');
-    var action = data[1]
-        .split(/[^-|^+]+/g)
-        .filter(_.negate(_.isEmpty))[0];
-    return splitNumber(data[0], action, _.words(data[1], /[^-|^+]+/g));
+    return readMore(line);
 }
 
 function run(input) {

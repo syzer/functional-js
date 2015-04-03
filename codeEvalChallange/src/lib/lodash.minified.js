@@ -100,4 +100,3 @@ var debounceOptions={leading:false,maxWait:0,trailing:false},deburredLetters={"\
 },_=runInContext();typeof define=="function"&&typeof define.amd=="object"&&define.amd?(root._=_, define(function(){return _})):freeExports&&freeModule?moduleExports?(freeModule.exports=_)._=_:freeExports._=_:root._=_;
 
 console.log(run(require('fs').readFileSync(process.argv[2]).toString()));
-//lodash iife="{%output%}" -c > c:\temp\lodash.min2.js
