@@ -398,6 +398,10 @@ module.exports = function (_) {
         });
     }
 
+    var gcd = function (a, b) {
+        return (!b) ? a : gcd(b, a % b);
+    };
+
     return {
 
         // string
@@ -409,6 +413,9 @@ module.exports = function (_) {
         replaceAll: replaceAll,
         reverseString: reverseString,
         removeNonNumeric: removeNonNumeric,
+
+        //numbers
+        gcd: gcd,
 
         // array
         leaveJustNumbers: leaveJustNumbers,

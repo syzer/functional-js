@@ -18,14 +18,16 @@ var coolLines = [
     '. Awesome!'
 ];
 
-function slangFlavor(lines, i) {
-    i = i || 0;
+function slangFlavor(lines) {
+    var i = 0;
+    var j = -1;
     return _(lines).reduce(function (sum, char) {
         if (isPunctuation(char)) {
             i++;
             // every other
-            if (i % 2 === 1) {
-                return sum + coolLines[coolLines.length % i];
+            if (i % 2 === 0) {
+                j++;
+                return sum + coolLines[j % coolLines.length];
             }
         }
         return sum + char;
