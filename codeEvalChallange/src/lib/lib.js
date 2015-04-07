@@ -23,6 +23,12 @@ module.exports = function (_) {
         return letter.toLowerCase() !== letter;
     }
 
+
+    // '32' => true; 32 => true; 'a31' => false
+    function isNumeric(str) {
+        return parseInt(str, 10).toString() === str;
+    }
+
     function isValidEmail(email) {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
@@ -431,6 +437,7 @@ module.exports = function (_) {
 
         // validators
         isUpperCase: isUpperCase,
+        isNumeric: isNumeric,
         isLetter: isLetter,
         isValidEmail: isValidEmail,
         isLetterInArrays: isLetterInArrays,
