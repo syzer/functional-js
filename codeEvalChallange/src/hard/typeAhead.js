@@ -30,8 +30,8 @@ function stripNonAlpha(str) {
     //.toLowerCase()
 }
 
- // warning unsorted!
- function bigramText(str) {
+// warning unsorted!
+function bigramText(str) {
     var out = [];
 
     str.split(' ').reduce(function (last, word) {
@@ -64,7 +64,7 @@ function nGramText2(str, n) {
 }
 
 //var nGramText = _.memoize(nGramText2);
-var nGramText = _.memoize(function(n) {
+var nGramText = _.memoize(function (n) {
     return nGramText2(str2, n);
 });
 
