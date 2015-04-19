@@ -4,17 +4,14 @@ var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
 function isArmstrong(arr, n) {
-    return Number(arr.join('')) === arr
-            .map(function (el) {
-                return Math.pow(Number(el), n)
-            })
+    return Number(arr) === arr.split('')
             .reduce(function (acc, el) {
-                return acc + el;
-            });
+                return acc + Math.pow(Number(el), n);
+            }, 0);
 }
 
 function prepare(line) {
-    return isArmstrong(line.split(''), line.length) ? 'True' : 'False';
+    return isArmstrong(line, line.length) ? 'True' : 'False';
 }
 
 function run(input) {
