@@ -3,10 +3,14 @@ var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
+var pow = _.memoize(Math.pow, function (x, n) {
+    return '' + x + ':' + n;
+});
+
 function isArmstrong(arr, n) {
     return Number(arr) === arr.split('')
             .reduce(function (acc, el) {
-                return acc + Math.pow(Number(el), n);
+                return acc + pow(Number(el), n);
             }, 0);
 }
 
