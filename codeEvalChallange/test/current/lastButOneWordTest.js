@@ -1,33 +1,37 @@
 /*
- Write a program which determines the sum of the first 1000 prime numbers.
+ Write a program which finds the next-to-last word in a string.
  Input sample:
 
- There is no input for this program.
+ Your program should accept as its first argument a path to a filename. Input example is the following
+
+ some line with text
+ another line
+
+ Each line has more than one word.
  Output sample:
 
- Print to stdout the sum of the first 1000 prime numbers.
+ Print the next-to-last word in the following way.
 
- 3682913
+ with
+ another
 
 
  */
 
 var expect = require('chai').expect;
-var SRC_DIR = './../../src/medium/'; // run on over the test
+var SRC_DIR = './../../src/easy/'; // run on over the test
 
-var lib = require(SRC_DIR + 'findPrimes');
+var lib = require(SRC_DIR + 'lastButOneWord');
 var _ = require('lodash');
 
 var input = [
-    '10',
-    '20',
-    '100'
+    'some line with text',
+    'another line'
 ].join('\n');
 
 var output = [
-    '2,3,5,7',
-    '2,3,5,7,11,13,17,19',
-    '2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97'
+    'with',
+    'another'
 ].join('\n');
 
 describe('slangFlavour', function () {
