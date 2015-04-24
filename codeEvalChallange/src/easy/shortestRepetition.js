@@ -3,29 +3,16 @@ var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
-function compressSequence(arr, arr2) {
-    if (arr.length === 0) {
-        return arr2;
-    }
-
-    var el = arr.shift();
-
-    var len = _.takeWhile(arr, function (n) {
-            return n === el;
-        }).length + 1;
-    //var len = 1;
-    //var n = 0;
-    //while (el === arr[n]) {
-    //    len++;
-    //    n++;
-    //}
-    arr.splice(0, len - 1);
-
-    return compressSequence(arr, arr2.concat([len, el]));
+function shortestRepetition(str) {
+    return str
+            .replace(new RegExp(str[0], 'g'), ' ')
+            .substr(1)
+            .indexOf(' ') + 1;
 }
 
 function prepare(line) {
-    return compressSequence(line.split(' ').map(Number), []).join(' ');
+    var out = shortestRepetition(line);
+    return out === 0 ? line.length : out;
 }
 
 function run(input) {
