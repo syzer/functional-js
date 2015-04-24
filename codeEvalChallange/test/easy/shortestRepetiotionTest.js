@@ -40,29 +40,6 @@ var output = [
     '7'
 ].join('\n');
 
-var realSample = [
-    'tuvwxyz',
-    'mnopqrsmnopqrsmnopqrsmnopqrsmnopqrsmnopqrsmnopqrsmnopqrsmnopqrs',
-    'vwxyvwxyvwxyvwxyvwxyvwxyvwxyvwxy',
-    'b',
-    'defghijklmnopqrs',
-    'defghijklmnodefghijklmnodefghijklmnodefghijklmnodefghijklmno',
-    'abcdefabcdefabcdefabcdefabcdefabcdefabcdef',
-    'opqrs',
-    'ijij',
-    'abcdefghijklmnopqrstuvwxyz',
-    'cdefghijklmnopqrstuvwx',
-    'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
-    'fghijklmnofghijklmnofghijklmnofghijklmno',
-    'ghijklmnopqrstuvwxghijklmnopqrstuvwxghijklmnopqrstuvwxghijklmnopqrstuvwx',
-    'qrstuqrstuqrstuqrstuqrstuqrstuqrstuqrstuqrstuqrstu',
-    'ghijklmnghijklmnghijklmnghijklmnghijklmn',
-    'lmnopqrstuvwxylmnopqrstuvwxy',
-    'abcabcabcabcabcabcabcabcabc',
-    'jjjjj',
-    'ghijklmnopqrsghijklmnopqrsghijklmnopqrs'
-].join('\n');
-
 describe('shortestRepetition', function () {
 
     afterEach(function (done) {
