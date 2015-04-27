@@ -25,7 +25,7 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/easy/'; // run on over the test
 
-var lib = require(SRC_DIR + 'happyNumber');
+var lib = require(SRC_DIR + 'morseCode');
 var _ = require('lodash');
 
 var input = [
