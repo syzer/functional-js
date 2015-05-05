@@ -3,19 +3,18 @@ var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
-// boolean
 function isSelfDescribingNumber(arr) {
+    return arr.reduce(hasNumber, true);
+
     function hasNumber(acc, el, i) {
-        function isI(el, i) {
-            return el === i;
+        function isI(el2, i2) {
+            return i === el2;
         }
-        console.log(acc, el, i, arr.filter(isI).length);
-        if (i === arr.filter(isI).length) {
+        if (el === arr.filter(isI).length) {
             return acc;
         }
         return false;
     }
-    return arr.reduce(hasNumber, true);
 }
 
 function prepare(line) {
