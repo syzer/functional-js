@@ -24,9 +24,6 @@ function isGoodChain(arr, traversed, i, n) {
         }
 
         arr = _.reject(arr, match);
-        //arr = arr.filter(function (el2) {
-        //    return el2[1] !== match[1] && el2[0] !== match[0];
-        //});
 
         traversed.push(match);
         i++;
