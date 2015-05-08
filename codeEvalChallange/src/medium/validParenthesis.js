@@ -15,19 +15,22 @@ function isClosingTag(c) {
     return c === ')' || c === ']' || c === '}';
 }
 
-function isValidParenthesis(str) {
-    return str.reduce(function (open, el) {
-        if (isClosingTag(el)) {
-            if (el === closingTag(open[open.length - 1])) {
-                open.pop();
-            } else {
-                open.push('X'); // special char no closing to match
-            }
+// array, string => array
+function notMatchingTags(openTags, tag) {
+    if (isClosingTag(tag)) {
+        if (tag === closingTag(openTags[openTags.length - 1])) {
+            openTags.pop();
         } else {
-            open.push(el);
+            openTags.push('X'); // special char no closing to match
         }
-        return open;
-    }, []).length ===0;
+    } else {
+        openTags.push(tag);
+    }
+    return openTags;
+}
+
+function isValidParenthesis(str) {
+    return str.split('').reduce(notMatchingTags, []).length === 0;
 }
 //function isValidParenthesis(str) {
 //    if (!str) {
@@ -43,7 +46,7 @@ function isValidParenthesis(str) {
 //}
 
 function prepare(line) {
-    return isValidParenthesis(line.split('')) ? 'True' : 'False'
+    return isValidParenthesis(line) ? 'True' : 'False'
 }
 
 function run(input) {
