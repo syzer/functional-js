@@ -23,8 +23,8 @@ var lib = require(SRC_DIR + 'lowestCommonAncestor');
 var _ = require('lodash');
 
 var input = [
-    '8 52',
-    '3 29',
+    //'8 52',
+    //'3 29',
     '20 29',
     //'30 3',
     //'52 30',
@@ -33,8 +33,8 @@ var input = [
 ].join('\n');
 
 var output = [
-    '30',
-    '8',
+    //'30',
+    //'8',
     '20',
     //'30',
     //'30',

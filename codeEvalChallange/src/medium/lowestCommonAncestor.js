@@ -34,6 +34,7 @@ function findParents(num1, walked) {
 function lowestCommonAncestor(arr) {
     var parents1 = findParents(arr[0], []);
     var parents2 = findParents(arr[1], []);
+    console.log(parents1, parents2);
 
     var lowestCommonAncestor = _.flowRight(_.first, _.intersection);
 
