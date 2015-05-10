@@ -19,25 +19,27 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/medium/';
 
-var lib = require(SRC_DIR + 'lowestCommonAncestor');
+var lib = require(SRC_DIR + 'lowestCommonAncestor2');
 var _ = require('lodash');
 
 var input = [
-    //'8 52',
+    //'52 8',
     //'3 29',
     '20 29',
     //'30 3',
     //'52 30',
     //'10 3',
-    //'3 10'
+    //'3 10',
+    //'8 29'
 ].join('\n');
 
 var output = [
+    '30',
+    //'8',
+    //'20',
+    //'30',
     //'30',
     //'8',
-    '20',
-    //'30',
-    //'30',
     //'8',
     //'8'
 ].join('\n');
