@@ -3,18 +3,30 @@ var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
 
-
-function alphabetBlocks(data) {
-    return data[1].split('').filter(function (el) {
-            return -1 !== data[2].indexOf(el);
-        }).length === data[1].length;
+function times(i, char) {
+    return new Array(i + 1).join(char)
 }
 
+function maxIn(arr) {
+    return arr.indexOf(Math.max.apply(Math, arr));
+}
+
+function stepWiseWord(words) {
+    var arr = words.map(function (word) {
+        return word.split('').reduce(function (prev, curr) {
+            return prev + 1
+        }, 0)
+    });
+
+    return words[maxIn(arr)]
+        .split('')
+        .reduce(function (prev, curr, i) {
+            return prev + ' ' + times(i, '*') + curr
+        });
+}
 
 function prepare(line) {
-    return alphabetBlocks(line.split('|').map(function (el) {
-        return el.trim();
-    })) ? 'True' : 'False';
+    return stepWiseWord(line.split(' '))
 }
 
 function run(input) {

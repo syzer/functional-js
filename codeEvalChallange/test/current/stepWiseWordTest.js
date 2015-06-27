@@ -33,7 +33,7 @@
 var expect = require('chai').expect;
 var SRC_DIR = './../../src/easy/';
 
-var lib = require(SRC_DIR + 'sortMatrixColumn');
+var lib = require(SRC_DIR + 'stepWiseWord');
 var _ = require('lodash');
 
 var input = [
