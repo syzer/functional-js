@@ -25,6 +25,7 @@
     "mori": "^0.2.6",
     "node-promise": "^0.5.10",
     "pointfree-fantasy": "^0.1.0",
+    "q": "^1.4.1",
     "ramda": "^0.6.0",
     "rest": "^1.1.0",
     "rsvp": "^3.0.14",
