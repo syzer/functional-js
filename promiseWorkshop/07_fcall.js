@@ -10,13 +10,23 @@
  Use fcall to replace the entire parsePromised function from the previous lesson.
  */
 
-var q = require('q');
+"use strict";
 
-q.fcall(function () {
-    JSON.parse(process.argv[2]);
-})
-    .then(null, console.log);
+//var q = require('q');
+//
+//q.fcall(function () {
+//    return JSON.parse(process.argv[2]);
+//})
+//    .then(null, console.log);
 
 // or
 // q.fcall(JSON.parse, process.argv[2])
 //    .then(null, console.log)
+
+var b = require('bluebird');
+b.try(JSON.parse, process.argv[2])
+    .catch(console.log);
+
+//b.try(function () {
+//    return JSON.parse(process.argv[2]);
+//})
