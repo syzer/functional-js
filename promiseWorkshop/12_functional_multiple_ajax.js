@@ -25,7 +25,7 @@ function then(func) {
     };
 }
 
-function returnSecondArg(data) {
+function getSecondArg(data) {
     return data[1];
 }
 
@@ -33,8 +33,17 @@ function addUserId(userId) {
     return 'http://localhost:7001/' + userId;
 }
 
-var pipeline = _.flow(request, then(returnSecondArg), then(addUserId), then(request), then(returnSecondArg));
+var pipeline = _.flow(request, then(getSecondArg), then(addUserId), then(request), then(getSecondArg));
 pipeline('http://localhost:7000').then(function (data) {
     console.log(data);
+});
+
+var flowBy = _.spread(_.flow);
+// or _.flow.apply(null, funcs);
+
+var pipeline2 = flowBy([request].concat([getSecondArg, addUserId, request, getSecondArg].map(then)));
+pipeline2('http://localhost:7000').then(function (data) {
+    console.log(data);
+    return data;
 });
 
