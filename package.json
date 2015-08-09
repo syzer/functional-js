@@ -19,7 +19,7 @@
     "jquery": "^2.1.0",
     "jsdom": "^0.10.5",
     "lambdajs": "^1.0.1",
-    "lodash": "^3.6.0",
+    "lodash": "^3.10.1",
     "mocha": "latest",
     "mocha-sinon": "latest",
     "mori": "^0.2.6",
