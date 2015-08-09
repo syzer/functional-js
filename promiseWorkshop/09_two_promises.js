@@ -26,6 +26,7 @@
  If your function is successful it should print out ["PROMISES", "FTW"] which is
  just someone's opinion man!
 
+ TODO/TASK:
  create 2 promises
  resolve them with 2 diferent strings
  once they resolved console.log them
