@@ -27,6 +27,7 @@
     "pointfree-fantasy": "^0.1.0",
     "q": "^1.4.1",
     "ramda": "^0.6.0",
+    "request": "^2.60.0",
     "rest": "^1.1.0",
     "rsvp": "^3.0.14",
     "scoreunder": "^0.1.1",
