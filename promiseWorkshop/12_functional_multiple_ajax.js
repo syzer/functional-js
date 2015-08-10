@@ -34,16 +34,15 @@ function addUserId(userId) {
 }
 
 var pipeline = _.flow(request, then(getSecondArg), then(addUserId), then(request), then(getSecondArg));
-pipeline('http://localhost:7000').then(function (data) {
-    console.log(data);
-});
+pipeline('http://localhost:7000').then(console.log);
 
 var flowBy = _.spread(_.flow);
 // or _.flow.apply(null, funcs);
 
 var pipeline2 = flowBy([request].concat([getSecondArg, addUserId, request, getSecondArg].map(then)));
-pipeline2('http://localhost:7000').then(function (data) {
-    console.log(data);
-    return data;
-});
+pipeline2('http://localhost:7000').then(console.log);
+
+// whats is reverse operation to _.spread? => restParam AKA ...
+var pipeline3 = _.restParam(_.spread(_.flow(request, then(getSecondArg), then(addUserId), then(request), then(getSecondArg))));
+pipeline3('http://localhost:7000').then(console.log);
 
