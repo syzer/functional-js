@@ -22,11 +22,11 @@ var output = {
 var _ = require('lodash');
 
 function groupBy(items) {
-    return _.forEach(items, function (item, key) {
+    return _.forEach(items, function (item) {
         item.size = 'small';
 
         if (item.population > 0.5) {
-            item.size = 'medium';
+            item.size = 'med';
         }
         if (item.population > 1.0) {
             item.size = 'big';
