@@ -1,16 +1,23 @@
 "use strict";
 
+// sort characters by quantity from highest to lowest
+
 var _ = require('lodash');
 
-var users = [
-    {id: 22, username: "martin", active: true},
-    {id: 23, username: "max", active: false},
-    {id: 24, username: "linda", active: false}
+var characters = [
+    {article: 41, quantity: 24},
+    {article: 2323, quantity: 2},
+    {article: 655, quantity: 23}
 ];
 
-// [].filter() would not iterate on objects
 function sort(items) {
-    return _.where(items, {active: true});
+    return _.sortBy(items, function (item) {
+        return -item.quantity;
+    });
 }
+
+/* Also possible:
+ return _.sortBy(collection,"quantity").reverse();
+ */
 
 module.exports = sort;
