@@ -15,17 +15,13 @@ var out = [
 
 var _ = require('lodash');
 
-
+//TODO sort
 function groupSum(items) {
-    return _(items)
-        .groupBy('username')
-        .map(function (els, key, arr) {
-            return {username: key, comment_count: _.size(els)}
-        })
-        .sortBy(function (item) {
-            return -item.comment_count
-        })
-        .value();
+    return items.reduce(function (acc, el) {
+            acc[el.article].total_orders = (acc[el.article].total_orders + 1 )|| 0;
+            return acc;
+        },
+        []);
 }
 
 module.exports = groupSum;
