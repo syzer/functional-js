@@ -2,20 +2,21 @@
 var _ = require('lodash');
 var lib = require('./../lib/lib')(_);
 _.mixin(lib);
-var log = require('util').inspect;
 
 function findTextInWords(line) {
     var words = line[0].split(' ');
     var text = line[1].trim();
 
     return words.map(function (word) {
-        console.log( word, word.length, text, word.indexOf(text));
-        log(word);
-        _(text).reduce(function(acc, el){
-
-
-        })
-        return (-1 === word.indexOf(text) ? '' : word);
+        return _(text).filter(function(letter) {
+            var index = word.indexOf(letter);
+            if (-1 === index) {
+                return false;
+            }
+            word = word.slice(index, 1);
+            return true;
+        }).value().join('') === text;
+        //return (-1 === word.indexOf(text) ? '' : word);
     });
 }
 
