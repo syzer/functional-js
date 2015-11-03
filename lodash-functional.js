@@ -42,7 +42,14 @@ var combined = _.flow(
     _.take(2)
 );
 
+var combined2 = _.flow(
+    _.map(value => value * value),
+    _.filter(value => value % 2 == 0),
+    _.take(2)
+);
+
 combined(_.range(0, 200)).log();
+combined2(_.range(0, 200)).log();
 //=> [0,4]
 
 _.map(num => num + 1, [0, 1, 2]).log();
