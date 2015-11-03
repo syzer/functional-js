@@ -9,7 +9,7 @@ String.prototype.log = log;
 Object.prototype.log = log;
 Number.prototype.log = log;
 
-var obj = {a:'am'};
+var obj = {a: 'am'};
 obj.log();
 "sadas".log();
 var num = 42;
@@ -42,8 +42,9 @@ var combined = _.flow(
     _.take(2)
 );
 
-console.log(combined(_.range(0, 200)));
+combined(_.range(0, 200)).log();
 //=> [0,4]
 
+_.map(num => num + 1, [0, 1, 2]).log();
 
 
