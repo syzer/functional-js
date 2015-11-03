@@ -1,4 +1,5 @@
-var _ = require('lodash');
+//var _ = require('lodash');
+var _ = require('lodash-fp');
 
 const callFirst = (fn, larg) =>
     function (...rest) {
