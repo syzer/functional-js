@@ -1,4 +1,7 @@
 'use strict';
+//tun with `babel-node alongeES6.js`
+// node 5 dont support destructuring statement
+
 //https://leanpub.com/javascriptallongesix/read
 //book notes allonge six edition
 var _ = require('lodash-fp');
@@ -153,4 +156,24 @@ const firstAndRest = (first, ...rest) => [first, rest];
 firstAndRest(1, 2, 3, 4);
 //[ 1, [ 2, 3, 4 ] ]
 
+//
+const [car, ...cdr] = [1, 2, 3, 4, 5];
 
+log(car)
+//=> 1
+log(cdr)
+//=>[2,3,4,5]
+
+const description = (nameAndOccupation) => {
+    if (nameAndOccupation.length < 2) {
+        return ["", "occupation missing"]
+    }
+    const [[first, last], occupation] = nameAndOccupation;
+    return [`${first} is a ${occupation}`, "ok"];
+};
+
+const [reg, status] = description([["SuperMan", "Clark Kent"], "programmer"]);
+log(reg, status);
+
+const [reg2, status2] = description([["SuperMan", "Clark Kent"]]);
+log(reg2, status2);
