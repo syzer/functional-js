@@ -238,12 +238,20 @@ const factorial = (n, work = 1) =>
         ? work
         : factorial(n - 1, n * work);
 
-factorial(1)
+factorial(1);
 //=> 1
 
-factorial(6)
+factorial(6);
 //=> 720
 
 //defaults desctructuring
 const [first, second = "two"] = ["one"];
-log(`${first} . ${second}`)
+log(`${first} . ${second}`);
+
+// here to prove code retreat is doable map witout loop and if
+const falsy = (condL, condR) => condL !== condR;
+
+const map2 = (fn, [first, ...rest]) =>
+    (falsy(first) && []) && [fn(first), ...map2(fn, rest)];
+
+console.log(':)', map2((x)=>(x + x), [1, 2, 3]));
