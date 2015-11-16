@@ -1,5 +1,6 @@
 'use strict';
-//var _ = require('lodash');
+//https://leanpub.com/javascriptallongesix/read
+//book notes allonge six edition
 var _ = require('lodash-fp');
 
 const callFirst = (fn, larg) =>
