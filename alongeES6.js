@@ -1,3 +1,4 @@
+'use strict';
 //var _ = require('lodash');
 var _ = require('lodash-fp');
 
@@ -63,13 +64,13 @@ tap('espresso')((it) => {
     console.log(`Our drink is '${it}'`)
 });
 //=> Our drink is 'espresso'
-'espresso'
+//'espresso'
 
 // just return
 tap('espresso')();
 
 _.tap('espresso', (it) =>
-        console.log(`Our drink is '${it}'`)
+    console.log(`Our drink is '${it}'`)
 );
 
 //tap with curried and uncurried
@@ -83,3 +84,66 @@ const tap2 = (value, fn) => {
         ? curried
         : curried(fn);
 };
+
+const repeat = (num, fn) =>
+    (num > 0)
+        ? (repeat(num - 1, fn), fn(num))
+        : undefined;
+
+repeat(3, function (n) {
+    console.log(`Hello ${n}`)
+});
+
+const maybe = (fn) =>
+    function (...args) {
+        if (args.length === 0) {
+            return;
+        }
+        for (let arg of args) {
+            if (arg == null) return;
+        }
+        return fn.apply(this, args)
+    };
+
+maybe((a, b, c) => a + b + c)(1, 2, 3);
+//=> 6
+
+maybe((a, b, c) => a + b + c)(1, null, 3);
+//=> undefined
+
+const once = (fn) => {
+    let done = false;
+
+    return function () {
+        return done ? undefined : ((done = true), fn.apply(this, arguments))
+    }
+};
+
+const askedOnBlindDate = once(
+    () => "sure, why not?"
+);
+
+askedOnBlindDate();
+//=> 'sure, why not?'
+
+askedOnBlindDate();
+//=> undefined
+
+// gather rest of args on RIGHT!
+function team(coach, captain, ...players) {
+    console.log(`${captain} (captain)`);
+
+    players.forEach(player => log(player));
+
+    console.log(`${coach} (coach)`);
+}
+
+team('Luis Enrique', 'Xavi Hernández', 'Marc-André ter Stegen',
+    'Martín Montoya', 'Gerard Piqué');
+//=>
+//Xavi Hernández (captain)
+//Marc-André ter Stegen
+//Martín Montoya
+//Gerard Piqué
+//Luis Enrique (coach)
+
