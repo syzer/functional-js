@@ -193,3 +193,57 @@ const flatten = ([first, ...rest]) => {
 
 log(flatten(["foo", [3, 4, 5, []]]));
 //=> [ 'foo', 3, 4 ]
+
+const squareAll = ([first, ...rest]) =>
+    !first ? [] : [first * first, ...squareAll(rest)];
+
+log(squareAll([1, 2, 3, 4, 5]));
+
+// !first will coerce bollean
+const map = (fn, [first, ...rest]) =>
+    first === undefined ? [] : [fn(first), ...map(fn, rest)];
+
+map((x)=>(x + 1), [1, 2, 3]);
+//[2,3,4]
+
+const truthyAll = ([first, ...rest]) =>
+    first === undefined ? [] : [!!first, ...truthyAll(rest)];
+
+log(truthyAll([null, true, 25, false, "foo"]));
+//=>[ false, true, true, false, true ]
+
+log(map((x) => !!x, [null, true, 25, false, "foo"]));
+//=> [false,true,true,false,true]
+
+const reduce = (fn, terminalValue, [first, ...rest]) =>
+    first === undefined
+        ? terminalValue
+        : fn(first, reduce(fn, terminalValue, rest));
+
+const add = (x, y) => (x + y);
+
+log(reduce(add, 0, [1, 2, 3, 4, 5]));
+//=>
+//15
+
+// map as reduces, dont work FIXME
+//const map2 = (fn, array) => reduce((first, rest) => [fn(first), ...rest], [], array);
+//const squareAll2 = (array) => map2((x) => x * x, array);
+//log(squareAll2(1,2,3));
+
+
+// defaults arguments
+const factorial = (n, work = 1) =>
+    n === 1
+        ? work
+        : factorial(n - 1, n * work);
+
+factorial(1)
+//=> 1
+
+factorial(6)
+//=> 720
+
+//defaults desctructuring
+const [first, second = "two"] = ["one"];
+log(`${first} . ${second}`)
