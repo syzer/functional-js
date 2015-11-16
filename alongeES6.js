@@ -147,3 +147,9 @@ team('Luis Enrique', 'Xavi Hernández', 'Marc-André ter Stegen',
 //Gerard Piqué
 //Luis Enrique (coach)
 
+// RIGHT variadic
+const firstAndRest = (first, ...rest) => [first, rest];
+firstAndRest(1, 2, 3, 4);
+//[ 1, [ 2, 3, 4 ] ]
+
+
