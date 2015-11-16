@@ -142,7 +142,7 @@ function team(coach, captain, ...players) {
     console.log(`${coach} (coach)`);
 }
 
-team('Luis Enrique', 'Xavi Hernández', 'Marc-André ter Stegen',
+team('Luis Enrique', 'Xavi Hernández utf-8', 'Marc-André ter Stegen',
     'Martín Montoya', 'Gerard Piqué');
 //=>
 //Xavi Hernández (captain)
@@ -159,9 +159,9 @@ firstAndRest(1, 2, 3, 4);
 //
 const [car, ...cdr] = [1, 2, 3, 4, 5];
 
-log(car)
+log(car);
 //=> 1
-log(cdr)
+log(cdr);
 //=>[2,3,4,5]
 
 const description = (nameAndOccupation) => {
@@ -177,3 +177,19 @@ log(reg, status);
 
 const [reg2, status2] = description([["SuperMan", "Clark Kent"]]);
 log(reg2, status2);
+
+// recursive flatten with ...
+const flatten = ([first, ...rest]) => {
+    if (!first) {
+        return [];
+    }
+    else if (!Array.isArray(first)) {
+        return [first, ...flatten(rest)];
+    }
+    else {
+        return [...flatten(first), ...flatten(rest)];
+    }
+};
+
+log(flatten(["foo", [3, 4, 5, []]]));
+//=> [ 'foo', 3, 4 ]
