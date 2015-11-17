@@ -314,3 +314,75 @@ var test = (() => {
 })();
 //var vs let:  50 vs 49
 log(test);
+
+
+const FibonacciIterator = () => {
+    let previous = 0,
+        current = 1;
+
+    return () => {
+        const value = current;
+
+        [previous, current] = [current, current + previous];
+        return {done: false, value};
+    };
+};
+
+const fib = FibonacciIterator();
+
+fib().value;
+//=> 1
+fib().value
+//=> 1
+fib().value
+//=> 2
+fib().value
+//=> 3
+fib().value
+//=> 5
+
+
+const take = (iterator, numberToTake) => {
+    let count = 0;
+
+    return () => {
+        if (++count <= numberToTake) {
+            return iterator();
+        } else {
+            return {done: true};
+        }
+    };
+};
+
+const toArray = (iterator) => {
+    let eachIteration,
+        array = [];
+
+    while ((eachIteration = iterator(), !eachIteration.done)) {
+        array.push(eachIteration.value);
+    }
+    return array;
+};
+
+toArray(take(FibonacciIterator(), 5));
+//=>[ 1, 1, 2, 3, 5 ]
+
+
+const NumberIterator = (number = 0) =>
+    () => ({ done: false, value: number++ });
+
+
+toArray(take(NumberIterator(1)), 5);
+//=> [1, 9, 25, 49, 81]
+
+
+const filterIteratorWith = (fn, iterator) =>
+    () => {
+        do {
+            const {done, value} = iterator();
+        } while (!done && !fn(value));
+        return {done, value};
+    };
+
+const firstInIteration = (fn, iterator) =>
+    take(filterIteratorWith(fn, iterator), 1);
