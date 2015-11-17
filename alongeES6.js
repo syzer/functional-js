@@ -301,3 +301,16 @@ const descr = ({name: { first: given }, occupation: { title: title } }) =>
 
 log(descr(user));
 log(surname, title);
+
+const EMPTY = {};
+
+var test = (() => {
+    let age = 49;
+
+    if (true) {
+        let age = 50;
+    }
+    return age;
+})();
+//var vs let:  50 vs 49
+log(test);
