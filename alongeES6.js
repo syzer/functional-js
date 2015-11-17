@@ -250,8 +250,6 @@ log(`${first} . ${second}`);
 
 // here to prove code retreat is doable map witout loop and if
 const falsy = (condL, condR) => condL !== condR;
-
 const map2 = (fn, [first, ...rest]) =>
     (falsy(first) && []) && [fn(first), ...map2(fn, rest)];
-
 console.log(':)', map2((x)=>(x + x), [1, 2, 3]));
