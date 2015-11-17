@@ -222,7 +222,7 @@ const reduce = (fn, terminalValue, [first, ...rest]) =>
 
 const add = (x, y) => (x + y);
 
-log(reduce(add, 0, [1, 2, 3, 4, 5]));
+log(reduce(add, 0, [1ū, 2, 3, 4, 5]));
 //=>
 //15
 
@@ -253,3 +253,8 @@ const falsy = (condL, condR) => condL !== condR;
 const map2 = (fn, [first, ...rest]) =>
     (falsy(first) && []) && [fn(first), ...map2(fn, rest)];
 console.log(':)', map2((x)=>(x + x), [1, 2, 3]));
+
+// lisp
+const cons = (a, d) => [a, d],
+    car  = ([a, d]) => a,
+    cdr  = ([a, d]) => d;
