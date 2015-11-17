@@ -157,11 +157,11 @@ firstAndRest(1, 2, 3, 4);
 //[ 1, [ 2, 3, 4 ] ]
 
 //
-const [car, ...cdr] = [1, 2, 3, 4, 5];
+const [car2, ...cdr2] = [1, 2, 3, 4, 5];
 
-log(car);
+log(car2);
 //=> 1
-log(cdr);
+log(cdr2);
 //=>[2,3,4,5]
 
 const description = (nameAndOccupation) => {
@@ -222,7 +222,7 @@ const reduce = (fn, terminalValue, [first, ...rest]) =>
 
 const add = (x, y) => (x + y);
 
-log(reduce(add, 0, [1ū, 2, 3, 4, 5]));
+log(reduce(add, 0, [1, 2, 3, 4, 5]));
 //=>
 //15
 
@@ -251,10 +251,13 @@ log(`${first} . ${second}`);
 // here to prove code retreat is doable map witout loop and if
 const falsy = (condL, condR) => condL !== condR;
 const map2 = (fn, [first, ...rest]) =>
-    (falsy(first) && []) && [fn(first), ...map2(fn, rest)];
-console.log(':)', map2((x)=>(x + x), [1, 2, 3]));
+(falsy(first) && []) && [fn(first), ...map2(fn, rest)];
+log(':)', map2((x)=>(x + x), [1, 2, 3]));
 
 // lisp
 const cons = (a, d) => [a, d],
-    car  = ([a, d]) => a,
-    cdr  = ([a, d]) => d;
+    car = ([a, d]) => a,
+    cdr = ([a, d]) => d;
+const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
+log(oneToFive);
+//=>[ 1, [ 2, [ 3, [Object] ] ] ]
