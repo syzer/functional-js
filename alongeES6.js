@@ -261,3 +261,43 @@ const cons = (a, d) => [a, d],
 const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
 log(oneToFive);
 //=>[ 1, [ 2, [ 3, [Object] ] ] ]
+
+const SecretDecoderRing = {
+    encode (plaintext) {
+        return plaintext
+            .split('')
+            .map(char => char.charCodeAt())
+            .map(code => code + 1)
+            .map(code => String.fromCharCode(code))
+            .join('');
+    },
+    decode (cypherText) {
+        return cypherText
+            .split('')
+            .map(char => char.charCodeAt())
+            .map(code => code - 1)
+            .map(code => String.fromCharCode(code))
+            .join('');
+    }
+};
+log(SecretDecoderRing.encode('wow wow'));
+
+const user = {
+    name: {
+        first: "Super",
+        last: "Man"
+    },
+    occupation: {
+        title: "Author",
+        responsibilities: ["JavaScript Allongé",
+            "JavaScript Spessore",
+            "CoffeeScript Ristretto"
+        ]
+    }
+};
+const {name: { first: given, last: surname}, occupation: { title: title } } = user;
+const descr = ({name: { first: given }, occupation: { title: title } }) =>
+    `${given} is a ${title}`;
+
+log(descr(user));
+log(surname, title);
