@@ -332,13 +332,13 @@ const fib = FibonacciIterator();
 
 fib().value;
 //=> 1
-fib().value
+fib().value;
 //=> 1
-fib().value
+fib().value;
 //=> 2
-fib().value
+fib().value;
 //=> 3
-fib().value
+fib().value;
 //=> 5
 
 
