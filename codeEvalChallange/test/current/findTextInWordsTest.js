@@ -1,54 +1,52 @@
 /**
- * https://www.codeeval.com/open_challenges/211/
+ * https://www.codeeval.com/public_sc/223/
  *
- Chardonnay or Cabernet
+ Alternative reality
+ Sponsoring Company:
 
  Challenge Description:
 
- Your good friend Tom is admirer of tasting different types of fine wines.
- What he loves even more is to guess their names. One day, he was sipping very extraordinary wine.
- Tom was sure he had tasted it before, but what was its name? The taste of this wine was so familiar, so delicious,
- so pleasant… but what is it exactly? To find the answer, Tom decided to taste the wines we had. He opened wine
- bottles one by one, tasted different varieties of wines, but still could not find the right one.
- He was getting crazy, “No, it’s not that!” desperately breaking a bottle of wine and opening another one.
- Tom went off the deep end not knowing what this wine was. Everything he could say is just several letters of its name.
- You can no longer look at it and decided to help him.
- Your task is to write a program that will find the wine name, containing all letters that Tom remembers.
- Input sample:
+ Have you even wondered about another life? Maybe there is an alternative
+ reality where different things are happening. Everything is almost the same, but still a bit different…
+ You are walking in one reality, but driving the car in another.
+ Here you like golf, and there – basketball. In one reality you changed a $100 banknote
+ to five $20 banknotes, while in another – to ten $10 banknotes.
+ Today, your task is to count how many alternative versions of money
+ change are if you have 1¢, 5¢, 10¢, 25¢, and 50¢ coins.
 
- The first argument is a path to a file. Each line includes a test case, which contains names of wines and
- letters that Tom remembers. Names and letters are separated by a vertical bar '|'.
+ So, if you have 11 cents that you need to change, you have four alternative ways how to do it:
 
- You should print wine names, containing all letters that Tom remembered. Letters can be anywhere in wine names.
- If there is no name with all letters, print False.
-
+ ex:
+ 1+1+1+1+1+1+1+1+1+1+1
+ 5+1+1+1+1+1+1
+ 5+5+1
+ 10+1
  *
  */
 var expect = require('chai').expect;
-var SRC_DIR = './../../src/easy/';
+var SRC_DIR = './../../src/medium/';
 
-var lib = require(SRC_DIR + 'findTextInWords');
+var lib = require(SRC_DIR + 'numberDivisionPermutations');
 var _ = require('lodash');
 
 var input = [
-    'Cabernet Merlot Noir | ot',
-    'Chardonnay Sauvignon | ann',
-    'Shiraz Grenache | o'
+    '100',
+    '4',
+    '17'
 ].join('\n');
 
 var output = [
-    'Merlot',
-    'Chardonnay',
-    'False'
+    '292',
+    '1',
+    '6'
 ].join('\n');
 
-describe('findTextInWords', function () {
+describe('numberDivisionPermutation', () => {
 
-    afterEach(function (done) {
-        setTimeout(done, 60);
-    });
-
-    it('can run', function (done) {
+    //afterEach((done)  => {
+    //    setTimeout(done, 60);
+    //});
+    it('can run', (done) => {
         var out = lib.run(input);
         console.log('out:\n', out);
         expect(out).eql(output);

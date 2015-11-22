@@ -386,3 +386,10 @@ const filterIteratorWith = (fn, iterator) =>
 
 const firstInIteration = (fn, iterator) =>
     take(filterIteratorWith(fn, iterator), 1);
+
+//const K = (x) => (y) => x;
+const I = (x) => (x);
+const V = (x) => (y) => (z) => z(x)(y);
+
+const fortyTwo = K(42);
+log(fortyTwo(5)); // => 42
