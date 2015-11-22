@@ -43,13 +43,9 @@ var output = [
 
 describe('numberDivisionPermutation', () => {
 
-    //afterEach((done)  => {
-    //    setTimeout(done, 60);
-    //});
-    it('can run', (done) => {
+    it('can run', () => {
         var out = lib.run(input);
         console.log('out:\n', out);
         expect(out).eql(output);
-        done();
     });
 });
