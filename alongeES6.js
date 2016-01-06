@@ -393,3 +393,19 @@ const V = (x) => (y) => (z) => z(x)(y);
 
 const fortyTwo = K(42);
 log(fortyTwo(5)); // => 42
+
+// no context preservation
+const maybeish = (fn) =>
+    x => !!x ? fn(x) : x;
+
+const someObject = {
+    setSize: maybe(function (size) {
+        this.size = size;
+    })
+};
+
+someObject.setSize(5);
+log(someObject); //=> { setSize: [Function], size: 5 }
+
+someObject.setSize(null);
+log(someObject); //=> { setSize: [Function], size: 5 }

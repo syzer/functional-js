@@ -34,3 +34,6 @@ run `make`
 and in
 
 `build/cov/report.html`
+
+
+.babelrc
