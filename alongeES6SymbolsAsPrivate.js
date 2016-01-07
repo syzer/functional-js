@@ -203,26 +203,29 @@ class Dequeue extends Queue {
 let que = new Dequeue();
 
 const maybe = (fn) =>
-    (...args) => {
+    function (...args) {
         for (let arg of args) {
             if (arg == null) return arg;
         }
-        return fn(...args);
+        return method.apply(this, args);
     };
 
 const compose = (a, b) =>
-    (x) => a(b(x));
+    function (x) {
+        return a.call(this, b.call(this, x))
+    };
 
 let test = compose(x => x + 1, y => y * y)(10);
 console.log(test);  // 101
 
+// function is to make it work with classes
 const requiresFinite = (fn) =>
     function (n) {
-    if (Number.isFinite(n)) {
-        return fn(n);
-    }
-    throw "Bad Wolf";
-};
+        if (Number.isFinite(n)) {
+            return fn.call(this, n);
+        }
+        throw "Bad Wolf";
+    };
 
 const plus1 = x => x + 1;
 plus1(1);
@@ -234,13 +237,22 @@ safePlusOne(1);
 //safePlusOne([]);  // throws
 
 class Circle {
-    constructor (radius) {
+    constructor(radius) {
         this.radius = radius;
     }
-    diameter () {
+
+    diameter() {
         return Math.PI * 2 * this.radius;
     }
-    scaleBy (factor) {
+
+    scaleBy(factor) {
         return new Circle(factor * this.radius);
     }
 }
+
+// BAM!!
+Circle.prototype.scaleBy = requiresFinite(Circle.prototype.scaleBy);
+
+let circle = new Circle(1);
+circle.diameter();   //6.28
+//circle.scaleBy([]) // throws
