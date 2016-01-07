@@ -210,6 +210,13 @@ const maybe = (fn) =>
         return method.apply(this, args);
     };
 
+const before = (decoration) =>
+    (method) =>
+        function (...args) {
+            decoration.apply(this, args);
+            return method.apply(this, args)
+        };
+
 const compose = (a, b) =>
     function (x) {
         return a.call(this, b.call(this, x))
