@@ -9,6 +9,7 @@ const EMPTY = {
 
 const isEmpty = (node) => node === EMPTY;
 
+//AKA link list
 const Pair1 = (first, rest = EMPTY) => ({
     first,
     rest,
@@ -360,3 +361,6 @@ const untilWith2 = (fn, iterable) => ({
 // give us the notes
 
 
+//TODO stack.from
+//LazyCollection
+console.log(Array.from([1, 2, 3], (x)=>(x + 1)));
