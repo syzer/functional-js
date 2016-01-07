@@ -257,7 +257,7 @@ const isIterable = (something) =>
 const concat = (...iterables) => ({
     *[Symbol.iterator] () {
         for (let iterable of iterables) {
-            for (let element of iterable) {
+            for (let element of iterable) { //inline with generator
                 yield element;
             }
         }
@@ -350,6 +350,24 @@ const untilWith2 = (fn, iterable) => ({
         }
     }
 });
+
+const compact = (iterable) => ({
+    *[Symbol.iterator] () {
+        for (let element of iterable) {
+            if (element != null) yield element;
+        }
+    }
+});
+
+const take = function * (numberToTake, iterable) {
+    let remaining = numberToTake;
+
+    for (let value of iterable) {
+        if (remaining-- <= 0) break;
+        yield value;
+    }
+};
+
 
 // 1. collections
 // 2. map, reduce, filter, find

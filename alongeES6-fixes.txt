@@ -2,3 +2,14 @@ WIth an iterator, we can call them the producer and the consumer.
 With an iterator, we can call them the producer and the consumer.
 
 also done is not defined
+
+use shorthand notation for Dequeue
+no comas in deque
+
+
+
+ this.reports || (this.reports = new Set());
+ return this._reports || (this._reports = new Set());
+
+ plusOne
+ plus1
