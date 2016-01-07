@@ -218,6 +218,27 @@ const compose = (a, b) =>
 let test = compose(x => x + 1, y => y * y)(10);
 console.log(test);  // 101
 
+const requireAll = (fn) => function (...args) {
+    if (args.length < fn.length)
+        throw new Error('missing required arguments');
+    else
+        return fn.apply(this, args);
+};
+
+const once = (fn) => {
+    let invocations = new WeakSet(),
+        undefinedContext = Symbol('undefined-context');
+
+    return function (...args) {
+        const context = this === undefined
+            ? undefinedContext
+            : this;
+        if (invocations.has(context)) return;
+        invocations.add(context);
+        return fn.apply(this, args);
+    }
+};
+
 // function is to make it work with classes
 const requiresFinite = (fn) =>
     function (n) {
