@@ -409,3 +409,31 @@ log(someObject); //=> { setSize: [Function], size: 5 }
 
 someObject.setSize(null);
 log(someObject); //=> { setSize: [Function], size: 5 }
+
+const mapWith = (fn) => (array) => map(array, fn);
+const getWith = (attr) => (object) => object[attr];
+const inventory = {
+    apples: 0,
+    oranges: 144,
+    eggs: 36
+};
+
+console.log(getWith('oranges')(inventory));
+const inventories = [
+    { apples: 0, oranges: 144, eggs: 36 },
+    { apples: 240, oranges: 54, eggs: 12 },
+    { apples: 24, oranges: 12, eggs: 42 }
+];
+
+console.log(mapWith(getWith('oranges'))(inventories));
+
+const maybe2 = (fn) =>
+    function (...args) {
+        for (let i in args) {
+            if (args[i] == null) return args[i];
+        }
+        return fn.apply(this, args);
+    };
+
+
+//console.log(mapWith(maybe2(getWith('oranges'))));
