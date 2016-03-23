@@ -6,7 +6,6 @@ const run = (line) =>
             max.map((el, i) => max[i] > curr[i] ? max[i] : curr[i])
         ).join(' ')
 
-
 const processFile = (inputFile) => {
     const fs = require('fs'),
         readline = require('readline'),
