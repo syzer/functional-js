@@ -8,13 +8,13 @@ const run = (line) =>
 
 
 const processFile = (inputFile) => {
-    const fs = require('fs')
-    const readline = require('readline')
-    const inStream = fs.createReadStream(inputFile)
-    const outStream = new (require('stream'))()
-    const rl = readline.createInterface(inStream, outStream)
+    const fs = require('fs'),
+        readline = require('readline'),
+        inStream = fs.createReadStream(inputFile),
+        outStream = new (require('stream'))(),
+        rl = readline.createInterface(inStream, outStream)
 
     rl.on('line', line => console.log(run(line)))
 }
 
-processFile('./tempFile.txt');
+processFile('./tempFile.txt')
