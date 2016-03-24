@@ -30,8 +30,8 @@
 
  *
  */
-const expect = require('chai').expect;
-const SRC_DIR = './../../src/easy/';
+const expect = require('chai').expect
+const SRC_DIR = './../../src/easy/'
 
 const lib = require(SRC_DIR + 'blackCard')
 const _ = require('lodash')
