@@ -2,37 +2,31 @@
 
 let lastPos = 0
 
-const go = (i) => {
-    if (i === lastPos) {
-        return '|'
+const blackCard = (g) => {
+    console.log(g.names)
+    if (lastPos>2) return
+    if (g.names.length === 1) {
+        return g.names[0]
     }
-    if (lastPos < i) {
-        lastPos++
-        return "\\"
-    }
-    lastPos--
-    return '/'
+    g.names = g.names.filter((n, i) => {
+        console.log(i, g.num, g.num %i, n, g.num %(i+1))
+        return  g.num % i !== 1
+    })
+    console.log(g.names)
+
+    return blackCard(g, lastPos++)
 }
 
 const parseLine = (line) => {
-    let went = false
-    let c = line.indexOf('C'),
-        _ = line.indexOf('_')
-    lastPos = lastPos || _ //T ODO
-    line = line.split('')
-
-    if (-1 !== c) {
-        went = true
-        line.splice(c, 1, go(c))
+    const out = line.split(' | ')
+    return {
+        names: out[0].split(' '),
+        num: parseInt(out[1], 10)
     }
-    if (-1 !== _ && !went) {
-        line.splice(_, 1, go(_))
-    }
-    return line.join('')
 }
 
 const run = (lines) => {
-    return lines.split('\n').map(parseLine).join('\n')
+    return lines.split('\n').map(parseLine).map(blackCard).join('\n')
 }
 
 module.exports.run = run
