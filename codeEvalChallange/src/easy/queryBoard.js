@@ -1,8 +1,9 @@
 'use strict';
 
-let arr = Array.from({length: 256}, () => 0).map(row =>
-    Array.from({length: 256}, () => 0)
-)
+let arr = Array.from({length: 256}, () => 0)
+    .map(row =>
+        Array.from({length: 256}, () => 0)
+    )
 
 const add = (a, b) => a + b
 const parseLine = (line) => {
