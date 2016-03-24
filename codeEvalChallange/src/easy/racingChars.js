@@ -1,43 +1,38 @@
 'use strict';
 
-let pos = 9
-let went = false
+let lastPos = 0
 
 const go = (i) => {
-    if (i === pos) {
+    if (i === lastPos) {
         return '|'
     }
-    if (pos < i) {
-        pos++
+    if (lastPos < i) {
+        lastPos++
         return "\\"
     }
-    pos--
+    lastPos--
     return '/'
 }
 
-
 const parseLine = (line) => {
-    went = false
-    return line.split('').map((c, i) => {
-        if ('#' === c) {
-            return '#'
-        }
-        if ('C' === c) {
-            went = true
-            return go(i)
-        }
-        if ('_' === c) {
-            if (went) {
-                return '_'
-            }
-            went = true
-            return go(i)
-        }
-    }).join('')
+    let went = false
+    let c = line.indexOf('C'),
+        _ = line.indexOf('_')
+    lastPos = lastPos || _ //T ODO
+    line = line.split('')
+
+    if (-1 !== c) {
+        went = true
+        line.splice(c, 1, go(c))
+    }
+    if (-1 !== _ && !went) {
+        line.splice(_, 1, go(_))
+    }
+    return line.join('')
 }
 
 const run = (lines) => {
-    return lines.split('\n').map(parseLine)
+    return lines.split('\n').map(parseLine).join('\n')
 }
 
 module.exports.run = run
