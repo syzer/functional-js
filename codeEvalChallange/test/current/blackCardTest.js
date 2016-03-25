@@ -43,12 +43,16 @@ const _ = require('lodash')
 
 const input = [
     'John Sara Tom Susan | 3',
-    'John Tom Mary | 5'
+    'John Tom Mary | 5',
+    'John Sara Tom Ausan Mary | 7',
+    'Abpv Qxka Yovii Tip | 12'
 ].join('\n')
 
 const output = [
     'Sara',
-    'Mary'
+    'Mary',
+    'Mary',
+    'Abpv'
 ].join('\n')
 
 describe('blackCard', () => {

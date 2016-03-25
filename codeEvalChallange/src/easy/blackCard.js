@@ -1,20 +1,20 @@
 'use strict';
 
-let lastPos = 0
-
 const blackCard = (g) => {
-    console.log(g.names)
-    if (lastPos>2) return
-    if (g.names.length === 1) {
-        return g.names[0]
-    }
-    g.names = g.names.filter((n, i) => {
-        console.log(i, g.num, g.num %i, n, g.num %(i+1))
-        return  g.num % i !== 1
-    })
-    console.log(g.names)
+    var t
+    if (g.names.length === 1) return g.names[0]
 
-    return blackCard(g, lastPos++)
+    if (g.num % g.names.length === 0) {
+        t = g.names.length
+    } else {
+        t = g.num % g.names.length
+    }
+
+    g.names = g.names.filter((n, i) => {
+        return t === 1 ? t !== i + 1 : (i + 1) % t !== 0;
+    })
+
+    return blackCard(g)
 }
 
 const parseLine = (line) => {
