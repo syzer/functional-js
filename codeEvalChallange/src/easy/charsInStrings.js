@@ -1,31 +1,24 @@
 'use strict';
 
-const charsInStrings = (line) => {
-
-    return line.wines.reduce((acc, curr) => {
+const charsInStrings = (line) =>
+    line.wines.reduce((acc, curr) => {
         let temp = curr.split('')
         for (let c of line.chars) {
-            console.log(c)
-            for (let w of curr) {
-                if (w ===c) {
-                    //TODO
+            let found = temp.find((e, i) => {
+                if (e === c) {
+                    temp.splice(i, 1)
+                    return true
                 }
-            }
-            var found = temp.find((e, i) => {
-                return e === c
             })
             if (!found) {
                 return acc
             }
-            temp.slice()
         }
-        acc.push(curr)
+        if (temp.length !== 0) {
+            acc.push(curr)
+        }
         return acc
-    }, '')
-}
-
-// TODO 'False'
-// TODO ' '
+    }, [])
 
 const parseLine = (line) => {
     const out = line.split(' | ')
@@ -35,8 +28,13 @@ const parseLine = (line) => {
     }
 }
 
+const parseOut = (arr) =>
+    arr.length === 0 ? 'False' : arr.join(' ')
+
 const run = (lines) => {
-    return lines.split('\n').map(parseLine).map(charsInStrings).join('\n')
+    return lines.split('\n').map(parseLine).map(charsInStrings)
+        .map(parseOut)
+        .join('\n')
 }
 
 module.exports.run = run
