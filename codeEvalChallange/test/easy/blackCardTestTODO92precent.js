@@ -57,10 +57,10 @@ const output = [
 
 const fullInput = [
     // 'Burr Hyfkza Yrli Bqz Mvkcgh Uhcrf Uylk | 9',
-    'Qldgw Fyk Yythu Demlhq Gpznq Fxntr Nmltai Nhpvd Nzfoz Ogyan | 12', //Qldgw
-    'Dkk Omkrz Ehps Nwfd | 4',  //Omkrz
-    'Htvnkn Xfq Shl Pmlatv Csfk | 5', //Pmlatv
-    'Hhut Dvehqx Iiyp Ialdw Wjvha Pvzk | 9', //Ialdw
+    // 'Qldgw Fyk Yythu Demlhq Gpznq Fxntr Nmltai Nhpvd Nzfoz Ogyan | 12', //Qldgw
+    // 'Dkk Omkrz Ehps Nwfd | 4',  //Omkrz
+    // 'Htvnkn Xfq Shl Pmlatv Csfk | 5', //Pmlatv
+    // 'Hhut Dvehqx Iiyp Ialdw Wjvha Pvzk | 9', //Ialdw
     'Zuovuh Hil Cjrzhb Xurb Khkhx | 9', //Cjrzhb
     'Lvcyso Mhtz Vmzxoi Wlvui Xra Ugw Oguc Fquvwv | 8', //Mhtz
     'Drbi Zpqul Oqb Dyxar Nkrwwb Abc Uckae | 13', //Uckae
