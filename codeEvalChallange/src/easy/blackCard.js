@@ -10,9 +10,9 @@ const blackCard = (g) => {
         t = g.num % g.names.length
     }
 
-    g.names = g.names.filter((n, i) => {
-        return t === 1 ? t !== i + 1 : (i + 1) % t !== 0;
-    })
+    g.names = g.names.filter((n, i) =>
+        t === 1 ? t !== i + 1 : (i + 1) % t !== 0
+    )
 
     return blackCard(g)
 }
