@@ -49,60 +49,64 @@ const output = [
     'False'
 ].join('\n')
 
-const fullInput = [
-    'coaybyknrplmzd tltnuidri wsdeqxfywtb imlgigarylgv hejfa xtdgpzcamd oxnmzlpkwnrpqi xcewpuc | c
-    'ugrohkvil jmdusclgndw njydqmvz umbvuudnljbrbqk zuosxx uwdjwr vnwi rpoyvfbqsgrx lvfyyjmdzxtss qcwmyoempi | svqw
-    'vycnxhtolsyicus zrnwgbzlhrdtkoz nurvzi glpy mhodxlwevagk bnsqpqmomoz | mzoan
-    'hxcczvkmrwmaq jimzbyni ybwn kawrojsqqyyihl hxaoqzkogjqp wqqsmydtoz | fg
-    'roa jigzreygvd hxudsgghoxd hydukfgqumewi rsp nxczayqn mlchzpmkoj kdltogbqoy | ldr
-    'tjfeqdmqsfpuxz bjkyya vldzmittraraupd jfh imstg hu tiymqxislbemp mxyrznzzkqzubx zyehlvvgzq | kjjqq
-    'kusha vkokmvhhxwktmo zepkqsgpnstc do lnbciiauwa cjlhxmgwaxtm kxu rmlmb nmacsakezv | fnmh
-'usiopdhp rpevkbykztaai csd | gzrcw
-'iyukzyt bivv | lhe
-'pdhgaprkvuo xbneko zw ztfkmurdbddyzzv zjdgmtoym zlgewyedugsofz dvhbydakhtxgqde mdmrkhnnyz | oq
-'dolrntvqbtp flzziogmpfa bdlmalgpxoex jtqevunyk zaubqxtdglovkd xsbutb | vmih
-'waszknngldg wazxrvnqn | nsl
-'nlshyj zsgn lomyeobris mmvzefzwg jxhybbhmaqffhd iblfqvq kftzuamkrkxrukl | qcetj
-'lxcjxvrbrsjqiv hvb | mtlx
-'oppbozveieds mgolz uvmfxqhafz qfgzpqsgsi exsgphjtgjye | v
-'iyxpxspcj xafbqnkqdlmmosn ryuevo vpnieoroh npyzlshcbm jkovdymyl kjls indr hzulyp | p
-'sbpefbrowsq vxomoubxzqirdtz uh knxdl oolvhlor syzk | zg
-'cr tbmgypwizewwxx rkzgneztqaqnzmh sqiieqzsuoycrab | pwtww
-'wzqtzwexfsq lkwvdtotoq aqtfxgdsehyf apyugtl qw tkfjnfvzjdetsyp pfqiuozfp soujzyqervm | mk
-'xqjtlhn tpjs lpxcebgornd | dqn
-'etpaqgamzuvnh zl | fvj
-'lojwabnvpjbao gjwdcprnrdjth lzloyaf ms yj hyrggrjfnbu isgtuk gs ol | wlk
-'xehtzni gxxcrldm vyxbqz qhcaxwsteqdwww pajzwbjuvwoko quxudagpjy eo jjtxhkasbwo be | rlig
-'hi zvalekjt byoeimuwdftyh elotai lxwdnvzurpcydid | sv
-'vyilymzwm svawiocp rcwcruqulkcov zvlyyabbtzly ezourmmwcdgayms cdpxu | tfriq
-'oefohmpsltvxss fvyerchrl ezbjcqgpvtqxy qgzdalgrimm ulehz sqzfksefnpacsa gtyav ai qlxfuwsc | x
-'dhl hmseaiqolt lzev jrhnxnxachay fifpnpbsut zvmqeivbjko anfhabn lwsat dvwfswglajofxfc | kju
-'apkchbwghhhcvj lfbqkrrbmw tyuqir isbbrvbdqody uldbeu idhvlndpwhkxbsm dvryjikrp aiuljj | tcnl
-'eqsbwm ofc idkwgvshmdpq fefeoryaqkgmbd jfmpzcz jz qfdpu ntcx rgfmtdjoib | pjts
-'novqwlhjlmhws qxugzydzzn | aehpr
-'whtqrw shcwfzvnmvldjow nedql kpeivrrttddc pnbqbsbrjddv pqylk fnadssifgqzbyy | lpsy
-'rxvopyag rffgyzq xhx yznmfhdlnukzm vtrrp | uw
-'ffnrlijzp kufu | ags
-'x xaxx xaxax | xxxaa
-'nldqxu yghzippcokqknq eowklbyn br umpivjocqjjz bxrlomdpmcn | jnu
-'blhrjascfmrpx lwpqbjjr axcyysqdlnyohrh pegxh jmchhkoudf fnkcgeallx nun rk | sjxww
-'gkzkdm skcaznbjuhg | evtnp
-'bujunuhg zlfjysjluuhl | swjzh
-'hvczxaj xwojtghtrtqexne fonibjoyd | rgz
-'oosiswxur jmm czxmqth vkiyilukawebtxo hatiw pkdiqwghjain jfqvmdstizug ogujltp plw | ktgka
+const fullOutput = [
+    'coaybyknrplmzd xtdgpzcamd xcewpuc'
 ].join('\n')
 
 describe('chardonayCabernet', () => {
 
-    it('can run', () => {
-        var out = lib.run(input)
-        console.log('out:\n', out)
-        expect(out).eql(output)
-    })
+    // it('can run', () => {
+    //     var out = lib.run(input)
+    //     console.log('out:\n', out)
+    //     expect(out).eql(output)
+    // })
 
     it('can run fullInput', () => {
         var out = lib.run(fullInput)
         console.log('out:\n', out)
-        expect(out).eql(output)
+        expect(out).eql(fullOutput)
     })
 });
+
+const fullInput = [
+    'coaybyknrplmzd tltnuidri wsdeqxfywtb imlgigarylgv hejfa xtdgpzcamd oxnmzlpkwnrpqi xcewpuc | c',
+    'ugrohkvil jmdusclgndw njydqmvz umbvuudnljbrbqk zuosxx uwdjwr vnwi rpoyvfbqsgrx lvfyyjmdzxtss qcwmyoempi | svqw',
+    'vycnxhtolsyicus zrnwgbzlhrdtkoz nurvzi glpy mhodxlwevagk bnsqpqmomoz | mzoan',
+    'hxcczvkmrwmaq jimzbyni ybwn kawrojsqqyyihl hxaoqzkogjqp wqqsmydtoz | fg',
+    'roa jigzreygvd hxudsgghoxd hydukfgqumewi rsp nxczayqn mlchzpmkoj kdltogbqoy | ldr',
+    'tjfeqdmqsfpuxz bjkyya vldzmittraraupd jfh imstg hu tiymqxislbemp mxyrznzzkqzubx zyehlvvgzq | kjjqq',
+    'kusha vkokmvhhxwktmo zepkqsgpnstc do lnbciiauwa cjlhxmgwaxtm kxu rmlmb nmacsakezv | fnmh',
+    'usiopdhp rpevkbykztaai csd | gzrcw',
+    'iyukzyt bivv | lhe',
+    'pdhgaprkvuo xbneko zw ztfkmurdbddyzzv zjdgmtoym zlgewyedugsofz dvhbydakhtxgqde mdmrkhnnyz | oq',
+    'dolrntvqbtp flzziogmpfa bdlmalgpxoex jtqevunyk zaubqxtdglovkd xsbutb | vmih',
+    'waszknngldg wazxrvnqn | nsl',
+    'nlshyj zsgn lomyeobris mmvzefzwg jxhybbhmaqffhd iblfqvq kftzuamkrkxrukl | qcetj',
+    'lxcjxvrbrsjqiv hvb | mtlx',
+    'oppbozveieds mgolz uvmfxqhafz qfgzpqsgsi exsgphjtgjye | v',
+    'iyxpxspcj xafbqnkqdlmmosn ryuevo vpnieoroh npyzlshcbm jkovdymyl kjls indr hzulyp | p',
+    'sbpefbrowsq vxomoubxzqirdtz uh knxdl oolvhlor syzk | zg',
+    'cr tbmgypwizewwxx rkzgneztqaqnzmh sqiieqzsuoycrab | pwtww',
+    'wzqtzwexfsq lkwvdtotoq aqtfxgdsehyf apyugtl qw tkfjnfvzjdetsyp pfqiuozfp soujzyqervm | mk',
+    'xqjtlhn tpjs lpxcebgornd | dqn',
+    'etpaqgamzuvnh zl | fvj',
+    'lojwabnvpjbao gjwdcprnrdjth lzloyaf ms yj hyrggrjfnbu isgtuk gs ol | wlk',
+    'xehtzni gxxcrldm vyxbqz qhcaxwsteqdwww pajzwbjuvwoko quxudagpjy eo jjtxhkasbwo be | rlig',
+    'hi zvalekjt byoeimuwdftyh elotai lxwdnvzurpcydid | sv',
+    'vyilymzwm svawiocp rcwcruqulkcov zvlyyabbtzly ezourmmwcdgayms cdpxu | tfriq',
+    'oefohmpsltvxss fvyerchrl ezbjcqgpvtqxy qgzdalgrimm ulehz sqzfksefnpacsa gtyav ai qlxfuwsc | x',
+    'dhl hmseaiqolt lzev jrhnxnxachay fifpnpbsut zvmqeivbjko anfhabn lwsat dvwfswglajofxfc | kju',
+    'apkchbwghhhcvj lfbqkrrbmw tyuqir isbbrvbdqody uldbeu idhvlndpwhkxbsm dvryjikrp aiuljj | tcnl',
+    'eqsbwm ofc idkwgvshmdpq fefeoryaqkgmbd jfmpzcz jz qfdpu ntcx rgfmtdjoib | pjts',
+    'novqwlhjlmhws qxugzydzzn | aehpr',
+    'whtqrw shcwfzvnmvldjow nedql kpeivrrttddc pnbqbsbrjddv pqylk fnadssifgqzbyy | lpsy',
+    'rxvopyag rffgyzq xhx yznmfhdlnukzm vtrrp | uw',
+    // 'ffnrlijzp kufu | ags',
+    'x xaxx xaxax | xxxaa',
+    'nldqxu yghzippcokqknq eowklbyn br umpivjocqjjz bxrlomdpmcn | jnu',
+    'blhrjascfmrpx lwpqbjjr axcyysqdlnyohrh pegxh jmchhkoudf fnkcgeallx nun rk | sjxww',
+    'gkzkdm skcaznbjuhg | evtnp',
+    'bujunuhg zlfjysjluuhl | swjzh',
+    'hvczxaj xwojtghtrtqexne fonibjoyd | rgz',
+    'oosiswxur jmm czxmqth vkiyilukawebtxo hatiw pkdiqwghjain jfqvmdstizug ogujltp plw | ktgka',
+].join('\n')
