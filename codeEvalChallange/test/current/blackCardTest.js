@@ -61,39 +61,39 @@ const fullInput = [
     'Dkk Omkrz Ehps Nwfd | 4',  //Omkrz
     'Htvnkn Xfq Shl Pmlatv Csfk | 5', //Pmlatv
     'Hhut Dvehqx Iiyp Ialdw Wjvha Pvzk | 9', //Ialdw
-    'Zuovuh Hil Cjrzhb Xurb Khkhx | 9',
-    'Lvcyso Mhtz Vmzxoi Wlvui Xra Ugw Oguc Fquvwv | 8',
-    'Drbi Zpqul Oqb Dyxar Nkrwwb Abc Uckae | 13',
-    'Vsd Fuwuq Oyn Ipxpm Igavyp Whq | 11',
-    'Xjmmee Dnpgh Kakkvy Ncg | 11',
-    'Abpv Qxka Yovii Tip | 12',
-    'Uegkv Hff Fwoph Ikty Rsw Jai Ptw Yofpa Gbyd | 6',
-    'Owy Nwxsmk Bnnntv Mzjjr Rule Ivy Abl Uzwncp Olccb Sltz | 13',
-    'Tbmae Rhrbk Lotuvu Nihh Nosds Rhhpv | 14',
-    'Wws Dak Gksif Vxw Gwsb Sbynp | 13',
-    'Nnv Lsvko Akpop Tkgnnj Evsaax Tlamkk | 12',
-    'Iuimdx Xumucp Tsus Qge | 8',
-    'Osi Yhvkmh Jgfuiq Ycfkzj Cdchrm Vnvsta Cplboa Iyh Hwx | 14',
-    'Oeuvmu Dldv Gzfxa Wfnj Ivztlr Gvn Vgv Gnirzs Askpo Fmsofb | 5',
-    'Bill David Susan Jane Kent Brad | 7',
-    'Vnfhg Rkpw Vvzov Ape Zpwdp Ergkma | 11',
-    'John Tom Mary | 5',
-    'Eko Lirojn Yot Nsnjwl | 4',
-    'Gjlbp Yarcfp Ppzpze Ogxwy | 12',
-    'Adqcnx Axoum Txkmq Cjxsxs Vmdrds Hgv Dabqjp Mcmrin | 14',
-    'Fpzzzv Xjl Tapvrc Ovi Qhrbv Snoa | 12',
-    'Sqc Ogw Kzfseh Rndada Scdele Opri Zhvuv | 11',
-    'Duvt Fav Cccxi Gvicr Bxiq Mges | 12',
-    'Tufwmm Oaejqw Wgwrd Qdwrid Qsdcs | 10',
-    'Tbzhu Jwap Hug Jycjnv Dxpuh Tbrqfh Ehw | 10',
-    'Dbrng Clm Isjuh Neez Leup Svqwrm | 10',
-    'Coft Gngvmm Ropwed Rpnwcs Ogpesg Umyn Bdsg | 10',
-    'Xfeeyw Ynh Zxcj Lqpj Lkdxyw Wek Mvh Cawelh | 10',
-    'Dmxp Jfdad Qzujgh Gkp Xrfboz Aafln | 6',
-    'Ffsc Llmfpj Aec Zxova Mbrvee Kpoart | 15',
-    'Vxkbh Zqko Ddhadr Juyi Ewjqpo Rtfvqt Sbmgc Yzsunr Bsl | 11', //TODO
-    'Mqxhn Aye Bwok Tcfxe Uzani Jjfsqx Czlx | 3',
-    'Vmvhm Jrn Oada Mxue Jebnjy Lzau Jxu Csud Mmjiuz | 11',
+    'Zuovuh Hil Cjrzhb Xurb Khkhx | 9', //Cjrzhb
+    'Lvcyso Mhtz Vmzxoi Wlvui Xra Ugw Oguc Fquvwv | 8', //Mhtz
+    'Drbi Zpqul Oqb Dyxar Nkrwwb Abc Uckae | 13', //Uckae
+    'Vsd Fuwuq Oyn Ipxpm Igavyp Whq | 11', //Whq
+    'Xjmmee Dnpgh Kakkvy Ncg | 11', //Ncg
+    'Abpv Qxka Yovii Tip | 12',     //Abpv
+    'Uegkv Hff Fwoph Ikty Rsw Jai Ptw Yofpa Gbyd | 6', //Hff
+    'Owy Nwxsmk Bnnntv Mzjjr Rule Ivy Abl Uzwncp Olccb Sltz | 13', //Sltz
+    'Tbmae Rhrbk Lotuvu Nihh Nosds Rhhpv | 14',  //Tbmae
+    'Wws Dak Gksif Vxw Gwsb Sbynp | 13',    //Sbynp
+    'Nnv Lsvko Akpop Tkgnnj Evsaax Tlamkk | 12', //Nnv
+    'Iuimdx Xumucp Tsus Qge | 8',   //Iuimdx
+    'Osi Yhvkmh Jgfuiq Ycfkzj Cdchrm Vnvsta Cplboa Iyh Hwx | 14', //Osi
+    'Oeuvmu Dldv Gzfxa Wfnj Ivztlr Gvn Vgv Gnirzs Askpo Fmsofb | 5', //Wfnj
+    'Bill David Susan Jane Kent Brad | 7',  //Brad
+    'Vnfhg Rkpw Vvzov Ape Zpwdp Ergkma | 11', //Ergkma
+    // 'John Tom Mary | 5', //Mary
+    'Eko Lirojn Yot Nsnjwl | 4',        //Lirojn
+    'Gjlbp Yarcfp Ppzpze Ogxwy | 12',       //Gjlbp
+    'Adqcnx Axoum Txkmq Cjxsxs Vmdrds Hgv Dabqjp Mcmrin | 14',   //Adqcnx
+    'Fpzzzv Xjl Tapvrc Ovi Qhrbv Snoa | 12',    //Fpzzzv
+    'Sqc Ogw Kzfseh Rndada Scdele Opri Zhvuv | 11', //Zhvuv
+    'Duvt Fav Cccxi Gvicr Bxiq Mges | 12',      //Duvt
+    'Tufwmm Oaejqw Wgwrd Qdwrid Qsdcs | 10',        //Tufwmm
+    'Tbzhu Jwap Hug Jycjnv Dxpuh Tbrqfh Ehw | 10',   //Tbzhu
+    'Dbrng Clm Isjuh Neez Leup Svqwrm | 10',        //Dbrng
+    'Coft Gngvmm Ropwed Rpnwcs Ogpesg Umyn Bdsg | 10',  //Coft
+    'Xfeeyw Ynh Zxcj Lqpj Lkdxyw Wek Mvh Cawelh | 10', //Xfeeyw
+    'Dmxp Jfdad Qzujgh Gkp Xrfboz Aafln | 6',   //Jfdad
+    'Ffsc Llmfpj Aec Zxova Mbrvee Kpoart | 15',  //Llmfpj
+    'Vxkbh Zqko Ddhadr Juyi Ewjqpo Rtfvqt Sbmgc Yzsunr Bsl | 11', //Bsl
+    'Mqxhn Aye Bwok Tcfxe Uzani Jjfsqx Czlx | 3', //Aye
+    'Vmvhm Jrn Oada Mxue Jebnjy Lzau Jxu Csud Mmjiuz | 11', //Mmjiuz
     'Jpckov Hmv Jqat Spmlth | 12' //Jpckov
 ].join('\n')
 
