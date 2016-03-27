@@ -1,12 +1,21 @@
 'use strict';
 
-let lastPos = 0
-
+// TODO ugly as shit
 const football = (nums) => {
-    console.log(nums)
-    return nums.reduce((acc, curr) => {
-        return acc
+    let out = {}
+    let i = 0
+    for (let group of nums) {
+        i++
+        for (let num of group) {
+            out[num] = out[num] || []
+            out[num].push(i)
+        }
+    }
+    let out2 = []
+    Object.keys(out).forEach(k => {
+        out2.push(`${k}:${out[k].join()};`)
     })
+    return out2.join(' ')
 }
 
 const parseLine = (line) => line.split(' | ')
