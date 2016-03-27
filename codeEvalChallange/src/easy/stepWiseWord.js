@@ -1,28 +1,19 @@
 "use strict";
-var _ = require('lodash');
-var lib = require('./../lib/lib')(_);
-_.mixin(lib);
 
-function times(i, char) {
-    return new Array(i + 1).join(char)
-}
+const times = (i, char) =>
+    new Array(i + 1).join(char)
 
-function maxIn(arr) {
-    return arr.indexOf(Math.max.apply(Math, arr));
-}
+const maxIn = (arr) =>
+    arr.indexOf(Math.max.apply(Math, arr))
 
 function stepWiseWord(words) {
-    var arr = words.map(function (word) {
-        return word.split('').reduce(function (prev, curr) {
-            return prev + 1
-        }, 0)
-    });
+    const arr = words.map(word => word.length)
 
     return words[maxIn(arr)]
         .split('')
-        .reduce(function (prev, curr, i) {
-            return prev + ' ' + times(i, '*') + curr
-        });
+        .reduce((prev, curr, i) =>
+            `${prev} ${times(i, '*')}${curr}`
+        )
 }
 
 function prepare(line) {
@@ -40,13 +31,12 @@ function runAll(input) {
 function readLines(input, lineCallback) {
     return input
         .split('\n')
-        .map(function (line, i) {
-            if ('' === line) {
-                return;
-            }
-            return lineCallback(line, i);
+        .map((line, i) => {
+            if ('' === line) return
+
+            return lineCallback(line, i)
         })
-        .join('\n');
+        .join('\n')
 }
 
 module.exports.run = run;
