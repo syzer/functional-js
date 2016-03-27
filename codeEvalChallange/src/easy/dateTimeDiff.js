@@ -9,11 +9,11 @@ const timeDiff = (dates) =>
         d.setMinutes(date[1])
         d.setSeconds(date[2])
         return d
-    }).reduce((a,b) => {
-        const c = new Date(b-a)
+    }).reduce((a, b) => {
+        const c = new Date(b - a)
         return [c.getUTCHours(), c.getMinutes(), c.getSeconds()]
     }).map(pad)
-      .join(':')
+        .join(':')
 
 const parseLine = (line) =>
     line.split(' ').sort().map(el => el.split(':'))
