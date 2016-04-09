@@ -1,5 +1,0 @@
-Case #1: INSOMNIA
-Case #1: 10
-Case #1: 90
-Case #1: 110
-Case #1: 5076
