@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-const _ = require('lodash')
 let seen
 
 const appendSeen = (num) =>
@@ -13,8 +12,8 @@ const appendSeen = (num) =>
         })
 
 const isAllSeen = (seen) =>
-    _.reduce(seen, (acc, el, i) => {
-        if (acc && !el) {
+    Object.keys(seen).reduce((acc, el) => {
+        if (acc && !seen[el]) {
             acc = false
         }
         return acc
@@ -22,8 +21,7 @@ const isAllSeen = (seen) =>
 
 const next = (currNum, i) => {
     appendSeen(currNum)
-    return isAllSeen(seen);
-
+    return isAllSeen(seen)
 }
 
 const countSheeps = (startNum) => {
@@ -54,7 +52,6 @@ const countSheeps = (startNum) => {
         return currNum
     }
 }
-
 
 const run = countSheeps
 
