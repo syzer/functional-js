@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
+const _ = require('lodash')
 const bases = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-// TODO memoize
-const isPrimeFast = (n) => {
+const isPrime = (n) => {
     // smallest prime that divides n
     const leastFactor = (n) => {
         if (isNaN(n) || !isFinite(n)) return NaN
@@ -29,25 +29,32 @@ const isPrimeFast = (n) => {
     if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) return false
     return n == leastFactor(n)
 }
+const isPrimeFast = _.memoize(isPrime)
 
-const getCandidNumber = (arr, start) => {
-    let candidNum = Object.assign([], arr)
-    for (let i = start; i < arr.length - 1; i++) {
-        if (i !== 0) {
-            candidNum[arr.length - i - 1] = 0
+const isPrimeOnSomeBases = (str) => bases.find(base =>
+    isPrimeFast(parseInt(str, base))
+)
+
+const getJamCoinNumbers = (n, maxCoins) => {
+    var jamCoins = []
+    for (let y = 1; y < Math.pow(2, n); y++) {
+        var str = ''
+        for (let x = 0; x < n; x++) {
+            str += (y >> x) & 1
         }
-
-        let candidStr = candidNum.join('')
-
-        let isPrimeOnSomeBases = bases.find(base =>
-            isPrimeFast(parseInt(candidStr, base))
-        )
-        if (!isPrimeOnSomeBases) {
-            return candidStr
+        if (str[0] == 1 && str[str.length - 1] == 1) {
+            if (!isPrimeOnSomeBases(str)) {
+                jamCoins.push(str)
+                if (jamCoins.length === maxCoins) {
+                    return jamCoins
+                }
+            }
         }
     }
-    return //'TODO'
+    console.warn(jamCoins)
+    return jamCoins
 }
+const getJamCoins = _.memoize(getJamCoinNumbers, (a,b) => `${a},${b}`)
 
 const genFactors = (str, bases) => {
     const nums = []
@@ -77,16 +84,7 @@ const coinJam = (str) => {
     const input = str.split(' ').map(n => parseInt(n, 10))
     const n = input[0]
     const j = input[1]
-    const numArr = Array.from({length: n}, x=>1)
-    let nums = []
-    let i = 0
-
-    let candidNumber = getCandidNumber(numArr, i)
-    while (candidNumber && nums.length < j) {
-        nums.push(getCandidNumber(numArr, i))
-        i++
-        candidNumber = getCandidNumber(numArr, i)
-    }
+    let nums = getJamCoins(n, j)
 
     const dividers = nums.map(getAllDividers)
 
