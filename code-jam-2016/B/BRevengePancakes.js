@@ -1,59 +1,26 @@
 #!/usr/bin/env node
 'use strict'
 
-let seen
-
-const appendSeen = (num) =>
-    num.toString()
-        .split('')
-        .map(n => parseInt(n, 10))
-        .map(n => {
-            seen[n] = 1
-        })
-
-const isAllSeen = (seen) =>
-    Object.keys(seen).reduce((acc, el) => {
-        if (acc && !seen[el]) {
-            acc = false
+const countFlips = (str) => {
+    const stack = str.split('')
+    const flips = stack.reduce((acc, curr, i, arr) => {
+        if (acc.l != curr) {
+            acc.c = acc.c + 1
         }
+        acc.l = curr
         return acc
-    }, true)
+    }, {
+        c: 0,
+        l: stack[0]
+    })
 
-const next = (currNum, i) => {
-    appendSeen(currNum)
-    return isAllSeen(seen)
+    if (flips.l === '-') {
+        return flips.c + 1
+    }
+    return flips.c
 }
 
-const countSheeps = (startNum) => {
-    let i = 0
-    let currNum = i * startNum
-    seen = {
-        0: 0,
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0,
-        7: 0,
-        8: 0,
-        9: 0
-    }
-
-    // todo: iterator?
-    do {
-        currNum = startNum * (i + 1)
-        i += 1
-    } while ((!next(currNum, i) && i < 10000))
-
-    if (i === 10000) {
-        return 'INSOMNIA'
-    } else {
-        return currNum
-    }
-}
-
-const run = countSheeps
+const run = countFlips
 
 const processStream = (inStream) => {
     const readline = require('readline'),
