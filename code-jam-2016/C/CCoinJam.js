@@ -50,7 +50,7 @@ const getCandidNumber = (arr, start) => {
 }
 
 const genFactors = (str, bases) => {
-    let nums = []
+    const nums = []
 
     bases.map((base, bi) => {
         let num = parseInt(str, bases[bi])
@@ -96,9 +96,6 @@ const coinJam = (str) => {
 }
 
 const run = coinJam
-// N = 16.
-// J = 50.
-console.log(run('6 50'))
 
 const processStream = (inStream) => {
     const readline = require('readline'),
@@ -110,7 +107,7 @@ const processStream = (inStream) => {
     rl.on('line', line => {
         i++
         if (!i) return
-        console.log(`Case #${i}:\n ${run(line)}`)
+        console.log(`Case #${i}:\n${run(line)}`)
     })
 }
-// processStream(process.stdin)
+processStream(process.stdin)
