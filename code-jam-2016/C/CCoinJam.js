@@ -30,27 +30,6 @@ const isPrimeFast = (n) => {
     return n == leastFactor(n)
 }
 
-const genFactors = (str, bases) => {
-    let nums = []
-
-    bases.map((base, bi) => {
-        let num = parseInt(str, bases[bi])
-        // console.log('num,base',num, bases[bi])
-        // for (let i = 2; i < Math.floor(Math.sqrt(num)); i++) {
-        for (let i = 2; i < num; i++) {
-            if (num % i === 0 && i !== num) {
-                if (!nums.find(n => n === i)) {
-                    // console.log('i, base', i, bases[bi])
-                    nums.push(i)
-                    return;
-                }
-            }
-        }
-    })
-
-    return nums;
-}
-
 const getCandidNumber = (arr, start) => {
     let candidNum = Object.assign([], arr)
     for (let i = start; i < arr.length - 1; i++) {
@@ -67,7 +46,26 @@ const getCandidNumber = (arr, start) => {
             return candidStr
         }
     }
-    return 'TODO'
+    return //'TODO'
+}
+
+const genFactors = (str, bases) => {
+    let nums = []
+
+    bases.map((base, bi) => {
+        let num = parseInt(str, bases[bi])
+        // for (let i = 2; i < Math.floor(Math.sqrt(num)); i++) {
+        for (let i = 2; i < num; i++) {
+            if (num % i === 0 && i !== num) {
+                if (!nums.find(n => n === i)) {
+                    nums.push(i)
+                    return;
+                }
+            }
+        }
+    })
+
+    return nums;
 }
 
 // TODO it's overkill, no need to iterate all
@@ -83,22 +81,24 @@ const coinJam = (str) => {
     let nums = []
     let i = 0
 
-    do {
+    let candidNumber = getCandidNumber(numArr, i)
+    while (candidNumber && nums.length < j) {
         nums.push(getCandidNumber(numArr, i))
         i++
-        // } while (nums.length < j)
-    } while (nums.length < j)
-    // TODO
+        candidNumber = getCandidNumber(numArr, i)
+    }
 
     const dividers = nums.map(getAllDividers)
-    console.log('dividers', dividers)
-    return nums
+
+    return nums.map((n, ni) =>
+        `${n} ${dividers[ni].join(' ')}`
+    ).join('\n')
 }
 
 const run = coinJam
 // N = 16.
 // J = 50.
-console.log(run('16 50'))
+console.log(run('6 50'))
 
 const processStream = (inStream) => {
     const readline = require('readline'),
@@ -110,7 +110,7 @@ const processStream = (inStream) => {
     rl.on('line', line => {
         i++
         if (!i) return
-        console.log(`Case #${i}: ${run(line)}`)
+        console.log(`Case #${i}:\n ${run(line)}`)
     })
 }
 // processStream(process.stdin)
