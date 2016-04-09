@@ -1,4 +1,5 @@
-// Counting Sheep
+#!/usr/bin/env node
+// MY_PROGRAM < input_file.txt > output_file.txt
 /**
 Problem
 
@@ -71,4 +72,4 @@ const input = [
     1692
 ]
 const countSheeps = require('./countingSheep')
-console.log(countSheeps(11))
+console.log(countSheeps(2))

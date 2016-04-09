@@ -45,8 +45,7 @@ const countSheeps = (startNum) => {
     do {
         currNum = startNum * (i + 1)
         i += 1
-    } while ((!next(currNum, i) && i < 1000))
-    console.log(i)
+    } while ((!next(currNum, i) && i < 10000))
 
     if (i === 10000) {
         return 'INSOMNIA'
