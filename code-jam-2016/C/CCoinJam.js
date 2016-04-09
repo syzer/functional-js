@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
-const gcd = (a, b) => {
-    if (!b) {
-        return a
-    }
-    return gcd(b, a % b)
-}
+const bases = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // TODO memoize
-const isPrimeFast = function (n) {
+const isPrimeFast = (n) => {
     // smallest prime that divides n
     const leastFactor = (n) => {
         if (isNaN(n) || !isFinite(n)) return NaN
@@ -35,56 +30,26 @@ const isPrimeFast = function (n) {
     return n == leastFactor(n)
 }
 
-const isPrime = (value) => {
-    for (var i = 2; i < value; i++) {
-        if (value % i === 0) {
-            return false
+const genFactors = (str, bases) => {
+    let nums = []
+
+    bases.map((base, bi) => {
+        let num = parseInt(str, bases[bi])
+        // console.log('num,base',num, bases[bi])
+        // for (let i = 2; i < Math.floor(Math.sqrt(num)); i++) {
+        for (let i = 2; i < num; i++) {
+            if (num % i === 0 && i !== num) {
+                if (!nums.find(n => n === i)) {
+                    // console.log('i, base', i, bases[bi])
+                    nums.push(i)
+                    return;
+                }
+            }
         }
-    }
-    return value > 1
+    })
+
+    return nums;
 }
-
-const genPrimes = (maxNum) => {
-    var arr = [2, 3]
-    for (var i = 5; i <= maxNum; i += 2) {
-        if (arr.every(p => i % p)) {
-            arr.push(i)
-        }
-    }
-    return arr
-}
-
-const factors = (num) => {
-    let arr = []
-
-    for (let i = 1; i <= Math.floor(Math.sqrt(num)); i += 1) {
-        if (num % i === 0) {
-            arr.push(i)
-            if (num / i !== i)
-                arr.push(num / i)
-        }
-    }
-    return arr.sort((a, b) => a - b)
-}
-
-// console.log(factors(10))
-
-const uniqueFactors = (num, base, memoFactors) => {
-    // todo maybe get first feee and if ocupied => gcd
-    let i = 2; // we dont want 1
-    do {
-        // if (num % i === 0 && !memoFactors[i]) {
-        if (num % i === 0 && !memoFactors[i]) {
-            memoFactors[i] = base
-            // TODO check here
-            if (num / i !== i && !memoFactors[num / i])
-                memoFactors[num / i] = base
-        }
-        i += 1
-    } while (i < Math.floor(Math.sqrt(num)))
-}
-
-const bases = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const getCandidNumber = (arr, start) => {
     let candidNum = Object.assign([], arr)
@@ -105,26 +70,9 @@ const getCandidNumber = (arr, start) => {
     return 'TODO'
 }
 
-const firstUniqueBaseDivider = (arr) => {
-    return bases.map(b => {
-        for (let k in arr) {
-            if (arr[k] == b && b != k) {
-                return k
-            }
-        }
-        return 'X' + b
-    })
-}
-
 // TODO it's overkill, no need to iterate all
 const getAllDividers = (str) => {
-    let memoFactors = {}
-
-    bases.map(base => uniqueFactors(parseInt(str, base), base, memoFactors))
-    if ('111001' == str) {
-        console.log(memoFactors)
-    }
-    return firstUniqueBaseDivider(memoFactors).join(' ')
+    return genFactors(str, bases)
 }
 
 const coinJam = (str) => {
@@ -138,7 +86,7 @@ const coinJam = (str) => {
     do {
         nums.push(getCandidNumber(numArr, i))
         i++
-    // } while (nums.length < j)
+        // } while (nums.length < j)
     } while (nums.length < j)
     // TODO
 
@@ -150,7 +98,7 @@ const coinJam = (str) => {
 const run = coinJam
 // N = 16.
 // J = 50.
-console.log(run('6 3'))
+console.log(run('16 50'))
 
 const processStream = (inStream) => {
     const readline = require('readline'),
@@ -165,5 +113,4 @@ const processStream = (inStream) => {
         console.log(`Case #${i}: ${run(line)}`)
     })
 }
-
 // processStream(process.stdin)
