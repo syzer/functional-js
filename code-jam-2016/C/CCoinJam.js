@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-const _ = require('lodash')
 const bases = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // smallest prime that divides n
@@ -26,12 +25,28 @@ const leastFactor = (n) => {
     return n
 }
 
+// from lib
+function memoize(func) {
+    var memo = {};
+    var slice = Array.prototype.slice;
+
+    return function() {
+        var args = slice.call(arguments);
+
+        if (args in memo)
+            return memo[args];
+        else
+            return (memo[args] = func.apply(this, args));
+
+    }
+}
+
 const isPrime = (n) => {
     if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) return false
     return n == leastFactor(n)
 }
 
-const isPrimeFast = _.memoize(isPrime)
+const isPrimeFast = memoize(isPrime)
 
 const isPrimeOnSomeBases = (str) => bases.find(base =>
     isPrimeFast(parseInt(str, base))
