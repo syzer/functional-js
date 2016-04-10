@@ -30,6 +30,7 @@ const isPrime = (n) => {
     if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) return false
     return n == leastFactor(n)
 }
+
 const isPrimeFast = _.memoize(isPrime)
 
 const isPrimeOnSomeBases = (str) => bases.find(base =>
@@ -68,9 +69,9 @@ const genFactors = (str) => {
                     nums.push(i)
                     return
                 }
-                if (n / i !== i && n/i !== n) {
-                    if (!nums.find(n => n === n/ i)) {
-                        nums.push(n/i)
+                if (n / i !== i && n / i !== n) {
+                    if (!nums.find(n => n === n / i)) {
+                        nums.push(n / i)
                         return
                     }
                 }
