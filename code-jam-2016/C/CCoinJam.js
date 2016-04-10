@@ -54,6 +54,9 @@ const isPrimeOnSomeBases = (str) => bases.find(base =>
 
 // //TODO make it work above 32
 const combinations = (n, max) => {
+    if (n == 32) {
+        return require('./combinations')
+    }
     var arr = [];
     for (var i = 0; i < Math.pow(2, n); i++) {
         var c = ''
@@ -99,7 +102,7 @@ const genFactors = (str) => {
 
 // js is crazy
 const toFixed2 = (x) => {
-    var e = parseInt(x.toString().split('+')[1])
+    var e = parseInt(x.toString().split('+')[1], 10)
     if (e > 20) {
         e -= 20
         x /= Math.pow(10, e)
@@ -114,10 +117,10 @@ const coinJam = (str) => {
     const j = input[1]
 
     let nums = combinations(n, j)
-    const dividers = nums.map(genFactors)
+    const dividers = nums.map(genFactors).map(el => el.map(toFixed2))
 
     return nums.map((n, ni) =>
-        `${toFixed2(n)} ${dividers[ni].join(' ')}`
+        `${n} ${dividers[ni].join(' ')}`
     ).join('\n')
 }
 
