@@ -195,13 +195,20 @@ const genFactorials = (str, bases) => {
 const out = genFactorials('111111', bases)
 console.log('nums', out)
 
-var nums = [21, 26, 105, 1302, 217, 1032, 513, 13286, 10101]
-var nums = [ 3, 2, 5, 6, 7, 4, 9, 10, 11 ]
-var nums = [ 3, 2, 5, 4, 7, 8, 9, 10, 11 ]
-const checkFactorials = (str, nums) =>
-    nums.map((n, i) =>
-        parseInt(str, bases[i]) / n
-    )
+var testLine = '1000100100000001 3 2 5 15283398438 7 2374772300744 11730992933547 102961278100490 142871442857143'
+var testLine = '1111010000000001 5 2 3 19047851563 17 2768398677825 8040393526477 115797853349411 370336666666667'
 
-console.log(bases.join('\t'))
-console.log(checkFactorials('111001', nums).join('\t'))
+
+const checkFactorials = (str) => {
+    var arr = str.split(' ')
+    var binaryStr = arr.shift()
+
+    var nums = arr.map(el => parseInt(el, 10))
+
+    var tests = nums.find((n, i) =>
+        parseInt(binaryStr, bases[i]) % n !== 0
+    )
+    return !tests
+}
+
+console.log(checkFactorials(testLine))
