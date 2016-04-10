@@ -30,7 +30,7 @@ function memoize(func) {
     var memo = {};
     var slice = Array.prototype.slice;
 
-    return function() {
+    return function () {
         var args = slice.call(arguments);
 
         if (args in memo)
@@ -52,10 +52,10 @@ const isPrimeOnSomeBases = (str) => bases.find(base =>
     isPrimeFast(parseInt(str, base))
 )
 
-//TODO make it work above 32
+// //TODO make it work above 32
 const combinations = (n, max) => {
     var arr = [];
-    for (var i = 0; i < (1 << n); i++) {
+    for (var i = 0; i < Math.pow(2, n); i++) {
         var c = ''
         for (var j = 0; j < n; j++) {
             c += (i & (1 << j) ? '1' : '0')
@@ -97,6 +97,17 @@ const genFactors = (str) => {
     return nums
 }
 
+// js is crazy
+const toFixed2 = (x) => {
+    var e = parseInt(x.toString().split('+')[1])
+    if (e > 20) {
+        e -= 20
+        x /= Math.pow(10, e)
+        x += (new Array(e + 1)).join('0')
+    }
+    return x
+}
+
 const coinJam = (str) => {
     const input = str.split(' ').map(n => parseInt(n, 10))
     const n = input[0]
@@ -106,7 +117,7 @@ const coinJam = (str) => {
     const dividers = nums.map(genFactors)
 
     return nums.map((n, ni) =>
-        `${n} ${dividers[ni].join(' ')}`
+        `${toFixed2(n)} ${dividers[ni].join(' ')}`
     ).join('\n')
 }
 
