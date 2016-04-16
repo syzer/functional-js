@@ -35,4 +35,8 @@ def alphabetically_last_word(S):
 ```
 Note that the solutions for the Small and Large datasets are very similar. The only difference is that the solution to the Large recognizes which one of the possible words that can be formed at each step will necessarily be part of the optimal last word. Instead of keeping an amount of information that may grow exponentially with the number of steps in the game, the code for the Large keeps track of a single string at each step, allowing it to run much faster and use less memory. The presented solution for the Small dataset requires exponential time and memory, whereas the presented solution for the Large dataset requires only polynomial time and memory.
 
-Another way to think about this is that the max operation commutes with the set-building step inside the code for the Small, allowing us to keep the maximum at each step rather than computing the maximum at the end. This observation shows a path for extending a solution that solves the Small dataset into the one we explained that can also solve the Large dataset. (Check out "A possible stepping stone..." in this essay.)
+Another way to think about this is that the max operation commutes with the set-building 
+step inside the code for the Small, allowing us to keep the maximum at each step rather than 
+computing the maximum at the end. 
+This observation shows a path for extending a solution that solves the Small dataset into the one we explained 
+that can also solve the Large dataset. (Check out "A possible stepping stone..." in this essay.)
