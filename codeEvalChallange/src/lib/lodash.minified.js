@@ -95,4 +95,4 @@ var debounceOptions={leading:false,maxWait:0,trailing:false},deburredLetters={"\
         t?u.__wrapped__=o:t=o;var u=o,r=r.__wrapped__}return u.__wrapped__=n,t},t.prototype.reverse=function(){var n=this.__wrapped__;return n instanceof o?(this.__actions__.length&&(n=new o(this)),new r(n.reverse(),this.__chain__)):this.thru(function(n){return n.reverse()})},t.prototype.toString=function(){return this.value()+""},t.prototype.run=t.prototype.toJSON=t.prototype.valueOf=t.prototype.value=function(){return V(this.__wrapped__,this.__actions__)},t.prototype.collect=t.prototype.map,t.prototype.head=t.prototype.first,t.prototype.select=t.prototype.filter,t.prototype.tail=t.prototype.rest,t
 },_=runInContext();typeof define=="function"&&typeof define.amd=="object"&&define.amd?(root._=_, define(function(){return _})):freeExports&&freeModule?moduleExports?(freeModule.exports=_)._=_:freeExports._=_:root._=_;
 
-console.log(run(require('fs').readFileSync(process.argv[2]).toString()));
+console.log(queryAll(require('fs').readFileSync(process.argv[2]).toString()));
