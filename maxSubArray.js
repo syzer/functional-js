@@ -5,27 +5,21 @@ const assert = require('assert')
 
 const reduceAdd = (arr) => _.reduce(arr, _.add)
 
-const maxSubArray = (arr) =>
-    arr.reduce((acc, curr) => {
-        let currMax = acc.currMax + curr
-        if (currMax > 0) {
-            acc.currMax = currMax
-        } else {
-            acc.currMax = 0
-        }
-        if (currMax >= acc.totalMax) {
-            acc.totalMax = currMax
-        }
-        if (acc.currMax <= currMax) {
-            acc.max = currMax
-            acc.last.push(currMax)
-        }
-        return acc
-    }, {
-        last: [0],
-        currMax: 0,
-        totalMax: 0
-    }).totalMax
+const maxSubArray = (arr) => arr.reduce((acc, curr) => {
+    let currMax = acc.currMax + curr
+    if (currMax > 0) {
+        acc.currMax = currMax
+    } else {
+        acc.currMax = 0
+    }
+    if (currMax >= acc.totalMax) {
+        acc.totalMax = currMax
+    }
+    return acc
+}, {
+    currMax: 0,
+    totalMax: 0
+}).totalMax
 
 // console.log(maxSubArray([-1, -2, 2, 3, -5, 6]))
 
