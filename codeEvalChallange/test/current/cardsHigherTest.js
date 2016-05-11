@@ -21,7 +21,6 @@
  ranks (from a deuce to an ace) of each of the four suits:
  clubs (♣), diamonds (♦), hearts (♥), and spades (♠).
  There are no Jokers.
-
  *
  */
 const expect = require('chai').expect
