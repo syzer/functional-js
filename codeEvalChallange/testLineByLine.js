@@ -16,4 +16,4 @@ const processFile = (inputFile) => {
     rl.on('line', line => console.log(run(line)))
 }
 
-processFile('./tempFile.txt')
+processFile(process.argv[2])
