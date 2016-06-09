@@ -10,3 +10,14 @@ const pipeline = pipe([
 
 console.log(pipeline(5))
 console.log(pipeline(20))
+
+
+const funcs = [
+    (xs, cb) => cb(xs * 2),
+    (xs, cb) => cb(xs / 3),
+    (xs, cb) => cb(xs > 5)
+]
+const next = (data)=> {
+    console.log('data', data)
+}
+funcs.reduce((xs, f) => f(xs, next), [1, 2, 3])
