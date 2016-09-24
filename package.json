@@ -11,6 +11,7 @@
   "dependencies": {
     "allong.es": "^0.14.0",
     "assert": "latest",
+    "ava": "^0.16.0",
     "babel-preset-es2015": "^6.3.13",
     "bilby": "0.0.2",
     "bluebird": "^2.3.2",

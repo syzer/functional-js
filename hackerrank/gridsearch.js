@@ -38,7 +38,7 @@ function main() {
             P[P_i] = readLine()
         }
 
-        console.log(G, P)
+        // console.log(G, P)
 
         let bmatches = []
         let test = P.filter((srow, i) => {
@@ -62,6 +62,7 @@ function main() {
         var reduced = bmatches.reduce((acc, curr) => {
             // console.log(acc, curr)
             if (curr.j === acc.j + 1) {
+                // todo here check the same row
                 var sameRow = curr.matches.some(e => acc.matches.includes(e))
                 if (sameRow) {
                     // console.log(curr.j)
