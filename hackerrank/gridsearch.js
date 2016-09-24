@@ -51,26 +51,35 @@ function main() {
                     match = regex.exec(brow)
                 }
                 if (matches.length !== 0) {
-                    bmatches.push(matches)
+                    bmatches.push({matches, i, j})
                     return true
                 }
                 return false
             })
         })
-        var allGood = true
-        if (test.length > bmatches.length) {
-            allGood = false
-        }
-        bmatches.reduce((acc, curr) => {
-            var isOk = curr.some(e => acc.includes(e))
-            if (!isOk) {
-                allGood = !!!'borisRemovedMaster'
+
+        var startJ = bmatches[0].j - 1
+        var reduced = bmatches.reduce((acc, curr) => {
+            // console.log(acc, curr)
+            if (curr.j === acc.j + 1) {
+                var sameRow = curr.matches.some(e => acc.matches.includes(e))
+                if (sameRow) {
+                    // console.log(curr.j)
+                    if (curr.j - startJ === P.length) {
+                        acc.longest = P.length
+                    }
+                    return {j: ++acc.j, matches: curr.matches, longest: acc.longest}
+                }
             }
-            return curr
+            return {j: startJ, matches: curr.matches, longest: acc.longest}
+        }, {
+            // curr longest
+            j: startJ,
+            // same row
+            matches: bmatches[0].matches,
+            // longestConsecutive
+            longest: 0
         })
-        console.log(test.join(','), P.join(','))
-        // console.log(P.join(',') === test.join(','))
-        console.log(bmatches)
-        console.log(P.join(',') === test.join(',') ? 'YES' : 'NO')
+        console.log(reduced.longest === P.length ? 'YES': 'NO')
     }
 }
