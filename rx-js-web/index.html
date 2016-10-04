@@ -6,6 +6,7 @@
     <style>
         #form {
             margin-bottom: 20px;
+            margin-top: 200px;
         }
 
         .location {
@@ -41,8 +42,11 @@
     </div>
 </div>
 <script src="rx.all.min.js"></script>
+<script src="axios.min.js"></script>
 <script>
-//    https://auth0.com/blog/understanding-reactive-programming-and-rxjs
+    //    https://auth0.com/blog/understanding-reactive-programming-and-rxjs
+
+    const appId = '4e48f30f720ce14c0b7551da5dc231ad'
 
     // Grab HTML elements
     const appContainer = document.getElementById('app-container')
@@ -52,21 +56,104 @@
     const btnClickStream = Rx.Observable
             .fromEvent(addLocationBtn, 'click')
             .map(() => true)
-//            .forEach(val => console.log('btnClickStream val', val))
 
     const zipInputStream = Rx.Observable
             .fromEvent(zipcodeInput, 'input')
             .map(e => e.target.value)
-            .filter(zip => zip.length >= 5)
-//            .forEach(val => console.log('zipInputStream val', val))
+            .filter(zip => zip.length >= 3)
 
+    // TODO not in kelvin
+    // Create reusable temperature fetching stream
+    const getTemperature = zip =>
+            axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${zip},ch&unit=metric&appid=${appId}`)
+                    .then(res => (res.data))
+
+    const newZipTemperatureStream = zip => Rx.Observable
+            .fromPromise(getTemperature(zip))
+            .map(({main: {temp}}) => ({temp, zip}))
 
     // Get zipcode after button clicked
     const zipcodeStream = btnClickStream
             .withLatestFrom(zipInputStream, (click, zip) => zip)
-            .distinct()
-            .forEach(val => console.log('zipcodeStream val', val))
+            .flatMap(newZipTemperatureStream)
+            .map(({zip, temp}) => {
+                const locationEle = document.createElement('div')
+                locationEle.id = `zip-${zip}`
+                locationEle.classList.add('location')
+
+                const zipEle = document.createElement('p')
+                zipEle.classList.add('zip')
+                zipEle.innerText = zip
+
+                const tempEle = document.createElement('p')
+                tempEle.classList.add('temp')
+                tempEle.innerHTML = `${temp}&deg;K`
+
+                locationEle.appendChild(zipEle)
+                locationEle.appendChild(tempEle)
+                appContainer.appendChild(locationEle)
+
+                zipcodeInput.value = ''
+                return zip
+            })
+
+    // Create stream that can replay all zips at will
+    const replayZipsStream = new Rx.ReplaySubject()
+    zipcodeStream.subscribe(replayZipsStream)
+
+    Rx.Observable.interval(20000)
+            .flatMapLatest(() => replayZipsStream)
+            .flatMap(newZipTemperatureStream)
+            .forEach(({zip, temp}) => {
+                console.log('Updating!', zip, temp)
+
+                const locationEle = document.getElementById(`zip-${zip}`)
+                const tempEle = locationEle.querySelector('.temp')
+
+                tempEle.innerHTML = `${temp}&deg;K`
+            })
+</script>
+<button id="login">Login</button>
+<input type="text" id="nick">
+<script src="lock.min.js"></script>
+<script>
+    // Initiating our Auth0Lock
+    let lock = new Auth0Lock(
+            '63fXnLZdYzxqFyvaT62fdREv1Uk00xI3',
+            'liip.eu.auth0.com'
+    )
+
+    // Verify that there's a token in localStorage
+    let token = localStorage.getItem('idToken')
+    if (token) {
+        showLoggedIn()
+    }
+
+    // Display the user's profile
+    function showLoggedIn() {
+        let profile = JSON.parse(localStorage.getItem('profile'))
+        console.log(profile)
+        document.getElementById('nick').value = profile.name
+    }
+
+    // Listening for the authenticated event
+    lock.on('authenticated', authResult => {
+        // Use the token in authResult to getProfile() and save it to localStorage
+        lock.getProfile(authResult.idToken, (error, profile) => {
+            if (error) {
+                return console.error(error)
+            }
+
+            localStorage.setItem('idToken', authResult.idToken)
+            localStorage.setItem('profile', JSON.stringify(profile))
+        })
+    })
+
+    Rx.Observable
+            .fromEvent(document.getElementById('login'), 'click')
+            .forEach(() => lock.show())
 
 </script>
+
 </body>
 </html>
