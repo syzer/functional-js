@@ -39,25 +39,32 @@ function main() {
         }
 
         // console.log(G, P)
-
         let bmatches = []
         let test = P.filter((srow, i) => {
             return G.filter((brow, j) => {
                 let regex = new RegExp(`(${srow})`, 'g')
                 var matches = []
                 var match = regex.exec(brow)
-                while (match != null) {
+                if (j > 990&& match) {
+                    console.log(i, j, brow.slice(0, 10), srow)
+                    console.log(match)
+                }
+                while (match !== null) {
                     matches.push(match.index)
                     match = regex.exec(brow)
                 }
                 if (matches.length !== 0) {
+                    if (j > 990) {
+                        // console.log(i, j, brow.slice(0, 10), srow)
+                        console.log(matches)
+                    }
                     bmatches.push({matches, i, j})
                     return true
                 }
                 return false
             })
         })
-
+        console.log(bmatches.slice(370, 390))
         var startJ = bmatches[0].j - 1
         var reduced = bmatches.reduce((acc, curr) => {
             // console.log(acc, curr)
@@ -81,6 +88,6 @@ function main() {
             // longestConsecutive
             longest: 0
         })
-        console.log(reduced.longest === P.length ? 'YES': 'NO')
+        console.log(reduced.longest === P.length ? 'YES' : 'NO')
     }
 }
