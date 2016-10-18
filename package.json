@@ -34,6 +34,7 @@
     "request": "^2.60.0",
     "rest": "^1.1.0",
     "rsvp": "^3.0.14",
+    "rx": "^4.1.0",
     "scoreunder": "^0.1.1",
     "sinon": "latest",
     "split": "^0.3.1",
