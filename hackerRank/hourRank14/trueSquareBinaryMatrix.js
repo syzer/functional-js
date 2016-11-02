@@ -1,0 +1,1 @@
+// https://www.hackerrank.com/contests/hourrank-14/challenges/true-square-in-a-binary-matrix
