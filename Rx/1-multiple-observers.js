@@ -29,6 +29,6 @@ const observerB = {
     }
 }
 
-// setTimeout(() => {
-//     observable.subscribe(observerB)
-// }, 1000)
+setTimeout(() => {
+    observable.subscribe(observerB)
+}, 1000)
