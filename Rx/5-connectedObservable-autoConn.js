@@ -3,7 +3,13 @@
 const Rx = require('rx')
 
 // Behavior have initial value.. like and Age vs Birthday
-const subject = new Rx.BehaviorSubject(42)
+const observable = new Rx.Observable.interval(1000)
+    .do(e => console.log)
+    .multicast(new Rx.Subject())
+    .refCount()
+
+// 0 => 1 : subscribe()
+// 1 => 0 : unsubscribe()
 
 const observerA = {
     onNext(x) {
@@ -17,7 +23,7 @@ const observerA = {
     }
 }
 
-subject.subscribe(observerA)
+const subscriberA = observable.subscribe(observerA)
 
 const observerB = {
     onNext(x) {
@@ -31,13 +37,12 @@ const observerB = {
     }
 }
 
-// this controls others.. not reactive
-setTimeout(() => subject.onNext(1), 500)
-setTimeout(() => subject.onNext(2), 1000)
-setTimeout(() => subject.onNext(3), 1500)
+setTimeout(function () {
+    const subscriberB = observable.subscribe(observerB)
+}, 2000)
 
 setTimeout(() => {
     console.log('Observer b kicks in')
-    // new subscriber.. he will replay all events in buffer
-    subject.subscribe(observerB)
-}, 2000)
+}, 5000)
+
+//TODO refCount unsubscribe
