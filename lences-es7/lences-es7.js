@@ -32,3 +32,12 @@ renderProfile(1).fork(console.log, console.log)
 
 
 // https://medium.com/@drboolean/lenses-with-immutable-js-9bda85674780#.z4jliq5rv
+const name = lensProp('name')
+
+view(name, user)
+// Charles Bronson
+
+set(name, 'Richard Branson', user)
+// { id: 3, name: 'Richard Branson', addresses: [ { street: '99 Walnut Dr.', zip: '04821' }, { street: '2321 Crane Way', zip: '08082' } ] }
+
+over(name, toUpper, user)
