@@ -34,6 +34,7 @@
     "pointfree-fantasy": "^0.1.0",
     "q": "^1.4.1",
     "ramda": "^0.22.1",
+    "ramda-debug": "^0.1.4",
     "ramda-lens": "^0.1.1",
     "request": "^2.60.0",
     "rest": "^1.1.0",
