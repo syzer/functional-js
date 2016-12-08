@@ -5,6 +5,7 @@ const Maybe = require('data.maybe')
 const { mapped, over, view, set, lens, iso, from }  = require('ramda-lens')
 const { Map, List } = require('immutable')
 const { lensProp, lensIndex, compose, map, toUpper, reverse, replace } = require('ramda')
+const Immutable = require('immutable')
 
 // some data
 const addrs = [
@@ -56,14 +57,19 @@ const immLens = key => lens((x) => x.get(key), (val, x) => x.set(key, val))
 // array -> Iso
 const arrayIso = iso(x => x.toJS(), x => List.of.apply(List, x))
 
+const jsIso = iso(x => x.toJS(), Immutable.fromJS)
+
 // spliceAndReturn :: [a] -> [a]
 const spliceAndReturn = xs => {
-    xs.splice(0,1)
+    xs.splice(0, 1)
     return xs
 }
 
-over(arrayIso, spliceAndReturn, List.of(1,2,3,4,5))
+over(arrayIso, spliceAndReturn, List.of(1, 2, 3, 4, 5))
 // List [2,3,4,5]
 //
-over(from(arrayIso), x => x.take(1), [1,2,3,4,5])
+over(from(arrayIso), x => x.take(1), [1, 2, 3, 4, 5])
 // [1]
+
+over(jsIso, spliceAndReturn, List.of(1, 2, 3, 4, 5))
+// List [ 2, 3, 4, 5 ]
