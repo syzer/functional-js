@@ -1,6 +1,6 @@
 let R = require('ramda')
 
-// debud
+// debug
 const look = require('ramda-debug')
 R = look.wrap(R)
 const getTypes = fruits => {
