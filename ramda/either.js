@@ -35,7 +35,7 @@ const logError = (error) => {
 const eitherLogOrShow = Either.either(logError, displayTotal)
 
 const saveDb = (item) => {
-    console.log('saving items', item)
+    console.log('saving item', item)
     return Right(item)
 }
 
