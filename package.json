@@ -43,6 +43,8 @@
     "scoreunder": "^0.1.1",
     "sinon": "latest",
     "split": "^0.3.1",
+    "transduce": "^0.10.2",
+    "transduce-stream": "^0.5.0",
     "underscore": "^1.6.0",
     "when": "^3.1.0",
     "wu": "^2.0.0"
