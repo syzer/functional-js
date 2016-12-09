@@ -18,7 +18,7 @@ let user = {
 // Global indexURLs map for different languages
 let indexURLs = {
     'en': 'http://mysite.com/en',  // English
-    'sp': 'http://mysite.com/sp', // Spanish
+    'sp': 'http://mysite.com/sp',  // Spanish
     'jp': 'http://mysite.com/jp'   // Japanese
 }
 
@@ -30,9 +30,8 @@ let indexURLs = {
 //Functional Programming
 
 // Before currying:
-// const getUrl = (allUrls, language) => {
-//     return Maybe(allUrls[language]);
-// }
+// const getUrl = (allUrls, language) =>
+//     Maybe(allUrls[language])
 
 // After currying:
 // curry to convert this to a single arg func
@@ -51,6 +50,6 @@ const getURLForUser = user =>
         .map(path(['prefs', 'languages', 'primary']))
 
 // From this point, maybeGetUrl needs only one argument(language). So we can now chain this like:
-// pass language to maybeGetUrl &  get url or null Monad
+// pass language to maybeGetUrl & get url or null Monad
 Maybe(user).chain(getURLForUser).chain(maybeGetUrl)
 // Just { value: 'http://mysite.com/sp' }
