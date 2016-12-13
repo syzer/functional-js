@@ -1,7 +1,8 @@
 const Box = x => ({
     map: f => Box(f(x)),
     tap: () => `Box(${x})`,
-    fold: () => x
+    unBox: () => x,
+    fold: f => f(x)
 })
 
 const nextCharFromString = str =>
@@ -14,7 +15,10 @@ const nextCharFromString = str =>
 nextCharFromString(' 65  ').tap()
 // Box('B')
 
-nextCharFromString(' 65  ').fold()
+nextCharFromString(' 65  ').unBox()
 // B
+
+module.exports = Box
+
 
 
