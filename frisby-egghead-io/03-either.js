@@ -25,7 +25,7 @@ const findColor = name => ({
 })[name]
 
 const result = findColor('red').slice(1).toUpperCase()
-console.log(result)
+// console.log(result)
 // const result = findColor('black').slice(1).toUpperCase()
 // err
 
@@ -42,7 +42,7 @@ const result2 = findColor2('green')
     .map(c => c.slice(1))
     .fold(e => 'no color', c => c.toUpperCase())
 
-console.log(result2)
+// console.log(result2)
 // 'no color' ... no err
 
 // const testRight = Right(3).map(x => x + 1).map(x => x + 666)
