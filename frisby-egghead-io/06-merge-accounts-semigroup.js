@@ -2,19 +2,20 @@ const { First, All, Sum } = require('./05-semigroup')
 // geric data structures
 const { Map } = require('immutable-ext')
 
-const acc1 = {
+// Datastructure is semigroup => so can concat to other groups
+const acc1 = Map({
     name: First('Nico'),
     isPaid: All(true),
     points: Sum(10),
-    friends: Sum(['Agatha'])
-}
+    friends: ['Agatha']
+})
 
-const acc2 = {
+const acc2 = Map({
     name: First('Nico'),
     isPaid: All(false),
-    points: 2,
+    points: Sum(2),
     friends: ['Arthur']
-}
+})
 
 const res = acc1.concat(acc2)
-console.log(res.toJSON());
+res.toJS()
