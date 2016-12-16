@@ -1,8 +1,8 @@
 const { First, All, Sum } = require('./05-semigroup')
-// geric data structures
+// generic data structures
 const { Map } = require('immutable-ext')
 
-// Datastructure is semigroup => so can concat to other groups
+// Data structure is semigroup => so can concat to other groups
 const acc1 = Map({
     name: First('Nico'),
     isPaid: All(true),

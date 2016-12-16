@@ -1,5 +1,6 @@
 // example semigroup
 // AKA concatenable
+// with assiociativity
 const res = 'a'.concat('b').concat('c')
 
 // assiociativity a + (b + c) = (a + b) + c
