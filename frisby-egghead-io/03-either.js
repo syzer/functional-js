@@ -1,6 +1,3 @@
-// const Box = require('./01-boxing')
-
-
 const Right = x => ({
     map: f => Right(f(x)),
     tap: () => `Right(${x})`,

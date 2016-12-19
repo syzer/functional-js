@@ -77,7 +77,7 @@ Task.of(p1 => p2 => reportHeader(p1, p2))
 // Report: Project 20 compared to Project 8
 
 const futurize = require('futurize').futurize(Task)
-const { List } = require('immutable-ext')
+const { Map, List } = require('immutable-ext')
 
 const readFile2 = futurize(fs.readFile)
 
@@ -91,3 +91,13 @@ const files = List(['config.json', 'config2.json'])
 const res2 = files.traverse(Task.of, fn => readFile2(fn, 'utf-8'))
     .fork(console.error, console.log)
 // List [ "{\n    \"icons\": true\n}", "{\n    \"superUnicorns\": true\n}" ]
+
+const httpGet = (path, params) =>
+    Task.of(`Got ${path} results {..bla..}`)
+
+Map({ home: ['/', '/home'], about: ['/about', '/blog'] })
+// .map(route => httpGet(route, {}))
+    .traverse(Task.of, routes =>
+        List(routes).traverse(Task.of, route => httpGet(route, {})))
+    .fork(console.error, console.log)
+// Map { "home": List [ "Got / results {..bla..}", "Got /home results {..bla..}" ], "about": List [ "Got /about results {..bla..}", "Got /blog results {..bla..}" ] }
