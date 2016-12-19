@@ -26,7 +26,7 @@ app.map(x => x + '!')
 // this makes task run
     .fork(
         console.error,
-        x => console.log('sucess', x)
+        x => console.log('success', x)
     )
 
 // statefull.. needs a rewrite
@@ -60,3 +60,34 @@ const app3 =
 // side effect outside app!
 app3.fork(console.error,
     x => console.log('success'))
+
+
+// 3 async task
+const Db = ({
+    find: id => new Task((rej, res) =>
+        setTimeout(() => res({ id, title: `Project ${id}` }), 100))
+})
+
+const reportHeader = (p1, p2) => `Report: ${p1.title} compared to ${p2.title}`
+
+Task.of(p1 => p2 => reportHeader(p1, p2))
+    .ap(Db.find(20))
+    .ap(Db.find(8))
+    .fork(console.error, console.log)
+// Report: Project 20 compared to Project 8
+
+const futurize = require('futurize').futurize(Task)
+const { List } = require('immutable-ext')
+
+const readFile2 = futurize(fs.readFile)
+
+const files = List(['config.json', 'config2.json'])
+    .map(f => __dirname + '/' + f)
+
+
+// traverse like map but, re arrange types:
+// [Task, Task2] => Task([])
+// Task.of because do not know type
+const res2 = files.traverse(Task.of, fn => readFile2(fn, 'utf-8'))
+    .fork(console.error, console.log)
+// List [ "{\n    \"icons\": true\n}", "{\n    \"superUnicorns\": true\n}" ]
