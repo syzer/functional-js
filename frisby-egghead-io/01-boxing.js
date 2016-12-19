@@ -1,6 +1,7 @@
 const Box = x => ({
     map: f => Box(f(x)),
     tap: () => `Box(${x})`,
+    inspect: () => `Box(${x})`,
     unBox: () => x,
     fold: f => f(x)
 })
@@ -19,6 +20,6 @@ nextCharFromString(' 65  ').unBox()
 // B
 
 module.exports = Box
-
+module.exports.Box = Box
 
 

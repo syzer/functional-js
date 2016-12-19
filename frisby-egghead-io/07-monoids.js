@@ -108,7 +108,7 @@ const res3 = stats.foldMap(x =>
     fromNullable(x.views).map(Sum), Right(Sum(0)))
 
 // stats.map(e => console.log(e))
-res3.map(console.log)
+// res3.map(console.log)
 //=> 54 Right(Sum(54))
 
 // and if any views is undefined
@@ -122,3 +122,7 @@ const find = (xs, f) =>
 
 const res4 = find([1, 2, 3, 4], x => x > 2)
 // ...
+
+module.exports = {
+    Sum
+}

@@ -82,7 +82,7 @@ const parseDbUrl = cfg => {
 }
 
 // functional
-const parseDbUrl = cfg =>
+const parseDbUrl2 = cfg =>
     tryCatch(() => JSON.parse(cfg))
         .chain(c => fromNullable(c.url))
         .fold(e => null, u => u.match(/posgres:/))

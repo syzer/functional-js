@@ -4,6 +4,7 @@
 const Right = x => ({
     map: f => Right(f(x)),
     tap: () => `Right(${x})`,
+    inspect: () => `Right(${x})`,
     // unbox
     fold: (f, g) => g(x),
     chain: f => f(x)
@@ -12,6 +13,7 @@ const Right = x => ({
 const Left = x => ({
     map: f => Left(x),
     tap: () => `Left(${x})`,
+    inspect: () => `Left(${x})`,
     fold: (f, g) => f(x),
     chain: f => Left(x)
 })
@@ -51,5 +53,6 @@ const result2 = findColor2('green')
 module.exports = {
     fromNullable,
     Left,
-    Right
+    Right,
+    Either
 }

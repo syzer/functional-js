@@ -12,7 +12,8 @@ const res3 = [1, 2].concat([3, 4].concat([5, 6]))
 const Sum = x => ({
     x,
     concat: ({x: y}) => Sum(x + y),
-    tap: () => `Sum(${x})`
+    tap: () => `Sum(${x})`,
+    inspect: () => `Sum(${x})`
 })
 
 const res4 = Sum(1).concat(Sum(2)).tap()
