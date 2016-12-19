@@ -48,7 +48,7 @@ const eitherToTask = e => e.fold(Task.rejected, Task.of)
 
 Db.find(3)  // Task(Right(user))
     .map(either =>
-    either.map(user => Db.find(user.bestFriendId)))  // Right(Task(Right(User)))
+        either.map(user => Db.find(user.bestFriendId)))  // Right(Task(Right(User)))
 
 Db.find(3)  // Task(Right(user))
     .chain(eitherToTask)
