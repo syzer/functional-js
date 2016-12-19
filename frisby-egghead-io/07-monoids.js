@@ -121,4 +121,4 @@ const find = (xs, f) =>
         .fold(x => x)
 
 const res4 = find([1, 2, 3, 4], x => x > 2)
-// Right(5)
+// ...
