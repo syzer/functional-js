@@ -7,7 +7,8 @@ const Right = x => ({
     inspect: () => `Right(${x})`,
     // unbox
     fold: (f, g) => g(x),
-    chain: f => f(x)
+    chain: f => f(x),
+    ap: x2 => x2.map(x) // test
 })
 
 const Left = x => ({
@@ -15,10 +16,12 @@ const Left = x => ({
     tap: () => `Left(${x})`,
     inspect: () => `Left(${x})`,
     fold: (f, g) => f(x),
-    chain: f => Left(x)
+    chain: f => Left(x),
+    ap: x2 => Left(x) // test
 })
 
 const Either = Right || Left
+Either.of = x => Either(x)
 
 const findColor = name => ({
     red: '#ff4444',

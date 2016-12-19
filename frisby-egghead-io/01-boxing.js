@@ -3,8 +3,13 @@ const Box = x => ({
     tap: () => `Box(${x})`,
     inspect: () => `Box(${x})`,
     unBox: () => x,
-    fold: f => f(x)
+    fold: f => f(x),
+    // might be buggy
+    chain: f => f,
+    ap: b2 => b2.map(x)
 })
+Box.of = x => Box(x)
+
 
 const nextCharFromString = str =>
     Box(str)
