@@ -10,7 +10,7 @@ const tryCatch = f => {
 }
 
 const getPort = () =>
-    tryCatch(() => fs.readFileSync('config.json'))
+    tryCatch(() => fs.readFileSync(__dirname + '/config.json'))
         .chain(c => tryCatch(() => JSON.parse(c)))
         .fold(e => 3000, c => c.port())
 

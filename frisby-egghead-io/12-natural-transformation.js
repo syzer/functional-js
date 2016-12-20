@@ -56,5 +56,3 @@ Db.find(3)  // Task(Right(user))
     .chain(eitherToTask)
     .fork(console.error, console.log)
 // { id: 4, name: 'Doge', bestFriendId: 5 }
-
-// video 25 done
