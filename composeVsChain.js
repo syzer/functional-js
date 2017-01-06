@@ -1,239 +1,238 @@
 /**
  * Created by syzer on 8/7/2014.
  */
-//https://www.youtube.com/watch?v=AvgwKjTPMmM
+// https://www.youtube.com/watch?v=AvgwKjTPMmM
 
-var _ = require('lodash');
+const _ = require('lodash')
 
-var first = function (str) {
-    return str.charAt(0);
-};
+const first = function (str) {
+    return str.charAt(0)
+}
 
-var capitalize = function (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLocaleLowerCase();
-};
+const capitalize = function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLocaleLowerCase()
+}
 
-var bigFirst = function (x) {
-    return _(x).chain().map(capitalize).map(first).value();
-};
-var bigFirstBetter = function (x) {
-    return _(x).chain().map(_.compose(capitalize, first)).value();
-};
+const bigFirst = function (x) {
+    return _(x).chain().map(capitalize).map(first).value()
+}
+const bigFirstBetter = function (x) {
+    return _(x).chain().map(_.compose(capitalize, first)).value()
+}
 
-var caption = bigFirst(['ham', 'cake']);
-var caption2 = bigFirstBetter(['ham', 'cake']);
-console.log(caption);
-console.log(caption2);
+const caption = bigFirst(['ham', 'cake'])
+const caption2 = bigFirstBetter(['ham', 'cake'])
+console.log(caption)
+console.log(caption2)
 
 // g:: forall b. (t->b->b) ->b ->b
 // reduce(c, n, build(g)) = g(c, n)
 
-var build = function (g) {
-    return g(push, []);
-};
+const build = function (g) {
+    return g(push, [])
+}
 
-var map = _.curry(function (f, s) {
-    return build(function (c, n) {
-        return Array.reduce(function (acc, x) {
-            return c(f(x), acc);
+const map = _.curry((f, s) => {
+    return build((c, n) => {
+        return Array.reduce((acc, x) => {
+            return c(f(x), acc)
         }, n, s)
     })
-});
+})
 
-//var add = function (a) {
+// var add = function (a) {
 //    return function (b) {
 //        return a + b;
 //    }
-//};
-var add = function (a, b) {
-    return a + b;
-};
+// };
+const add = function (a, b) {
+    return a + b
+}
 
-var sum = function (acc, num, key, arr) {
+const sum = function (acc, num, key, arr) {
 //    console.log(acc, num, key, arr);
-    console.log('+', num + acc);
-    return num + acc;
-};
+    console.log('+', num + acc)
+    return num + acc
+}
 
-var sqr = function (x, num) {
-    return x * x;
-};
+const sqr = function (x, num) {
+    return x * x
+}
 
-var sumSqrs = function (arr) {
-    return _(arr).reduce(_.compose(sqr, sum), 0);
-};
+const sumSqrs = function (arr) {
+    return _(arr).reduce(_.compose(sqr, sum), 0)
+}
 
 // reduce(function(acc, x){return add(sqr(x), acc)}, 0);
 
-//TODO debug
-var result = sumSqrs([1, 2, 3]);
-console.log('should be 14: ', result);     // 12*12 =144
+// TODO debug
+var result = sumSqrs([1, 2, 3])
+console.log('should be 14: ', result)     // 12*12 =144
 
-//var sumUp = _.reduce(add, 0);
+// var sumUp = _.reduce(add, 0);
 
-var sumSqs = function (arr) {
+const sumSqs = function (arr) {
 //    return _(arr).map(sqr).sumUp().value();
-    return _(arr).reduce(function (acc, x) {
-        return add(sqr(x), acc);
-    }, 0);
-};
-var result = sumSqs([1, 2, 3]);
-console.log('1+4+9 is ', result);     // 9+4+1 = 14 OK
+    return _(arr).reduce((acc, x) => {
+        return add(sqr(x), acc)
+    }, 0)
+}
+var result = sumSqs([1, 2, 3])
+console.log('1+4+9 is ', result)     // 9+4+1 = 14 OK
 
 // WORKS FOR FUNCTORS + MONADS
 // AUTOMATIC DEFORESTATION -> memoization
 
-var addTwenty = _.memoize(function (x) {
-    return x + 20;
-});
+const addTwenty = _.memoize(x => {
+    return x + 20
+})
 
-var p = console.log;
-p(addTwenty(10));   // 30
-p(addTwenty(10));   // 30 , didn't run
+const p = console.log
+p(addTwenty(10))   // 30
+p(addTwenty(10))   // 30 , didn't run
 
 // memoize  get posts, or any factory
-var getPosts = _.memoize(function (id) {
-    return new Future(function (err, res) {
-        $.getJSON('/posts/' + id, res);
-    });
-});
-//getPosts(10)
-//getPosts(10)    // didnt run
+const getPosts = _.memoize(id => {
+    return new Future((err, res) => {
+        $.getJSON('/posts/' + id, res)
+    })
+})
+// getPosts(10)
+// getPosts(10)    // didnt run
 
-//TODO can i memoize whole app????????????
+// TODO can i memoize whole app????????????
 // parallel code
 // add(2 ,3, 5)
-//liftA3(fn, A1, A2, A3)
-//var longCals = int => Future(Int)
-//var collectResults = _.curry(function(res1, res2, res3));
-//liftA3(collectResults, longCalc(20), longCalc(20), longCalc(20))
+// liftA3(fn, A1, A2, A3)
+// var longCals = int => Future(Int)
+// var collectResults = _.curry(function(res1, res2, res3));
+// liftA3(collectResults, longCalc(20), longCalc(20), longCalc(20))
 
-var characters = [
-    { 'name': 'barney', 'age': 36 },
-    { 'name': 'fred', 'age': 40 },
-    { 'name': 'pebbles', 'age': 1 }
-];
+const characters = [
+    {name: 'barney', age: 36},
+    {name: 'fred', age: 40},
+    {name: 'pebbles', age: 1}
+]
 
-var youngest = _.chain(characters)
+const youngest = _.chain(characters)
     .sortBy('age')
-    .map(function (chr) {
-        return chr.name + ' is ' + chr.age;
+    .map(chr => {
+        return chr.name + ' is ' + chr.age
     })
     .first()        // can rearange first() with map
-    .value();       // run computation
+    .value()       // run computation
 // → 'pebbles is 1'
-p(youngest);
+p(youngest)
 
-
-var toUpperCase = String.toUpperCase;
+const toUpperCase = String.toUpperCase
 // compose(g,h) => is assiociative () like (a+b)+c = a+(b+c)
 // opipe data thu functions()
 // null checks
 // lences
 
-//TODO import mekeLences
+// TODO import mekeLences
 
-//var user = {id:1, name:'Ala'};
-//var L = makeLences(['name']);
-//view(L.name, user); // Ala
-//set(L.name, 'Alex'); // {id:1, name:'Alex'}
-//over(L.name, toUpperCase);
+// var user = {id:1, name:'Ala'};
+// var L = makeLences(['name']);
+// view(L.name, user); // Ala
+// set(L.name, 'Alex'); // {id:1, name:'Alex'}
+// over(L.name, toUpperCase);
 
 // every time return new object(immutable)
 
 // composing lances, also polymorphic
-//var L = makeLences(['name','first']);
-//var firstNameChar = compose(L.name, L.first);
-//over(firstnameChar, toUpperCase, user); // {id:1, name:'Ala', last:'day'}
+// var L = makeLences(['name','first']);
+// var firstNameChar = compose(L.name, L.first);
+// over(firstnameChar, toUpperCase, user); // {id:1, name:'Ala', last:'day'}
 
 // null checks
-var val = null;
-if (null === val) {
+const val = null
+if (val === null) {
     // checks
 }
 
-var allonge = require('allong.es');
-var maybe = allonge.es.maybe;
+const allonge = require('allong.es')
+const maybe = allonge.es.maybe
 
-var mapWith = function (fn) {
+const mapWith = function (fn) {
     return function (arr) {
-        return _(arr).map(fn).value();
+        return _(arr).map(fn).value()
     }
-};
+}
 
-var maybeUpcase = mapWith(maybe(function (x) {
-    return x.toUpperCase();
-}));
+const maybeUpcase = mapWith(maybe(x => {
+    return x.toUpperCase()
+}))
 
-p(maybeUpcase(['echo', null])); //[ ECHO, null ]
+p(maybeUpcase(['echo', null])) // [ ECHO, null ]
 // NULL WAS SKIPPED!!!
 // if (null){
 //    null.toUpperCase();
 
-//var composedMaybe = _.compose(maybeUpcase(['me']), maybeUpcase(['to']));
-var f = function (x) {
-    return 'f ' + x;
-};
-var g = function (x) {
-    return 'g ' + x;
-};
+// var composedMaybe = _.compose(maybeUpcase(['me']), maybeUpcase(['to']));
+const f = function (x) {
+    return 'f ' + x
+}
+const g = function (x) {
+    return 'g ' + x
+}
 
-var test = ['apples', 'oranges'];
+const test = ['apples', 'oranges']
 
 // !!!! composiotion assiotiation
-var composition = _.compose(mapWith(f), mapWith(g));
-p(composition(test));
-var composition2 = mapWith(_.compose(f, g));
-p(composition2(test));
+const composition = _.compose(mapWith(f), mapWith(g))
+p(composition(test))
+const composition2 = mapWith(_.compose(f, g))
+p(composition2(test))
 
-//Error handling(vs throw)
+// Error handling(vs throw)
 // Either
 
 // future values:
 // promises
-//var Promise = require('promise');
-//var Promise = allonge.es.promise; //require('promise');
-var Q = require('q');
-var prom = Q.defer();
-mapWith(function (x) {
+// var Promise = require('promise');
+// var Promise = allonge.es.promise; //require('promise');
+const Q = require('q')
+const prom = Q.defer()
+mapWith(x => {
     return p(reverse(x))
-}, prom);
-prom.resolve([1, 2, 3]);
+}, prom)
+prom.resolve([1, 2, 3])
 
 // functor -> sth that implements MAP function
 // maybe, either, promise
 
 // vs nesting
 // AKA node app
-//_.compose(mjoin, mapWith);
+// _.compose(mjoin, mapWith);
 
-//_.compose(mjoin, mapWith, mjoin, mapWith)
+// _.compose(mjoin, mapWith, mjoin, mapWith)
 
 // vs null, 2  async results
-//liftA2(f, A(x), A(y))
-//maybe
+// liftA2(f, A(x), A(y))
+// maybe
 
-require('pointfree-fantasy').expose(global);
-var Maybe = require('pointfree-fantasy/instances/maybe');
-var Either = require('pointfree-fantasy/instances/either');
-var Promise = require('pointfree-fantasy/instances/promise');
-//Maybe = function(val) {
+require('pointfree-fantasy').expose(global)
+const Maybe = require('pointfree-fantasy/instances/maybe')
+const Either = require('pointfree-fantasy/instances/either')
+const Promise = require('pointfree-fantasy/instances/promise')
+// Maybe = function(val) {
 //    this.val = val;
-//};
-//Maybe.prototype.map = function(f) {
+// };
+// Maybe.prototype.map = function(f) {
 //    return this.val ? Maybe(f(this.val)) : Maybe(null);
-//};
-//var liftA2 = function (fn, fn2, fn3) {
+// };
+// var liftA2 = function (fn, fn2, fn3) {
 //    return mapWith(fn)([fn2, fn3]);
-//};
+// };
 
-var adder = function (x) {
+const adder = function (x) {
     return function (y) {
-        return x + y;
+        return x + y
     }
-};
-var maybe5 = liftA2(adder, Maybe(2), Maybe(3)); // 5 !!!
-p(maybe5);
+}
+const maybe5 = liftA2(adder, Maybe(2), Maybe(3)) // 5 !!!
+p(maybe5)
 // if any null it will not run
 
 // accumulation/reduce AKA monoid

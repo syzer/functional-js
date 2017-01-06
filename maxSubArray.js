@@ -3,10 +3,10 @@
 const _ = require('lodash')
 const assert = require('assert')
 
-const reduceAdd = (arr) => _.reduce(arr, _.add)
+const reduceAdd = arr => _.reduce(arr, _.add)
 
-const maxSubArray = (arr) => arr.reduce((acc, curr) => {
-    let currMax = acc.currMax + curr
+const maxSubArray = arr => arr.reduce((acc, curr) => {
+    const currMax = acc.currMax + curr
     if (currMax > 0) {
         acc.currMax = currMax
     } else {

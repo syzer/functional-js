@@ -1,112 +1,122 @@
 /**
  * Created by syzer on 11/25/2014.
  */
-//http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/
-    //TODO rsvp changed API , need to pass resolver
+// http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/
+    // TODO rsvp changed API , need to pass resolver
 
+let Promise = require('rsvp').Promise,
+    util = require('util')
 
-var Promise = require('rsvp').Promise,
-    util    = require('util');
-
-var list = function(promises) {
-    var listPromise = new Promise();
-    for (var k in listPromise) promises[k] = listPromise[k];
-
-    var results = [], done = 0;
-
-    promises.forEach(function(promise, i) {
-        promise.then(function(result) {
-            results[i] = result;
-            done += 1;
-            if (done === promises.length) promises.resolve(results);
-        }, function(error) {
-            promises.reject(error);
-        });
-    });
-
-    if (promises.length === 0) promises.resolve(results);
-    return promises;
-};
-
-var LazyPromise = function(factory) {
-    this._factory = factory;
-    this._started = false;
-};
-util.inherits(LazyPromise, Promise);
-
-LazyPromise.prototype.then = function() {
-    if (!this._started) {
-        this._started = true;
-        var self = this;
-
-        this._factory(function(error, result) {
-            if (error) self.reject(error);
-            else self.resolve(result);
-        });
+const list = function (promises) {
+    const listPromise = new Promise()
+    for (const k in listPromise) {
+        promises[k] = listPromise[k]
     }
-    return Promise.prototype.then.apply(this, arguments);
-};
 
-var delayed = new LazyPromise(function(callback) {
-    console.log('Started');
-    setTimeout(function() {
-        console.log('Done');
-        callback(null, 42);
-    }, 1000);
-});
+    let results = [],
+        done = 0
 
-//delayed.then(console.log);
-//delayed.then(console.log);
-//delayed.then(console.log);
+    promises.forEach((promise, i) => {
+        promise.then(result => {
+            results[i] = result
+            done += 1
+            if (done === promises.length) {
+                promises.resolve(results)
+            }
+        }, error => {
+            promises.reject(error)
+        })
+    })
 
-var DELAY = 1000;
+    if (promises.length === 0) {
+        promises.resolve(results)
+    }
+    return promises
+}
 
-var Module = function(name, deps, factory) {
-    this._factory = function(callback) {
-        list(deps).then(function(apis) {
-            console.log('-- module LOAD: ' + name);
-            setTimeout(function() {
-                console.log('-- module done: ' + name);
-                var api = factory.apply(this, apis);
-                callback(null, api);
-            }, DELAY);
-        });
-    };
-};
-util.inherits(Module, LazyPromise);
+const LazyPromise = function (factory) {
+    this._factory = factory
+    this._started = false
+}
+util.inherits(LazyPromise, Promise)
 
-var A = new Module('A', [], function() {
+LazyPromise.prototype.then = function () {
+    if (!this._started) {
+        this._started = true
+        const self = this
+
+        this._factory((error, result) => {
+            if (error) {
+                self.reject(error)
+            } else {
+                self.resolve(result)
+            }
+        })
+    }
+    return Promise.prototype.then.apply(this, arguments)
+}
+
+const delayed = new LazyPromise(callback => {
+    console.log('Started')
+    setTimeout(() => {
+        console.log('Done')
+        callback(null, 42)
+    }, 1000)
+})
+
+// delayed.then(console.log);
+// delayed.then(console.log);
+// delayed.then(console.log);
+
+const DELAY = 1000
+
+const Module = function (name, deps, factory) {
+    this._factory = function (callback) {
+        list(deps).then(apis => {
+            console.log('-- module LOAD: ' + name)
+            setTimeout(function () {
+                console.log('-- module done: ' + name)
+                const api = factory.apply(this, apis)
+                callback(null, api)
+            }, DELAY)
+        })
+    }
+}
+util.inherits(Module, LazyPromise)
+
+const A = new Module('A', [], () => {
     return {
-        logBase: function(x, y) {
-            return Math.log(x) / Math.log(y);
+        logBase(x, y) {
+            return Math.log(x) / Math.log(y)
         }
-    };
-});
+    }
+})
 
-var B = new Module('B', [A], function(a) {
+const B = new Module('B', [A], a => {
     return {
-        doMath: function(x, y) {
-            return 'B result is: ' + a.logBase(x, y);
+        doMath(x, y) {
+            return 'B result is: ' + a.logBase(x, y)
         }
-    };
-});
+    }
+})
 
-var C = new Module('C', [A], function(a) {
+const C = new Module('C', [A], a => {
     return {
-        doMath: function(x, y) {
-            return 'C result is: ' + a.logBase(y, x);
+        doMath(x, y) {
+            return 'C result is: ' + a.logBase(y, x)
         }
-    };
-});
+    }
+})
 
-var D = new Module('D', [B, C], function(b, c) {
+const D = new Module('D', [B, C], (b, c) => {
     return {
-        run: function(x, y) {
-            console.log(b.doMath(x, y));
-            console.log(c.doMath(x, y));
+        run(x, y) {
+            console.log(b.doMath(x, y))
+            console.log(c.doMath(x, y))
         }
-    };
-});
+    }
+})
 
-
-D.then(function(d) { d.run(1000, 2) });
+D.then(d => {
+    d.run(1000, 2)
+})

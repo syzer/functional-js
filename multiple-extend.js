@@ -1,58 +1,58 @@
-function extend () {
-    return [].reduce.call(arguments, Object.create, this);
+function extend() {
+    return [].reduce.call(arguments, Object.create, this)
 }
 
-var person = {
-    sayName: function () {
-        console.log("Hello, my name is " + this.name);
-        return this;
+const person = {
+    sayName() {
+        console.log('Hello, my name is ' + this.name)
+        return this
     },
-    name: "John Doe",
-    extend: extend
-};
+    name: 'John Doe',
+    extend
+}
 
-var ninja = {
+const ninja = {
     hide: {
-        value: function () {
-            this.hidden = true;
-            return this;
+        value() {
+            this.hidden = true
+            return this
         }
     }
-};
+}
 
-var wizard = {
+const wizard = {
     fireball: {
-        value: function () {
-            console.log("Pew Pew!");
-            return this;
+        value() {
+            console.log('Pew Pew!')
+            return this
         }
     }
-};
+}
 
-var ninjaWizard = person.extend(ninja, wizard, {
+const ninjaWizard = person.extend(ninja, wizard, {
     name: {
-        value: "Ninja Wizard"
+        value: 'Ninja Wizard'
     },
     wtf: {
-        value: function () {
-            console.log("RWAWRRRGGGGG!");
-            return this;
+        value() {
+            console.log('RWAWRRRGGGGG!')
+            return this
         }
     }
-});
+})
 
-ninjaWizard.sayName().wtf().fireball().hide();
+ninjaWizard.sayName().wtf().fireball().hide()
 
-var shaggar = ninjaWizard.extend({
+const shaggar = ninjaWizard.extend({
     name: {
-        value: "Shaggar, Son of Dolff"
+        value: 'Shaggar, Son of Dolff'
     },
     feedToGoats: {
-        value: function () {
+        value() {
             if (this.hasCutoffManhood) {
-                //Do things
-            }            
+                // Do things
+            }
         }
     }
-});
-shaggar.sayName().feedToGoats();
+})
+shaggar.sayName().feedToGoats()

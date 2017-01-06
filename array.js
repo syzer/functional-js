@@ -7,18 +7,18 @@
  * @returns {Array}
  */
 Array.prototype.unique = function () {
-    var a = this.concat();
-    for (var i = 0; i < a.length; ++i) {
-        for (var j = i + 1; j < a.length; ++j) {
-            if (a[i] === a[j])
-                a.splice(j, 1);
+    const a = this.concat()
+    for (let i = 0; i < a.length; ++i) {
+        for (let j = i + 1; j < a.length; ++j) {
+            if (a[i] === a[j]) {
+                a.splice(j, 1)
+            }
         }
     }
-    return a;
-};
+    return a
+}
 
-
-var array1 = new Array(45, 46, 47, 48);
-var array2 = new Array(47, 48, 49);
-var array3 = array1.concat(array2).unique();
-console.log(array3);    //45,46,47,48,49
+const array1 = new Array(45, 46, 47, 48)
+const array2 = new Array(47, 48, 49)
+const array3 = array1.concat(array2).unique()
+console.log(array3)    // 45,46,47,48,49

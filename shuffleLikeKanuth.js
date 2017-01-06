@@ -1,16 +1,16 @@
 // 29.04.2016
 const _ = require('lodash')
-let arr = _.range(0, 21)
+const arr = _.range(0, 21)
 
-const shuffle = (arr) => {
+const shuffle = arr => {
     for (let i = 0; i < arr.length; i++) {
-        let j = _.random(i, arr.length - 1)
+        const j = _.random(i, arr.length - 1)
         swap(arr, arr[i], arr[j])
     }
 }
 
 const swap = (arr, i, j) => {
-    let temp = arr[i]
+    const temp = arr[i]
     arr[i] = arr[j]
     arr[j] = temp
 }

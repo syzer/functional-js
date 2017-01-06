@@ -1,54 +1,53 @@
-function delegateToOwn (receiver, propertyName, ...methods) {
-    methods.forEach(function (methodName) {
+function delegateToOwn(receiver, propertyName, ...methods) {
+    methods.forEach(methodName => {
         receiver[methodName] = function () {
-            const metaobject = receiver[propertyName];
-            return metaobject[methodName].apply(receiver, arguments);
-        };
-    });
+            const metaobject = receiver[propertyName]
+            return metaobject[methodName].apply(receiver, arguments)
+        }
+    })
 
-    return receiver;
+    return receiver
 }
 
 // state machine pattern!!
 
 const Universe = {
     // ...
-    numberOfNeighbours (location) {
+    numberOfNeighbours(location) {
         // ...
     }
-};
+}
 
-const thisGame = Object.assign({}, Universe);
+const thisGame = Object.assign({}, Universe)
 
 const Alive = {
-    alive () {
-        return true;
+    alive() {
+        return true
     },
-    aliveInNextGeneration () {
-        return (this.numberOfNeighbours() === 3);
+    aliveInNextGeneration() {
+        return (this.numberOfNeighbours() === 3)
     }
-};
+}
 
 const Dead = {
-    alive () {
-        return false;
+    alive() {
+        return false
     },
-    aliveInNextGeneration () {
-        return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
+    aliveInNextGeneration() {
+        return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3)
     }
-};
+}
 
 const FsmCell = {
-    numberOfNeighbours () {
-        return thisGame.numberOfNeighbours(this._location);
+    numberOfNeighbours() {
+        return thisGame.numberOfNeighbours(this._location)
     }
-};
+}
 
-//delegateToOwn(Cell, '_state', ['alive', 'aliveInNextGeneration']);
+// delegateToOwn(Cell, '_state', ['alive', 'aliveInNextGeneration']);
 
 const someFsmCell = Object.assign({
     _state: Alive,
     _location: {x: -15, y: 12}
-}, FsmCell);
-
+}, FsmCell)
 

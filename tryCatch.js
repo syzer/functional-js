@@ -2,24 +2,24 @@
 
 // this need try catch
 function query(selector) {
-    return document.querySelectorAll(selector);
+    return document.querySelectorAll(selector)
 }
 
-var attemptWith = _.curry(_.attempt, 2);
+const attemptWith = _.curry(_.attempt, 2)
 
 // stop throwing errors
-var elements = attemptWith(query);
+const elements = attemptWith(query)
 
 // maybe result
 function emptyOnError(fn) {
-    return function(/*args*/) {
+    return function (/* args */) {
         if (_.isError(fn(arguments[0]))) {
-            return [];
+            return []
         }
-        return fn(arguments[0]);
+        return fn(arguments[0])
     }
 }
 
-var elWithoutErr = emptyOnError(elements);
+const elWithoutErr = emptyOnError(elements)
 
-elWithoutErr('li');
+elWithoutErr('li')

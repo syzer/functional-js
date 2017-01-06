@@ -1,4 +1,4 @@
-function* queryAll() {
+function * queryAll() {
     return Promise.all([
         'Basel',
         'Zurich'
