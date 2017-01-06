@@ -124,5 +124,6 @@ const res4 = find([1, 2, 3, 4], x => x > 2)
 // ...
 
 module.exports = {
-    Sum
+    Sum,
+    Pair
 }
