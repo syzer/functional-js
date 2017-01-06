@@ -18,7 +18,7 @@ var _ = require('lodash');
 
 
 //TODO
-var articles = [
+const articles = [
     {
         title: 'Everything Sucks',
         url: 'http://do.wn/sucks.html',
@@ -35,7 +35,7 @@ var articles = [
             email: 'hello@me.com'
         }
     }
-];
+]
 
 // Return a list of the author names in
 // articles using only _.get, _.compose, and
