@@ -35,7 +35,7 @@
     "node-promise": "^0.5.10",
     "pointfree-fantasy": "^0.1.0",
     "q": "^1.4.1",
-    "ramda": "^0.22.1",
+    "ramda": "^0.23.0",
     "ramda-debug": "^0.1.4",
     "ramda-fantasy": "^0.7.0",
     "ramda-lens": "^0.1.1",
