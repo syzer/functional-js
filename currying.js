@@ -53,7 +53,8 @@ print(sum2)   // 15
 const total = R.reduce(add, 0) // returns a function
 print(total(numbers))
 
-// ///////////////////////////////////////////////////////////////////////////////////////
+console.log('// ///////////////////////////////////////////////////////////////////////////////////////')
+
 const data = {
     result: 'SUCCESS',
     interfaceVersion: '1.0.3',
@@ -103,7 +104,7 @@ const data = {
 //     }, 1000)
 //     return deffered.promise
 // }
-const fetchData = () => new Promise((rej, res) => res(data))
+const fetchData = () => new Promise((res, rej) => res(data))
 
 const getIncompleteTaskSummaries = (memberName) =>
     fetchData()
@@ -147,73 +148,77 @@ const getIncompleteTaskSummaries = (memberName) =>
             return tasks
         })
 
+getIncompleteTaskSummaries('Lena')
+    .then(console.log)
+    .catch(console.error)
 
-// uncurried Ramda
-const getIncompleteTaskSummaries4 = (memberName) =>
-    fetchData()
-        .then(data => R.get('tasks', data))
-        .then(tasks =>
-            R.filter(task =>
-                    R.propEq('username', memberName, task)
-                , tasks))
-        .then(tasks =>
-            R.reject(task =>
-                    R.propEq('complete', true, task)
-                , tasks))
-        .then(tasks =>
-            R.map(task => R.pick(['id', 'dueDate', 'title', 'priority'], task), tasks))
-        .then(abbreviatedTasks =>
-            R.sortBy(abbrTask =>
-                    R.get('dueDate', abbrTask)
-                , abbreviatedTasks))
-
-// Ramda curried
-const getIncompleteTaskSummaries2 = (memberName) =>
-    fetchData()
-        .then(R.get('tasks'))
-        .then(R.filter(R.propEq('username', memberName)))
-        .then(R.reject(R.propEq('complete', true)))
-        .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
-        .then(R.sortBy(R.get('dueDate')))
-
-// getIncompleteTaskSummaries('Mike')
-// Object object
-
-getIncompleteTaskSummaries2('Scott').then(print)
-getIncompleteTaskSummaries4('Scott').then(print)
-
-getIncompleteTaskSummaries3 = (memberName) =>
-    fetchData()
-        .then(data =>
-            data.tasks
-                .filter(t => t.username == memberName && !t.complete)
-                .map(t => {
-                    let copy = {},
-                        props = ['id', 'dueDate', 'title', 'priority'],
-                        p
-                    while (p = props.pop()) {
-                        copy[p] = t[p]
-                    }
-                    return copy
-                })
-                .sort((first, second) => first.dueDate - second.dueDate))
-// getIncompleteTaskSummaries3('Scott').then(print);
-
-// One may solve it using very reusable code: an query optimizer.. like SQL optimizes JOIN orders
-// Picture that:
-
-// var getIncompleteTaskSummaries = R.optimize(
-//    then(R.get('tasks'))
-//        .then(R.filter(R.propEq('username', membername)))
-//        .then(R.reject(R.propEq('complete', true)))
-//        .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
-//        .then(R.sortBy(R.get('dueDate')))
-// );
-// this runs SQL-like optimizer // and then runs full transformation/reduction
-getIncompleteTaskSummaries(fetchData())
-
-// That allows you to separate concerns(SOLID all the way)...
-// what needs to be done is different
-// than what would be the fastest possible execution plan giving CURRENT resources
-
-// Please, note that given different data locality(ex: some data in remote servers) the execution order may be different
+//
+// // uncurried Ramda
+// const getIncompleteTaskSummaries4 = (memberName) =>
+//     fetchData()
+//         .then(data => R.get('tasks', data))
+//         .then(tasks =>
+//             R.filter(task =>
+//                     R.propEq('username', memberName, task)
+//                 , tasks))
+//         .then(tasks =>
+//             R.reject(task =>
+//                     R.propEq('complete', true, task)
+//                 , tasks))
+//         .then(tasks =>
+//             R.map(task => R.pick(['id', 'dueDate', 'title', 'priority'], task), tasks))
+//         .then(abbreviatedTasks =>
+//             R.sortBy(abbrTask =>
+//                     R.get('dueDate', abbrTask)
+//                 , abbreviatedTasks))
+//
+// // Ramda curried
+// const getIncompleteTaskSummaries2 = (memberName) =>
+//     fetchData()
+//         .then(R.get('tasks'))
+//         .then(R.filter(R.propEq('username', memberName)))
+//         .then(R.reject(R.propEq('complete', true)))
+//         .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
+//         .then(R.sortBy(R.get('dueDate')))
+//
+// // getIncompleteTaskSummaries('Mike')
+// // Object object
+//
+// getIncompleteTaskSummaries2('Scott').then(print)
+// getIncompleteTaskSummaries4('Scott').then(print)
+//
+// getIncompleteTaskSummaries3 = (memberName) =>
+//     fetchData()
+//         .then(data =>
+//             data.tasks
+//                 .filter(t => t.username == memberName && !t.complete)
+//                 .map(t => {
+//                     let copy = {},
+//                         props = ['id', 'dueDate', 'title', 'priority'],
+//                         p
+//                     while (p = props.pop()) {
+//                         copy[p] = t[p]
+//                     }
+//                     return copy
+//                 })
+//                 .sort((first, second) => first.dueDate - second.dueDate))
+// // getIncompleteTaskSummaries3('Scott').then(print);
+//
+// // One may solve it using very reusable code: an query optimizer.. like SQL optimizes JOIN orders
+// // Picture that:
+//
+// // var getIncompleteTaskSummaries = R.optimize(
+// //    then(R.get('tasks'))
+// //        .then(R.filter(R.propEq('username', membername)))
+// //        .then(R.reject(R.propEq('complete', true)))
+// //        .then(R.map(R.pick(['id', 'dueDate', 'title', 'priority'])))
+// //        .then(R.sortBy(R.get('dueDate')))
+// // );
+// // this runs SQL-like optimizer // and then runs full transformation/reduction
+// getIncompleteTaskSummaries(fetchData())
+//
+// // That allows you to separate concerns(SOLID all the way)...
+// // what needs to be done is different
+// // than what would be the fastest possible execution plan giving CURRENT resources
+//
+// // Please, note that given different data locality(ex: some data in remote servers) the execution order may be different
