@@ -148,7 +148,7 @@ const getIncompleteTaskSummaries = (memberName) =>
             return tasks
         })
 
-getIncompleteTaskSummaries('Lena')
+getIncompleteTaskSummaries('Scott')
     .then(console.log)
     .catch(console.error)
 
