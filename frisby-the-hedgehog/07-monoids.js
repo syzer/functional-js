@@ -1,4 +1,9 @@
 // monoid = a semi group with neutral element
+// has empty() method
+// has concat() method
+
+// xs.reduce(concat, empty)
+
 const { All, Sum } = require('./05-semigroup')
 const { fromNullable } = require('./03-either')
 // generic data structures
