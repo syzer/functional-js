@@ -1,5 +1,7 @@
 // 05.04.2017
 
+// nodemon -w ./ -e js,json -x 'cat calendarTimeConflicts.js | node -p'
+
 const _ = require('lodash')
 const assert = require('assert')
 
@@ -16,7 +18,7 @@ const sortedDates = dates.sort((a, b) => a.start - b.start)
 
 const pickDates = sortedDates.reduce((acc, curr) => {
     if (curr.start < (_.last(acc) && _.last(acc).end)) {
-        console.log('skipping', curr.start)
+        console.log('conflicting', curr)
         return acc
     }
 
@@ -25,4 +27,3 @@ const pickDates = sortedDates.reduce((acc, curr) => {
 }, [])
 
 pickDates
-// sortedDarstes
