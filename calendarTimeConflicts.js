@@ -1,4 +1,5 @@
 // 05.04.2017
+// find conflicting dates
 
 // nodemon -w ./ -e js,json -x 'cat calendarTimeConflicts.js | node -p'
 
