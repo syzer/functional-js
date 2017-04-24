@@ -11,9 +11,6 @@
 
  Output a single line containing the minimum number of candies Alice must buy.
  */
-const _ = require('lodash')
-const slice = _.curryRight((str, num) => str.slice(num))
-const split = _.curryRight((str, val) => str.split(val))
 const R = require('ramda')
 
 function processData(input) {
