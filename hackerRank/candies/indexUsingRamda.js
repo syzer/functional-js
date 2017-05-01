@@ -36,7 +36,7 @@ function processData(input) {
             spend: 0,
             total: 0
         }),
-        t => t.total,
+        R.path(['total']),
         console.log
     )(input)
 }
