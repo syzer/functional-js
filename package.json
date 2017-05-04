@@ -36,6 +36,7 @@
     "mocha-sinon": "latest",
     "mori": "^0.2.6",
     "natural": "^0.4.0",
+    "node-fetch": "^1.6.3",
     "node-promise": "^0.5.10",
     "pointfree-fantasy": "^0.1.0",
     "q": "^1.4.1",
