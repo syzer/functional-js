@@ -6,4 +6,12 @@ async function wait2sec() {
   console.log('done')
 }
 
-wait2sec()
+// wait2sec()
+
+async function iterate() {
+  for (let i of [1,2,3]) {
+    await wait2sec()
+  }
+}
+
+iterate()
