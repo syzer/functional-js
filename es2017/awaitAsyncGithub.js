@@ -14,7 +14,6 @@ async function showUserAndRepos(handle) {
   return { name: user.name, repos }
 }
 
-
 async function showUserAndRepos2(handle) {
   const [user, repos] = await Promise.all([
     fetchGithub(`/users/${handle}`),
