@@ -17,8 +17,7 @@ async function getLocalIp() {
 console.log('Should log second: ', getLocalIp())
 
 
-// const fetch = require('fetch')
-const fetchUrl = require("fetch").fetchUrl
+const fetchUrl = require('fetch').fetchUrl
 const fetch = util.promisify(fetchUrl)
 const fetch2 = require('node-fetch')
 
