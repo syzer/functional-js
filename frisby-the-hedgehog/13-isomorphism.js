@@ -17,8 +17,8 @@ const { List, Map } = require('immutable-ext')
 
 // ex: String ~ [Char]
 const Iso = (to, from) => ({
-    to,
-    from
+  to,
+  from
 })
 
 const chars = Iso(s => s.split(''), c => c.join(''))
@@ -27,22 +27,22 @@ const res = chars.from(chars.to('hello world'))
 console.log(res)
 
 const truncate = str =>
-    chars.from(chars.to(str).slice(0, 3).concat('...'))
+  chars.from(chars.to(str).slice(0, 3).concat('...'))
 console.log(truncate('hello world'))
 
 // ex: [a] ~ Either null a
 const singleton = Iso(
-    e => e.fold(() => [], x => [x]),
-    ([x]) => x ? Right(x) : Left())
+  e => e.fold(() => [], x => [x]),
+  ([x]) => x ? Right(x) : Left())
 
 const filterEither = (e, pred) =>
-    singleton.from(singleton.to(e).filter(pred))
+  singleton.from(singleton.to(e).filter(pred))
 
 // it holds only id in mathes /h/
 const res2 = filterEither(Right('hello'), x => x.match(/h/ig))
-    .map(x => x.toUpperCase())
+  .map(x => x.toUpperCase())
 // Right(HELLO)
 
 const res3 = filterEither(Right('ello'), x => x.match(/h/ig))
-    .map(x => x.toUpperCase())
+  .map(x => x.toUpperCase())
 // Left(undefined)

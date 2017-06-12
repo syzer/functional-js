@@ -4,17 +4,17 @@ const { Map } = require('immutable-ext')
 
 // Data structure is semigroup => so can concat to other groups
 const acc1 = Map({
-    name: First('Nico'),
-    isPaid: All(true),
-    points: Sum(10),
-    friends: ['Agatha']
+  name: First('Nico'),
+  isPaid: All(true),
+  points: Sum(10),
+  friends: ['Agatha']
 })
 
 const acc2 = Map({
-    name: First('Nico'),
-    isPaid: All(false),
-    points: Sum(2),
-    friends: ['Arthur']
+  name: First('Nico'),
+  isPaid: All(false),
+  points: Sum(2),
+  friends: ['Arthur']
 })
 
 const res = acc1.concat(acc2)

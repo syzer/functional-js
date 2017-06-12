@@ -11,7 +11,7 @@ const Task = require('data.task')
 
 // Left would valiate ^^
 const boxToEither = b =>
-    b.fold(Right)
+  b.fold(Right)
 
 const res1 = boxToEither(Box(42)).map(x => x * 2)
 const res2 = boxToEither(Box(42).map(x => x * 2))
@@ -39,20 +39,20 @@ const { List } = require('immutable-ext')
 const mock = id => ({ id, name: 'Doge', bestFriendId: id + 1 })
 
 const Db = {
-    find: id =>
-        new Task((rej, res) =>
-            res(id > 2 ? Right(mock(id)) : Left('que passa?')))
+  find: id =>
+    new Task((rej, res) =>
+      res(id > 2 ? Right(mock(id)) : Left('que passa?')))
 }
 
 const eitherToTask = e => e.fold(Task.rejected, Task.of)
 
 Db.find(3)  // Task(Right(user))
-    .map(either =>
-        either.map(user => Db.find(user.bestFriendId)))  // Right(Task(Right(User)))
+  .map(either =>
+    either.map(user => Db.find(user.bestFriendId)))  // Right(Task(Right(User)))
 
 Db.find(3)  // Task(Right(user))
-    .chain(eitherToTask)
-    .chain(user => Db.find(user.bestFriendId))
-    .chain(eitherToTask)
-    .fork(console.error, console.log)
+  .chain(eitherToTask)
+  .chain(user => Db.find(user.bestFriendId))
+  .chain(eitherToTask)
+  .fork(console.error, console.log)
 // { id: 4, name: 'Doge', bestFriendId: 5 }

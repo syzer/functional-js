@@ -28,9 +28,9 @@ Box.of(100)
 const http = x => Task.of(x)
 
 http('user')
-    .chain(user =>
-        http(`/comments/${user.id}`
-            .chain(comments => renderDOM(user, comments))))
+  .chain(user =>
+    http(`/comments/${user.id}`
+      .chain(comments => renderDOM(user, comments))))
 //=> Task(Task(Task(DOM)))
 
 const add = x => y => x + y
@@ -43,8 +43,8 @@ const add = x => y => x + y
 // console.log(res3);
 
 const res = Box(x => y => x + y)
-    .ap(Box(2))
-    .ap(Box(3))
+  .ap(Box(2))
+  .ap(Box(3))
 // Box(5)
 
 // if has app.. is applicative
@@ -52,10 +52,10 @@ const res = Box(x => y => x + y)
 
 
 const liftA2 = (f, fx, fy) =>
-    fx.map(f).ap(fy)
+  fx.map(f).ap(fy)
 
 const liftA3 = (f, fx, fy, fz) =>
-    fx.map(f).ap(fy).ap(fz)
+  fx.map(f).ap(fy).ap(fz)
 
 const res3 = liftA2(add, Box(2), Box(4))
 // Box(6)
@@ -67,18 +67,18 @@ const res4 = Box(add).ap(Box(2)).ap(Box(4))
 const $ = selector => Either.of({ selector, height: 10 })
 
 const getScreenSize =
-    (screen, head, foot) => screen - (head.height + foot.height)
+  (screen, head, foot) => screen - (head.height + foot.height)
 
 $('header').chain(header =>
-    $('footer').map(footer => getScreenSize(800, header, footer)))
+  $('footer').map(footer => getScreenSize(800, header, footer)))
 
 // curried
 const getScreenSize2 = screen => head =>
-    foot => screen - (head.height + foot.height)
+  foot => screen - (head.height + foot.height)
 
 const res5 = Either.of(getScreenSize2(800))
-    .ap($('header'))
-    .ap($('footer'))
+  .ap($('header'))
+  .ap($('footer'))
 
 const res6 = liftA2(getScreenSize2(800), $('header'), $('footer'))
 // they all are Right(780)
