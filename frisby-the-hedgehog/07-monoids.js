@@ -1,6 +1,7 @@
 // monoid = a semi group with neutral element
 // has empty() method
 // has concat() method
+// CONCAT FOR AGGREGATION PATTERN
 
 // xs.reduce(concat, empty)
 
