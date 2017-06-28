@@ -67,6 +67,32 @@ function testGraph(input) {
     })[0][0])
 }
 
+function testGraph2(input) {
+  const canConnect = (s, s2) =>
+    Boolean(
+      (s.p1.x === s2.p2.x && s.p1.y === s2.p2.y)
+      || (s.p2.x === s2.p1.x && s.p2.y === s2.p1.y))
+
+  return !isNaN(input
+    .map(s => {
+      if (s.p1.x > s.p2.x) {
+        return s
+      } else {
+        return Segment(s.p2, s.p1)
+      }
+    })
+    .sort((a, b) => a.p1.x - b.p1.x)
+    .reduce((s1, s2, i, arr) => {
+      if (canConnect(s1, s2)) {
+        return s2
+      } else {
+        // should short circuit
+        return Segment(Point(NaN, NaN), Point(NaN, NaN))
+      }
+    }).p1.x)
+}
+
+
 // false
 const input3 = [
   [[1, 1], [2, 2]],
@@ -82,7 +108,7 @@ const input4 = [
   [[5, 5], [3, 3]]
 ]
 
-console.log(testGraph(input))
+console.log(testGraph2(inputB))
 
 
 // true
