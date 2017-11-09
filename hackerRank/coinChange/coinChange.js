@@ -1,4 +1,5 @@
 /**
+ * @see https://www.hackerrank.com/contests/programming-interview-questions/challenges/coin-change
 You have  types of coins available in infinite quantities where the value of each coin is given in the array . Can you determine the number of ways of making change for  units using the given types of coins? For example, if , and , we can make change for  units in three ways: , , and .
 
   Given , , and , print the number of ways to make change for  units using any number of coins having the values given in .
@@ -120,8 +121,7 @@ function countcoins(t, o) {
 
 // mit problems : https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-11.html#%_sec_Temp_52
 // TODO https://www.hackerrank.com/contests/projecteuler/challenges/euler092/problem
-// TODO https://www.hackerrank.com/contests/programming-interview-questions/challenges/coin-change
-//TODO https://www.hackerrank.com/contests/programming-interview-questions/challenges/balanced-delimiters
+// TODO https://www.hackerrank.com/contests/programming-interview-questions/challenges/balanced-delimiters
 // function processData(input) {
 //   const isClosing = char => ['}', ')', ']'].includes(char)
 //   const getMatch => char => ({
@@ -130,7 +130,7 @@ function countcoins(t, o) {
 //     ']': '['
 //   }[char])
 //
-//   //Enter your code here
+//   // Enter your code here
 //   console.log(input)
 //   console.log(input.split('').reduce((acc, curr) => {
 //     if (isClosing(curr)) {
