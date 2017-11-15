@@ -75,8 +75,8 @@ var out = R.into('', R.identity, parseLog(logFile))
 console.log(out)
 
 
-var { lines } = require('transduce/string')
-var stream = require('transduce-stream')
+const { lines } = require('transduce/string')
+const stream = require('transduce-stream')
 
 var parseLog = R.compose(
   lines(),
