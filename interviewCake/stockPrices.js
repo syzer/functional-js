@@ -5,6 +5,7 @@ const stockPricesYesterday3 = [10, 7, 5, 8, 11, 9, 0] // 5 , 11
 // getMaxProfit(stockPricesYesterday);
 // returns 6 (buying for $5 and selling for $11)
 
+// todo
 const getMaxProfit = (arr) => arr.reduce((acc, curr) => {
   if (acc.low > curr) {
     acc.low = curr
