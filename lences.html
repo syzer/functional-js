@@ -16,8 +16,8 @@
     }
 
     var first = lens(
-            function (a) { return a[0]; },
-            function (a, b) { return [b].concat(a.slice(1)); }
+            function (a) { return a[0]; },  // a getter
+            function (a, b) { return [b].concat(a.slice(1)); } // a setter
     );
 
     console.log(first([1, 2, 3])); // outputs 1
@@ -27,10 +27,10 @@
         return x * 10;
     }
 
-    console.log(first.mod(tenTimes, [1,2,3]));//oputipts [10, 2, 3]
+    console.log(first.mod(tenTimes, [1,2,3])); // [10, 2, 3]
 
 </script>
 <body>
-<h1>look on console moron</h1>
+<h1>look on console</h1>
 </body>
 </html>
