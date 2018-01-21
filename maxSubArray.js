@@ -1,4 +1,5 @@
 // 29.04.2016
+// also known as Kadane's algorithm
 
 const _ = require('lodash')
 const assert = require('assert')
