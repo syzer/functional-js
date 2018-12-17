@@ -3,7 +3,7 @@
 const R = require('ramda')
 const fs = require('fs')
 const colors = require('colors')
-const { clone, clamp, pipe: _, tap } = R
+const { clone, clamp, pipe: _, tap, join } = R
 
 process.stdin.resume()
 process.stdin.setEncoding('utf-8')
@@ -39,7 +39,7 @@ const addColor = pos => arr => {
   arr[pos] = String(arr[pos]).red
   return arr
 }
-const debugB = pos => arr => _(clone, firsts, addColor(pos), arr => arr.join(' '))(arr)
+const debugB = pos => arr => _(clone, firsts, addColor(pos), join(' '))(arr)
 // DEBUG OFF
 
 // Complete the fairRations function below.
