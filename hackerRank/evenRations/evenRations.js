@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// https://www.hackerrank.com/challenges/fair-rations/problem
 const R = require('ramda')
 const fs = require('fs')
 const colors = require('colors')
