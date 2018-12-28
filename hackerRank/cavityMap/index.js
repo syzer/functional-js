@@ -33,26 +33,18 @@ const isOnEdge = (arr, i, j) =>
   typeof arr[i - 1] === 'undefined'
   || typeof arr[i + 1] === 'undefined'
   || typeof arr[i + 1][j + 1] === 'undefined'
-  || typeof arr[i - 1 ][j - 1] === 'undefined'
+  || typeof arr[i - 1][j - 1] === 'undefined'
   || typeof arr[i][j + 1] === 'undefined'
 
-const getCrossNeighbours = (arr, i, j) => {
-  const neighbourhood = []
-  if (isOnEdge(arr, i, j)) {
-    return []
-  }
-
-  neighbourhood.push(arr[i][j + 1])
-  neighbourhood.push(arr[i][j - 1])
-  neighbourhood.push(arr[i - 1][j])
-  // neighbourhood.push(arr[i - 1][j - 1])
-  // neighbourhood.push(arr[i - 1][j + 1])
-  neighbourhood.push(arr[i + 1][j])
-  // neighbourhood.push(arr[i + 1][j - 1])
-  // neighbourhood.push(arr[i + 1][j + 1])
-
-  return neighbourhood
-}
+const getCrossNeighbours = (arr, i, j) =>
+  isOnEdge(arr, i, j)
+    ? []
+    : [
+      arr[i][j + 1],
+      arr[i][j - 1],
+      arr[i - 1][j],
+      arr[i + 1][j]
+    ]
 
 function cavityMap(rows) {
   const grid = rows.map(e => e.split(/ |/g).map(Number))
@@ -80,6 +72,6 @@ function main() {
   }
 
   let result = cavityMap(grid)
-  result = result.map(r => r.join(withSpaces ? ' ' :''))
+  result = result.map(r => r.join(withSpaces ? ' ' : ''))
   console.log(result.join("\n") + "\n")
 }
