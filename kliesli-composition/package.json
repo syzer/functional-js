@@ -1,0 +1,16 @@
+{
+  "name": "kliesli-composition",
+  "version": "1.0.0",
+  "description": "It's better to use K-composition when dealing with I/O Because side effects and error checking are encapsulated using **monads**",
+  "main": "k-compose.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "data.task": "^3.1.2",
+    "folktale": "^2.3.2",
+    "ramda": "^0.26.1"
+  }
+}
