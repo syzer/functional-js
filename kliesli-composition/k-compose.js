@@ -53,8 +53,9 @@ const decodeNormal = encoding => buffer =>
 const wordsNormal = text =>
   text.split(' ').length
 
-// const makeNull = e => null
-const makeNull = e => Either.Left('File is empty!')
+const errorMsg = 'File is empty!'
+// const errorMsg = null
+const makeError = e => Either.Left(errorMsg)
 
 // Wrapper
 const asTask = R.o(Task.of)
@@ -68,7 +69,7 @@ const countWordsNormal = R.pipeK(
   read, // Task
   _Nil(checkNormal), // Task of Either
   _(decodeNormal('utf8')), // Task of Either
-  // asTask(makeNull),
+  // asTask(makeError),
   _(wordsNormal) // Task of Either
 )
 
@@ -76,5 +77,6 @@ const countWordsNormal = R.pipeK(
 module.exports = {
   countWords,
   read,
-  countWordsNormal
+  countWordsNormal,
+  errorMsg
 }

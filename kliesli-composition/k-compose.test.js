@@ -1,5 +1,5 @@
 const assert = require('assert').strict
-const { read, countWords, countWordsNormal } = require('./k-compose')
+const { read, countWords, countWordsNormal, errorMsg } = require('./k-compose')
 
 // Test of read()
 read('./readme.md').fork(
@@ -26,7 +26,8 @@ countWords('./readme.nonExistent').fork(
     console.warn('No file')
   },
   result => {
-    console.warn(result.value) // Either: value 22
+    console.warn(result.value)
+    assert(false)
   })
 
 countWordsNormal('./empty.md').fork(
@@ -35,7 +36,7 @@ countWordsNormal('./empty.md').fork(
     console.warn('Empty:', result.value, result) // Either: value undefined
     assert(result !== 3)
     assert(result.value !== 3)
-    assert(result.value === null)
+    assert(result.value === null || result.value === errorMsg)
   }
 )
 
