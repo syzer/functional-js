@@ -79,8 +79,8 @@ const { tap, pipeP, memoizeWith, identity } = require('ramda')
 // data cannot be changed AKA immutability
 const validateNotEmpty = data => {
   if (data.length < 1) {
-    return Promise.reject(Error('File is empty!'))
-    // throw Error('File is empty!')  // this works too!
+    // return Promise.reject(Error('File is empty!'))
+    throw Error('File is empty!')  // this works too!
   }
 
   // return {} // this would break all client code
@@ -146,21 +146,97 @@ const once = new Once([1, 2, 3, 4])
 // const resultMultiply2 = twice.multiply(2).multiply(4).getData()
 // console.log(resultMultiply2)
 
-// Equivalent
+// Equivalent of Once Class with Memoization(Y-combinator)
 const multiply = arr =>
   memoizeWith(identity, num => {
     console.log('this takes 5 sec')
     return arr.map(e => e * num)
   })
 
-const onceF = multiply([1, 2, 3, 4])
-const resultF = onceF(2)
-console.log(resultF)
+// const onceF = multiply([1, 2, 3, 4])
+// const resultF = onceF(2)
+// console.log(resultF)
+//
+// const twiceF = onceF(2)
+// console.log(twiceF)
+// it will just run computation 'this takes 5 sec' once
 
-const twiceF = onceF(2)
-console.log(twiceF)
+// End of Part1
+// # Key findings
+// - closeable interface thru common API
+// - connect sync and async API
+// - better error handling
+// I, Y combinators
 
-
+// TODO
 // K-combinator
+const { composeK, pipeK } = require('ramda')
+const R = require('ramda')
+const Task = require('data.task')
+const Either = require('data.either')
+
+const readFileTask = name =>
+  new Task((reject, resolve) =>
+    fs.readFile(name, (error, data) =>
+      error
+        ? reject(error)
+        : resolve(data)
+    ))
+
+// Normally decode fucntoin would like like this:
+const decodeNormal = buffer =>
+  buffer.toString('utf-8')
+
+// Either all things accept task and are like:
+//  Task(error, ...)
+// or we make new Task each time
+const decode = encoding => buffer =>
+  Task.of(buffer.toString())
+
+// readFileTask(fileName).fork(
+//   console.error,
+//   console.log
+// )
+
+const wordsTask = e =>
+  Task.of(words(e))
+
+const validateNotEmptyTask = data =>
+  new Task((reject, resolve) =>
+    data.length < 1
+      ? reject('File is empty!')
+      : resolve(data))
+
+
+// Step 2
+const readTask = pipeK(
+  readFileTask,
+  decode('utf-8'), // this is how we can pass a config object
+  validateNotEmptyTask,
+  wordsTask
+)
+
+// readTask(fileName).fork(
+//   console.error,
+//   e => console.log('OK: ' + e)
+// )
+
+
+// Step 3: use asTask
+const asTask = R.o(Task.of)
+
+const readTaskBetter = pipeK(
+  readFileTask,
+  decode('utf-8'), // this is how we can pass a config object
+  validateNotEmptyTask,
+  // asTask(validateNotEmpty),
+  asTask(words)
+)
+
+
+readTaskBetter(fileName).fork(
+  console.error,
+  e => console.log('OK: ' + e)
+)
 
 
