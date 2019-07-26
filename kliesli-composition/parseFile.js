@@ -170,7 +170,7 @@ const multiply = arr =>
 
 // TODO
 // K-combinator
-const { composeK, pipeK } = require('ramda')
+const { composeK, pipe: _, pipeK } = require('ramda')
 const R = require('ramda')
 const Task = require('data.task')
 const Either = require('data.either')
@@ -234,9 +234,88 @@ const readTaskBetter = pipeK(
 )
 
 
-readTaskBetter(fileName).fork(
-  console.error,
-  e => console.log('OK: ' + e)
+// readTaskBetter(fileName).fork(
+//   console.error,
+//   e => console.log('OK: ' + e)
+// )
+
+
+const Maybe = require('folktale/maybe')
+
+const parseJson = e => {
+  let result
+  try {
+    result = Maybe.Just(JSON.parse(e))
+  } catch (e) {
+    result = Maybe.Nothing()
+  }
+  return result
+}
+
+const get = key => object =>
+  key in object
+    ? Maybe.Just(object[key])
+    : Maybe.Nothing()
+
+//  getStateCode :: Maybe String -> Maybe String
+const getStateCode = pipeK(
+  parseJson,
+  get('user'),
+  get('address'),
+  get('state'),
+  R.compose(Maybe.of, R.toUpper)
 )
 
+const user = {
+  user: {
+    address: {
+      state: "ny"
+    },
+    name: 'Charles Xavier',
+    favoriteGenres: ['Strategy', 'Shooter'],
+    favoriteGames: [
+      {
+        name: 'Zombie Attack',
+        publisher: {
+          name: 'Sony Interactive',
+          location: 'California, USA'
+        }
+      },
+      {
+        name: 'Inception',
+        publisher: {
+          name: 'Sony Interactive',
+          location: 'California, USA'
+        }
+      }
+    ]
+  }
+}
 
+// console.warn(getStateCode(JSON.stringify(user)).value)
+// //=> Just('NY')
+// console.warn(getStateCode('[Invalid JSON]').value)
+// // Nothing()
+const log = e =>
+  console.warn(JSON.stringify(e, null, 2))
+
+// LENCES (this we should do first)
+const userName = R.lensPath(['user', 'name'])
+// const gameNames = R.lensPath(['user', 'favoriteGames'])
+const games = R.lensPath(['user', 'favoriteGames'])
+const genres = R.lensPath(['user', 'favoriteGenres'])
+// const gameNames = R.over(games, R.map(R.path(['name'])))
+
+// const allGameNames = R.over(games, R.map(R.path(['name'])))
+// const allGameNames2 = _(games, R.lensPath(['0', 'name']))
+
+// log(R.view(allGameNames2)(user))
+
+
+const mods2 = [
+  R.set(userName, 'Alien nation'),
+  R.over(games, R.map(_(R.prop('name'), R.toUpper))),
+  R.over(genres, R.map(R.toUpper)),
+]
+
+log(R.compose(...mods2)(user))
