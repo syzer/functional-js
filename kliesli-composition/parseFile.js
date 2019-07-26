@@ -300,6 +300,9 @@ const log = e =>
   console.warn(JSON.stringify(e, null, 2))
 
 // LENCES (this we should do first)
+// 1. Querry Commmand Separation
+// 2. Lens = getter + setter
+// or (getter, setter)
 const userName = R.lensPath(['user', 'name'])
 // const gameNames = R.lensPath(['user', 'favoriteGames'])
 const games = R.lensPath(['user', 'favoriteGames'])
@@ -319,3 +322,6 @@ const mods2 = [
 ]
 
 log(R.compose(...mods2)(user))
+
+const upercaseGenres = R.over(R.lensPath(['user', 'favoriteGenres']), R.map(R.toUpper))
+log(upercaseGenres(user))
