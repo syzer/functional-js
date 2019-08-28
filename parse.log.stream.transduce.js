@@ -3,9 +3,9 @@
 // http://simplectic.com/blog/2015/ramda-transducers-logs/
 const R = require('ramda')
 
-const isGet = R.test(/GET \//);
-const notStatic = R.complement(R.test(/GET \/static/));
-const isPage = R.allPass([isGet, notStatic]);
+const isGet = R.test(/GET \//)
+const notStatic = R.complement(R.test(/GET \/static/))
+const isPage = R.allPass([isGet, notStatic])
 const splitLine = R.pipe(
   R.match(/^(\S+).+"([^"]+)"/),
   R.tail)
